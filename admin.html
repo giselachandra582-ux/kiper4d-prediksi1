@@ -14,7 +14,7 @@ body {
     min-height: 100vh;
     padding: 20px;
 }
-.container { max-width: 1500px; margin: auto; }
+.container { max-width: 1600px; margin: auto; }
 header {
     text-align: center; padding: 18px 15px; margin-bottom: 18px;
     background: rgba(8, 30, 60, 0.95);
@@ -88,10 +88,10 @@ table {
     width: 100%;
     border-collapse: collapse;
     font-size: 12px;
-    min-width: 1100px;
+    min-width: 1200px;
 }
 thead {
-    background: rgba(8, 145, 178, 0.5);
+    background: rgba(8, 145, 178, 0.6);
     position: sticky; top: 0;
     z-index: 10;
 }
@@ -113,6 +113,8 @@ td {
 tr:hover { background: rgba(34, 211, 238, 0.08); }
 tr.saved { background: rgba(34,197,94,0.15); }
 tr.saved td { color: #86efac; }
+tr.new-row { background: rgba(251,191,36,0.1); border-left: 3px solid #fbbf24; }
+tr.new-row td:first-child::before { content: "🆕 "; color: #fbbf24; }
 
 .td-date { color: #94a3b8; font-size: 11px; white-space: nowrap; }
 .td-time { color: #22d3ee; font-weight: bold; white-space: nowrap; }
@@ -168,6 +170,25 @@ td input::placeholder { color: #475569; }
 }
 .hint-box b { color: #67e8f9; }
 
+.filter-tabs {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    margin-bottom: 14px;
+}
+.filter-tab {
+    padding: 8px 14px; border-radius: 20px;
+    font-size: 12px; font-weight: bold;
+    background: rgba(30,20,60,0.7);
+    border: 1.5px solid rgba(34, 211, 238, 0.4);
+    color: #c8c8d4; cursor: pointer;
+    transition: all 0.3s;
+}
+.filter-tab:hover { color: #00d4ff; border-color: rgba(0,212,255,0.7); }
+.filter-tab.active {
+    color: #000;
+    background: linear-gradient(135deg, #67e8f9, #22d3ee, #67e8f9);
+    border-color: #67e8f9;
+}
+
 @media (max-width: 700px) {
     body { padding: 10px; }
     header { padding: 14px 10px; }
@@ -175,6 +196,7 @@ td input::placeholder { color: #475569; }
     .card { padding: 12px; }
     .controls { flex-direction: column; align-items: stretch; }
     .controls select, .controls input, button { width: 100%; }
+    .filter-tabs { display: grid; grid-template-columns: repeat(2, 1fr); }
 }
 </style>
 </head>
@@ -199,16 +221,17 @@ td input::placeholder { color: #475569; }
 
     <div class="card">
         <h2>📅 Ambil Jadwal ESPN</h2>
-        <p class="small">Pilih tanggal → klik Ambil Jadwal → muncul tabel semua pertandingan.</p>
+        <p class="small">Klik <b>🔄 AMBIL JADWAL</b> untuk fetch data terbaru dari ESPN + Firestore. Pertandingan baru akan ditandai 🆕.</p>
 
         <div class="controls">
             <select id="tanggalSelect">
                 <option value="today">Hari Ini</option>
                 <option value="tomorrow">Besok</option>
                 <option value="7days" selected>7 Hari ke Depan</option>
+                <option value="all">Semua Data</option>
             </select>
-            <button id="btnFetch" class="btn-blue">🔄 AMBIL JADWAL ESPN</button>
-            <button id="btnLoadExisting" class="btn-dark">📖 LOAD DATA TERSIMPAN</button>
+            <button id="btnFetch" class="btn-blue">🔄 AMBIL JADWAL</button>
+            <button id="btnRefresh" class="btn-pink">⚡ REFRESH (FORCE)</button>
         </div>
 
         <div id="fetchStatus" class="status hidden"></div>
@@ -221,11 +244,19 @@ td input::placeholder { color: #475569; }
             💡 <b>Tips:</b> Klik <b>⚡ ISI SEMUA</b> → HDP & Pred terisi otomatis (variatif per tim). Edit manual yang perlu. Klik <b>💾 SIMPAN SEMUA</b>.
         </div>
 
+        <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">📋 Semua</button>
+            <button class="filter-tab" data-filter="today">📅 Hari Ini</button>
+            <button class="filter-tab" data-filter="tomorrow">📅 Besok</button>
+            <button class="filter-tab" data-filter="empty">⏳ Belum Diisi</button>
+            <button class="filter-tab" data-filter="new">🆕 Baru</button>
+        </div>
+
         <div class="info-bar">
             <div>📋 Total: <strong id="statTotal">0</strong></div>
             <div>✅ Tersimpan: <strong id="statSaved">0</strong></div>
             <div>⏳ Belum: <strong id="statPending">0</strong></div>
-            <div>🎯 Ada HDP: <strong id="statHdp">0</strong></div>
+            <div>🆕 Baru: <strong id="statNew">0</strong></div>
         </div>
 
         <div class="controls">
@@ -237,7 +268,7 @@ td input::placeholder { color: #475569; }
         </div>
 
         <div id="tableWrap" class="table-wrap">
-            <div class="loading">Klik "AMBIL JADWAL ESPN" untuk mulai</div>
+            <div class="loading">Klik "AMBIL JADWAL" untuk mulai</div>
         </div>
     </div>
 
@@ -281,50 +312,86 @@ const db = getFirestore(app);
    ============================================================ */
 const ESPN_LIGAS = [
     { id: "eng.1", name: "Premier League" },
-    { id: "eng.2", name: "Championship" },
     { id: "esp.1", name: "La Liga" },
-    { id: "esp.2", name: "La Liga 2" },
     { id: "ita.1", name: "Serie A" },
-    { id: "ita.2", name: "Serie B" },
     { id: "ger.1", name: "Bundesliga" },
-    { id: "ger.2", name: "2. Bundesliga" },
     { id: "fra.1", name: "Ligue 1" },
-    { id: "fra.2", name: "Ligue 2" },
     { id: "ned.1", name: "Eredivisie" },
     { id: "por.1", name: "Primeira Liga" },
+    { id: "tur.1", name: "Süper Lig" },
+    { id: "sco.1", name: "Scottish Premiership" },
+    { id: "rus.1", name: "Russian Premier League" },
+    { id: "bel.1", name: "Pro League Belgia" },
     { id: "uefa.champions", name: "Champions League" },
     { id: "uefa.europa", name: "Europa League" },
     { id: "uefa.europa.conf", name: "Conference League" },
     { id: "uefa.nations", name: "UEFA Nations League" },
+    { id: "uefa.euro", name: "UEFA Euro" },
+    { id: "eng.2", name: "Championship" },
+    { id: "eng.fa", name: "FA Cup" },
+    { id: "eng.league_cup", name: "Carabao Cup" },
+    { id: "esp.2", name: "La Liga 2" },
+    { id: "esp.copa_del_rey", name: "Copa del Rey" },
+    { id: "ita.2", name: "Serie B" },
+    { id: "ita.coppa_italia", name: "Coppa Italia" },
+    { id: "ger.2", name: "2. Bundesliga" },
+    { id: "ger.dfb_pokal", name: "DFB Pokal" },
+    { id: "fra.2", name: "Ligue 2" },
+    { id: "fra.coupe_de_france", name: "Coupe de France" },
+    { id: "ned.2", name: "Eerste Divisie" },
+    { id: "por.2", name: "Liga Portugal 2" },
+    { id: "gre.1", name: "Super League Yunani" },
+    { id: "ukr.1", name: "Ukrainian Premier League" },
+    { id: "aut.1", name: "Austrian Bundesliga" },
+    { id: "sui.1", name: "Swiss Super League" },
+    { id: "den.1", name: "Danish Superliga" },
+    { id: "swe.1", name: "Allsvenskan" },
+    { id: "nor.1", name: "Eliteserien" },
+    { id: "pol.1", name: "Ekstraklasa" },
+    { id: "cze.1", name: "Czech First League" },
+    { id: "rou.1", name: "Liga I Romania" },
+    { id: "isr.1", name: "Israeli Premier League" },
     { id: "usa.1", name: "MLS" },
+    { id: "usa.nwsl", name: "NWSL" },
     { id: "mex.1", name: "Liga MX" },
     { id: "bra.1", name: "Brasileirão" },
+    { id: "bra.2", name: "Brasileirão Série B" },
     { id: "arg.1", name: "Liga Profesional" },
+    { id: "arg.2", name: "Primera Nacional" },
+    { id: "chi.1", name: "Primera División Chile" },
+    { id: "col.1", name: "Primera A Colombia" },
+    { id: "uru.1", name: "Primera División Uruguay" },
+    { id: "per.1", name: "Liga 1 Perú" },
+    { id: "ecu.1", name: "Liga Pro Ecuador" },
+    { id: "par.1", name: "Primera División Paraguay" },
+    { id: "ven.1", name: "Liga FUTVE" },
+    { id: "bol.1", name: "División Profesional Bolivia" },
     { id: "conmebol.libertadores", name: "Copa Libertadores" },
     { id: "conmebol.sudamericana", name: "Copa Sudamericana" },
     { id: "afc.champions", name: "AFC Champions" },
     { id: "jpn.1", name: "J-League" },
     { id: "kor.1", name: "K-League 1" },
+    { id: "chn.1", name: "Chinese Super League" },
     { id: "sau.1", name: "Saudi Pro League" },
-    { id: "fifa.world", name: "FIFA World Cup" }
-];
-
-/* ============================================================
-   TEAM STRENGTH — tim kuat/lemah untuk prediksi realistis
-   ============================================================ */
-const STRONG_TEAMS = [
-    "real madrid", "barcelona", "atletico", "bayern", "dortmund",
-    "manchester city", "manchester united", "liverpool", "arsenal", "chelsea", "tottenham",
-    "juventus", "inter", "milan", "napoli", "roma", "lazio", "atalanta",
-    "psg", "paris", "marseille", "lyon", "monaco", "lille",
-    "ajax", "psv", "feyenoord", "porto", "benfica", "sporting",
-    "flamengo", "palmeiras", "boca", "river", "santos", "corinthians",
-    "germany", "france", "italy", "spain", "england", "portugal",
-    "netherlands", "belgium", "croatia", "brazil", "argentina", "uruguay"
+    { id: "ind.1", name: "Indian Super League" },
+    { id: "tha.1", name: "Thai League 1" },
+    { id: "mys.1", name: "Malaysia Super League" },
+    { id: "idn.1", name: "Liga 1 Indonesia" },
+    { id: "vnm.1", name: "V.League 1" },
+    { id: "sgp.1", name: "Singapore Premier League" },
+    { id: "aus.1", name: "A-League" },
+    { id: "egy.1", name: "Egyptian Premier League" },
+    { id: "mar.1", name: "Botola Pro" },
+    { id: "rsa.1", name: "South African Premier" },
+    { id: "nga.1", name: "Nigeria Premier League" },
+    { id: "caf.champions", name: "CAF Champions League" },
+    { id: "fifa.world", name: "FIFA World Cup" },
+    { id: "fifa.friendly", name: "International Friendly" }
 ];
 
 let allMatches = [];
 let existingData = new Map();
+let currentFilter = "all";
 
 /* ============================================================
    AUTH
@@ -341,6 +408,8 @@ onAuthStateChanged(auth, async (user) => {
         loginStatus.textContent = "✅ Login: " + user.email;
         adminContent.classList.remove("hidden");
         notLogged.classList.add("hidden");
+        // AUTO-FETCH saat login
+        loadAllData();
     } else {
         loginStatus.className = "status warning";
         loginStatus.textContent = "⚠️ Belum login";
@@ -375,6 +444,16 @@ function normalizeTeam(name) {
 
 function getNowWIBMs() { return Date.now() + (7 * 60 * 60 * 1000); }
 
+function getTodayStr() {
+    const wib = new Date(getNowWIBMs());
+    return wib.getUTCFullYear() + "-" + String(wib.getUTCMonth() + 1).padStart(2, "0") + "-" + String(wib.getUTCDate()).padStart(2, "0");
+}
+
+function getTomorrowStr() {
+    const wib = new Date(getNowWIBMs() + 86400000);
+    return wib.getUTCFullYear() + "-" + String(wib.getUTCMonth() + 1).padStart(2, "0") + "-" + String(wib.getUTCDate()).padStart(2, "0");
+}
+
 function getYMD(offset = 0) {
     const wib = new Date(getNowWIBMs() + (offset * 86400000));
     return wib.getUTCFullYear() + String(wib.getUTCMonth() + 1).padStart(2, "0") + String(wib.getUTCDate()).padStart(2, "0");
@@ -382,11 +461,6 @@ function getYMD(offset = 0) {
 
 function makeLooseKey(date, home, away) {
     return [date, normalizeTeam(home), normalizeTeam(away)].join("|");
-}
-
-function isStrongTeam(name) {
-    const n = clean(name).toLowerCase();
-    return STRONG_TEAMS.some(t => n.includes(t));
 }
 
 /* ============================================================
@@ -434,7 +508,7 @@ async function fetchESPNDate(dateStr) {
 async function fetchAllESPN() {
     const pilihan = document.getElementById("tanggalSelect").value;
     let days = 1;
-    if (pilihan === "7days") days = 7;
+    if (pilihan === "7days" || pilihan === "all") days = 7;
 
     const promises = [];
     for (let i = 0; i < days; i++) {
@@ -447,7 +521,7 @@ async function fetchAllESPN() {
 }
 
 /* ============================================================
-   LOAD EXISTING
+   LOAD FIRESTORE
    ============================================================ */
 async function loadExisting() {
     const snap = await getDocs(collection(db, "predictions"));
@@ -462,18 +536,109 @@ async function loadExisting() {
 }
 
 /* ============================================================
+   LOAD ALL DATA (ESPN + Firestore)
+   ============================================================ */
+async function loadAllData(forceRefresh) {
+    const btn = document.getElementById("btnFetch");
+    const btnR = document.getElementById("btnRefresh");
+    btn.disabled = true;
+    btnR.disabled = true;
+    btn.textContent = "⏳ Loading...";
+
+    const wrap = document.getElementById("tableWrap");
+    wrap.innerHTML = '<div class="loading">Memuat jadwal dari ESPN + Firestore...</div>';
+
+    try {
+        // Fetch ESPN + Firestore PARALEL
+        const [espn, _] = await Promise.all([
+            fetchAllESPN(),
+            loadExisting()
+        ]);
+
+        // Gabung: ESPN dulu, terus data dari Firestore yang gak ada di ESPN
+        const seen = new Set();
+        const result = [];
+
+        espn.forEach(m => {
+            const k = makeLooseKey(m.date, m.home, m.away);
+            if (seen.has(k)) return;
+            seen.add(k);
+            result.push(m);
+        });
+
+        // Tambahkan data Firestore yang gak ada di ESPN
+        existingData.forEach((v, k) => {
+            if (seen.has(k)) return;
+            seen.add(k);
+            result.push({
+                league: v.league || "LAINNYA",
+                date: v.date,
+                time: v.time,
+                home: v.home,
+                away: v.away,
+                homeLogo: v.homeLogo || "",
+                awayLogo: v.awayLogo || "",
+                fromFirestore: true
+            });
+        });
+
+        allMatches = result;
+
+        document.getElementById("fetchStatus").className = "status success";
+        document.getElementById("fetchStatus").innerHTML = `✅ <b>${espn.length}</b> dari ESPN + <b>${existingData.size}</b> dari Firestore = <b>${allMatches.length}</b> total`;
+        document.getElementById("fetchStatus").classList.remove("hidden");
+
+        renderTable();
+
+    } catch (err) {
+        console.error(err);
+        document.getElementById("fetchStatus").className = "status error";
+        document.getElementById("fetchStatus").textContent = "❌ Error: " + err.message;
+        document.getElementById("fetchStatus").classList.remove("hidden");
+    }
+
+    btn.disabled = false;
+    btnR.disabled = false;
+    btn.textContent = "🔄 AMBIL JADWAL";
+}
+
+/* ============================================================
    RENDER TABLE
    ============================================================ */
 function renderTable() {
     const wrap = document.getElementById("tableWrap");
 
-    if (!allMatches.length) {
-        wrap.innerHTML = '<div class="loading">Tidak ada pertandingan</div>';
+    let display = [...allMatches];
+
+    // Filter
+    const today = getTodayStr();
+    const tomorrow = getTomorrowStr();
+
+    if (currentFilter === "today") {
+        display = display.filter(m => m.date === today);
+    } else if (currentFilter === "tomorrow") {
+        display = display.filter(m => m.date === tomorrow);
+    } else if (currentFilter === "empty") {
+        display = display.filter(m => {
+            const key = makeLooseKey(m.date, m.home, m.away);
+            const fs = existingData.get(key);
+            return !fs || !fs.handicap || !fs.predictionScoreHome || !fs.predictionScoreAway;
+        });
+    } else if (currentFilter === "new") {
+        display = display.filter(m => {
+            const key = makeLooseKey(m.date, m.home, m.away);
+            return !existingData.has(key);
+        });
+    }
+
+    if (!display.length) {
+        wrap.innerHTML = '<div class="loading">Tidak ada pertandingan di filter ini</div>';
         updateStats();
         return;
     }
 
-    allMatches.sort((a, b) => {
+    // Sort by date + time
+    display.sort((a, b) => {
         const da = (a.date || "") + (a.time || "");
         const db2 = (b.date || "") + (b.time || "");
         return da.localeCompare(db2);
@@ -485,38 +650,42 @@ function renderTable() {
                 <tr>
                     <th style="width:70px;">Tanggal</th>
                     <th style="width:55px;">Jam</th>
-                    <th style="width:20px;">🏆</th>
-                    <th style="width:110px;">Liga</th>
+                    <th style="width:120px;">Liga</th>
                     <th style="width:28px;"></th>
                     <th>Tim Home</th>
                     <th style="width:28px;"></th>
                     <th>Tim Away</th>
-                    <th style="width:100px;">HDP</th>
-                    <th style="width:55px;">Pred H</th>
-                    <th style="width:55px;">Pred A</th>
-                    <th style="width:60px;">Status</th>
+                    <th style="width:110px;">HDP</th>
+                    <th style="width:60px;">Pred H</th>
+                    <th style="width:60px;">Pred A</th>
+                    <th style="width:70px;">Status</th>
                 </tr>
             </thead>
             <tbody>
     `;
 
-    allMatches.forEach((m, i) => {
+    display.forEach((m) => {
+        const idx = allMatches.indexOf(m);
         const key = makeLooseKey(m.date, m.home, m.away);
         const existing = existingData.get(key);
+        const isNew = !existing;
 
         const hdp = existing?.handicap || "";
         const pH = existing?.predictionScoreHome || "";
         const pA = existing?.predictionScoreAway || "";
-        const saved = existing?.handicap && existing?.predictionScoreHome && existing?.predictionScoreAway;
+        const saved = hdp && pH && pA;
 
         const homeLogoHTML = m.homeLogo ? `<img src="${m.homeLogo}" onerror="this.style.display='none'">` : "";
         const awayLogoHTML = m.awayLogo ? `<img src="${m.awayLogo}" onerror="this.style.display='none'">` : "";
 
+        let cls = "";
+        if (saved) cls += "saved ";
+        if (isNew) cls += "new-row";
+
         html += `
-            <tr data-index="${i}" data-key="${key}" class="${saved ? 'saved' : ''}">
+            <tr data-index="${idx}" data-key="${key}" class="${cls}">
                 <td class="td-date">${m.date}</td>
                 <td class="td-time">${m.time}</td>
-                <td></td>
                 <td class="td-league">${m.league}</td>
                 <td class="td-logo">${homeLogoHTML}</td>
                 <td class="td-teams">${m.home}</td>
@@ -533,6 +702,7 @@ function renderTable() {
     html += `</tbody></table>`;
     wrap.innerHTML = html;
 
+    // Listeners
     wrap.querySelectorAll("input").forEach(input => {
         input.addEventListener("input", () => {
             const tr = input.closest("tr");
@@ -555,30 +725,40 @@ function renderTable() {
     updateStats();
 }
 
+/* ============================================================
+   UPDATE STATS
+   ============================================================ */
 function updateStats() {
     const total = allMatches.length;
-    const inputs = document.querySelectorAll("tbody tr");
-    let saved = 0, pending = 0, adaHdp = 0;
+    let saved = 0, pending = 0, newCount = 0;
 
-    inputs.forEach(tr => {
-        const hdp = tr.querySelector(".input-hdp")?.value.trim();
-        const pH = tr.querySelector(".input-pred[data-field='predH']")?.value.trim();
-        const pA = tr.querySelector(".input-pred[data-field='predA']")?.value.trim();
-
-        if (hdp) adaHdp++;
-        if (hdp && pH && pA) saved++;
-        else pending++;
+    allMatches.forEach(m => {
+        const key = makeLooseKey(m.date, m.home, m.away);
+        const fs = existingData.get(key);
+        if (fs && fs.handicap && fs.predictionScoreHome && fs.predictionScoreAway) {
+            saved++;
+        } else {
+            pending++;
+        }
+        if (!fs) newCount++;
     });
 
     document.getElementById("statTotal").textContent = total;
     document.getElementById("statSaved").textContent = saved;
     document.getElementById("statPending").textContent = pending;
-    document.getElementById("statHdp").textContent = adaHdp;
+    document.getElementById("statNew").textContent = newCount;
 }
 
 /* ============================================================
-   FILL HDP VARIATIF (berdasarkan kekuatan tim)
+   FILL HDP VARIATIF
    ============================================================ */
+const STRONG_TEAMS = ["real madrid", "barcelona", "atletico", "bayern", "dortmund", "manchester", "liverpool", "arsenal", "chelsea", "tottenham", "juventus", "inter", "milan", "napoli", "roma", "lazio", "atalanta", "psg", "paris", "marseille", "lyon", "monaco", "lille", "ajax", "psv", "feyenoord", "porto", "benfica", "sporting", "flamengo", "palmeiras", "boca", "river", "germany", "france", "italy", "spain", "england", "portugal", "netherlands", "belgium", "croatia", "brazil", "argentina", "uruguay"];
+
+function isStrongTeam(name) {
+    const n = clean(name).toLowerCase();
+    return STRONG_TEAMS.some(t => n.includes(t));
+}
+
 function fillHdpVariatif() {
     const rows = document.querySelectorAll("tbody tr");
     rows.forEach(tr => {
@@ -594,21 +774,13 @@ function fillHdpVariatif() {
 
         let value;
         if (homeStrong && !awayStrong) {
-            // Home kuat → HDP untuk home
             const homeHdp = ["1/4 : 0", "1/4 : 0", "1/2 : 0", "1/2 : 0", "3/4 : 0", "1 : 0", "1 1/4 : 0", "1 1/2 : 0"];
             value = homeHdp[Math.floor(Math.random() * homeHdp.length)];
         } else if (awayStrong && !homeStrong) {
-            // Away kuat → HDP untuk away
             const awayHdp = ["0 : 1/4", "0 : 1/4", "0 : 1/2", "0 : 1/2", "0 : 3/4", "0 : 1", "0 : 1 1/4", "0 : 1 1/2"];
             value = awayHdp[Math.floor(Math.random() * awayHdp.length)];
         } else {
-            // Seimbang → mayoritas HDP kecil
-            const balanced = [
-                "0 : 1/4", "1/4 : 0", "0 : 1/4", "1/4 : 0", "0 : 1/4", "1/4 : 0",
-                "0 : 1/2", "1/2 : 0", "0 : 1/2", "1/2 : 0",
-                "0 : 3/4", "3/4 : 0",
-                "0 : 1", "1 : 0"
-            ];
+            const balanced = ["0 : 1/4", "1/4 : 0", "0 : 1/4", "1/4 : 0", "0 : 1/4", "1/4 : 0", "0 : 1/2", "1/2 : 0", "0 : 3/4", "3/4 : 0"];
             value = balanced[Math.floor(Math.random() * balanced.length)];
         }
 
@@ -617,9 +789,6 @@ function fillHdpVariatif() {
     });
 }
 
-/* ============================================================
-   FILL PREDIKSI VARIATIF & REALISTIS
-   ============================================================ */
 function fillPredVariatif() {
     const rows = document.querySelectorAll("tbody tr");
     rows.forEach(tr => {
@@ -637,29 +806,13 @@ function fillPredVariatif() {
         let homeGoal, awayGoal;
 
         if (homeStrong && !awayStrong) {
-            // Home kuat → menang
-            const patterns = [
-                [2, 0], [2, 1], [3, 1], [1, 0], [3, 0], [2, 0], [3, 1], [2, 1],
-                [3, 0], [4, 1], [2, 1], [3, 1], [2, 0], [1, 0],
-                [1, 1], [0, 0], [2, 2]
-            ];
+            const patterns = [[2, 0], [2, 1], [3, 1], [1, 0], [3, 0], [2, 0], [3, 1], [2, 1], [1, 1], [0, 0], [2, 2]];
             [homeGoal, awayGoal] = patterns[Math.floor(Math.random() * patterns.length)];
         } else if (awayStrong && !homeStrong) {
-            // Away kuat → away menang
-            const patterns = [
-                [0, 1], [0, 2], [1, 2], [0, 3], [1, 3], [0, 2], [1, 2], [0, 1],
-                [0, 3], [1, 4], [1, 2], [0, 2], [1, 2], [0, 1],
-                [1, 1], [0, 0], [2, 2]
-            ];
+            const patterns = [[0, 1], [0, 2], [1, 2], [0, 3], [1, 3], [0, 2], [1, 2], [0, 1], [1, 1], [0, 0], [2, 2]];
             [homeGoal, awayGoal] = patterns[Math.floor(Math.random() * patterns.length)];
         } else {
-            // Seimbang → mayoritas skor kecil
-            const patterns = [
-                [0, 0], [1, 0], [0, 1], [1, 1], [2, 1], [1, 2],
-                [2, 0], [0, 2], [2, 2], [3, 1], [1, 3], [3, 0], [0, 3],
-                [0, 0], [1, 1], [2, 1], [1, 2], [0, 1], [1, 0],
-                [2, 0], [0, 2], [3, 2], [2, 3], [1, 1]
-            ];
+            const patterns = [[0, 0], [1, 0], [0, 1], [1, 1], [2, 1], [1, 2], [2, 0], [0, 2], [2, 2], [3, 1], [1, 3], [0, 0], [1, 1]];
             [homeGoal, awayGoal] = patterns[Math.floor(Math.random() * patterns.length)];
         }
 
@@ -755,6 +908,7 @@ async function saveAll() {
 
         alert(`✅ Berhasil!\n\n📝 Update: ${updated}\n🆕 Baru: ${created}\n📊 Total: ${toSave.length}`);
 
+        // Reload data biar akurat
         await loadExisting();
         renderTable();
 
@@ -770,61 +924,19 @@ async function saveAll() {
 /* ============================================================
    EVENT LISTENERS
    ============================================================ */
-document.getElementById("btnFetch").addEventListener("click", async () => {
-    const btn = document.getElementById("btnFetch");
-    btn.disabled = true;
-    btn.textContent = "⏳ Loading...";
-    const wrap = document.getElementById("tableWrap");
-    wrap.innerHTML = '<div class="loading">Memuat jadwal dari ESPN...</div>';
-
-    try {
-        const [espn] = await Promise.all([
-            fetchAllESPN(),
-            loadExisting()
-        ]);
-
-        const seen = new Set();
-        allMatches = [];
-        espn.forEach(m => {
-            const k = makeLooseKey(m.date, m.home, m.away);
-            if (seen.has(k)) return;
-            seen.add(k);
-            allMatches.push(m);
-        });
-
-        document.getElementById("fetchStatus").className = "status success";
-        document.getElementById("fetchStatus").textContent = `✅ ${allMatches.length} pertandingan dari ESPN | ${existingData.size} data existing`;
-        document.getElementById("fetchStatus").classList.remove("hidden");
-
-        renderTable();
-
-    } catch (err) {
-        console.error(err);
-        document.getElementById("fetchStatus").className = "status error";
-        document.getElementById("fetchStatus").textContent = "❌ Error: " + err.message;
-        document.getElementById("fetchStatus").classList.remove("hidden");
-    }
-
-    btn.disabled = false;
-    btn.textContent = "🔄 AMBIL JADWAL ESPN";
+document.getElementById("btnFetch").addEventListener("click", () => loadAllData(false));
+document.getElementById("btnRefresh").addEventListener("click", () => {
+    if (!confirm("Force refresh? Akan fetch ulang dari ESPN.")) return;
+    loadAllData(true);
 });
 
-document.getElementById("btnLoadExisting").addEventListener("click", async () => {
-    const btn = document.getElementById("btnLoadExisting");
-    btn.disabled = true;
-    btn.textContent = "⏳ Loading...";
-
-    try {
-        await loadExisting();
-        document.getElementById("fetchStatus").className = "status success";
-        document.getElementById("fetchStatus").textContent = `✅ ${existingData.size} data tersimpan dari Firestore`;
-        document.getElementById("fetchStatus").classList.remove("hidden");
-    } catch (err) {
-        console.error(err);
-    }
-
-    btn.disabled = false;
-    btn.textContent = "📖 LOAD DATA TERSIMPAN";
+document.querySelectorAll(".filter-tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+        document.querySelectorAll(".filter-tab").forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        currentFilter = tab.dataset.filter;
+        renderTable();
+    });
 });
 
 document.getElementById("btnFillHdp").addEventListener("click", () => {
