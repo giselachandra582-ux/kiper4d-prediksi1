@@ -24,10 +24,10 @@ h1 { color: #ffd700; text-align: center; margin-bottom: 20px; }
 </head>
 <body>
 <div class="container">
-<h1>🎨 AUTO FETCH LOGO v8 (Final)</h1>
+<h1>🎨 AUTO FETCH LOGO v9</h1>
 
 <div class="card">
-    <p>Wikipedia (filter ketat) + TheSportsDB (fallback). Filter timnas juga.</p>
+    <p>Filter seimbang: cukup judul cocok + ada keyword sepak bola. Skip orang & timnas.</p>
     <button id="btnFetch" class="btn btn-blue">🔍 MULAI AMBIL LOGO</button>
     <button id="btnFetchOne" class="btn btn-green">🎯 Test 1 Tim</button>
     <div id="status"></div>
@@ -102,41 +102,50 @@ async function fetchViaWorker(url) {
     } catch (e) { return null; }
 }
 
-// === FILTER: beneran klub sepak bola (BUKAN timnas, BUKAN orang) ===
-function isFootballClub(title, description, extract) {
-    const t = (title || "").toLowerCase();
+// === FILTER LONGGAR — cukup 1 dari 2 syarat ===
+function isValidFootballPage(title, description, extract) {
     const d = (description || "").toLowerCase();
-    const e = (extract || "").toLowerCase().slice(0, 500);
+    const e = (extract || "").toLowerCase().slice(0, 800);
     const haystack = d + " " + e;
 
-    // Harus ada kata kunci sepak bola
+    // Skip orang (bisa presiden, aktor, pemain)
+    const personKeywords = [
+        "presiden", "politikus", "aktor", "aktris", "penyanyi",
+        "president", "politician", "actor", "actress", "singer",
+        "footballer", "pemain sepak bola", "pemain sepakbola",
+        "born in", "born on", "lahir"
+    ];
+    if (personKeywords.some(k => d.includes(k) || e.includes(k))) return false;
+
+    // Skip timnas
+    if (haystack.includes("national football team") || 
+        haystack.includes("national soccer team") || 
+        haystack.includes("national team") ||
+        haystack.includes("tim nasional")) return false;
+
+    // Skip tempat/kota/negara
+    if (d.includes("kota") || d.includes("city") || d.includes("town") ||
+        d.includes("country") || d.includes("negara") || d.includes("village")) {
+        // KECUALI kalau ada kata "football club" juga
+        if (!haystack.includes("football club") && !haystack.includes("football team") && !haystack.includes("soccer")) {
+            return false;
+        }
+    }
+
+    // Terima kalau ada keyword sepak bola di deskripsi ATAU extract
     const footballKeywords = [
         "football club", "football team", "soccer club", "soccer team",
         "association football", "klub sepak bola", "tim sepak bola",
-        "f.c.", "fc ", " afc", "soccer"
+        "sepak bola", "soccer", "football", "f.c.", "afc"
     ];
-    const titleHasFC = /\b(fc|f\.c\.|sc|afc|cf)\b/i.test(title);
-    const hasKeyword = footballKeywords.some(k => haystack.includes(k));
+    if (footballKeywords.some(k => haystack.includes(k))) return true;
 
-    // SKIP kalau ini TIMNAS (national team)
-    const isNational = haystack.includes("national football team") 
-        || haystack.includes("national soccer team")
-        || haystack.includes("tim nasional")
-        || haystack.includes("national team");
+    // Terima kalau judul ada FC/SC
+    if (/\b(fc|f\.c\.|sc|afc|cf)\b/i.test(title)) return true;
 
-    // SKIP kalau ini orang
-    const notFootball = [
-        "presiden", "politikus", "aktor", "aktris", "penyanyi",
-        "president", "politician", "actor", "actress", "singer",
-        "born in", "lahir", "pemain sepak bola", "footballer",
-        "pemain sepakbola", "player", "pemain"
-    ];
-    const isPerson = notFootball.some(k => d.includes(k) || e.slice(0, 200).includes(k));
-
-    return (hasKeyword || titleHasFC) && !isNational && !isPerson;
+    return false;
 }
 
-// === Wikipedia search + filter ===
 async function searchWikipediaRest(teamName, lang) {
     const name = cleanTeam(teamName);
     if (!name) return null;
@@ -153,14 +162,14 @@ async function searchWikipediaRest(teamName, lang) {
 
             const teamKey = normalizeKey(name);
             const titleKey = normalizeKey(title);
-            const titleMatch = titleKey.includes(teamKey) || teamKey.includes(titleKey);
-            if (!titleMatch) continue;
+            // Judul harus mengandung nama tim
+            if (!titleKey.includes(teamKey) && !teamKey.includes(titleKey)) continue;
 
             const summaryUrl = `https://${lang}.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(pageKey)}`;
             const summary = await fetchViaWorker(summaryUrl);
             if (!summary) continue;
 
-            if (!isFootballClub(title, desc, summary.extract || "")) continue;
+            if (!isValidFootballPage(title, desc, summary.extract || "")) continue;
 
             const thumb = summary.thumbnail?.source || summary.originalimage?.source;
             if (thumb) {
@@ -171,7 +180,6 @@ async function searchWikipediaRest(teamName, lang) {
     return null;
 }
 
-// === TheSportsDB fallback ===
 async function searchTheSportsDB(teamName) {
     const name = cleanTeam(teamName);
     if (!name) return null;
@@ -205,12 +213,10 @@ async function searchTheSportsDB(teamName) {
 }
 
 async function findLogo(teamName) {
-    // Wikipedia dulu (kualitas lebih bagus)
     let r = await searchWikipediaRest(teamName, "id");
     if (r) return r;
     r = await searchWikipediaRest(teamName, "en");
     if (r) return r;
-    // Fallback TheSportsDB
     r = await searchTheSportsDB(teamName);
     if (r) return r;
     return null;
@@ -225,9 +231,8 @@ function showPreview(team, r) {
     `;
 }
 
-// TEST 1 TIM
 document.getElementById("btnFetchOne").addEventListener("click", async () => {
-    const teamName = prompt("Nama tim:", "Persija Jakarta");
+    const teamName = prompt("Nama tim:", "Livingston");
     if (!teamName) return;
 
     setStatus("⏳ Cari: " + teamName, "wait");
@@ -235,40 +240,24 @@ document.getElementById("btnFetchOne").addEventListener("click", async () => {
 
     log("\n1. Wikipedia ID...");
     let r = await searchWikipediaRest(teamName, "id");
-    if (r) {
-        log("  ✅ " + r.name + " [" + r.source + "]");
-        showPreview(teamName, r);
-        setStatus("✅ ID: " + r.name, "ok");
-        return;
-    }
+    if (r) { log("  ✅ " + r.name + " [" + r.source + "]"); showPreview(teamName, r); setStatus("✅ ID: " + r.name, "ok"); return; }
     log("  ❌ ID tidak ketemu");
 
     log("\n2. Wikipedia EN...");
     r = await searchWikipediaRest(teamName, "en");
-    if (r) {
-        log("  ✅ " + r.name + " [" + r.source + "]");
-        showPreview(teamName, r);
-        setStatus("✅ EN: " + r.name, "ok");
-        return;
-    }
+    if (r) { log("  ✅ " + r.name + " [" + r.source + "]"); showPreview(teamName, r); setStatus("✅ EN: " + r.name, "ok"); return; }
     log("  ❌ EN tidak ketemu");
 
     log("\n3. TheSportsDB...");
     r = await searchTheSportsDB(teamName);
-    if (r) {
-        log("  ✅ " + r.name + " [" + r.source + "]");
-        showPreview(teamName, r);
-        setStatus("✅ TSDB: " + r.name, "ok");
-        return;
-    }
+    if (r) { log("  ✅ " + r.name + " [" + r.source + "]"); showPreview(teamName, r); setStatus("✅ TSDB: " + r.name, "ok"); return; }
     log("  ❌ TSDB tidak ketemu");
 
     setStatus("❌ Tidak ketemu: " + teamName, "err");
 });
 
-// MASSAL
 document.getElementById("btnFetch").addEventListener("click", async () => {
-    if (!confirm("Proses semua tim? Bisa 15-25 menit.")) return;
+    if (!confirm("Proses semua tim? 15-25 menit.")) return;
 
     const btn = document.getElementById("btnFetch");
     btn.disabled = true;
