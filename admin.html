@@ -7,65 +7,24 @@
 <link rel="icon" type="image/png" href="favicon.png">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-    font-family: Arial, sans-serif;
-    background: radial-gradient(circle at top, #0a2050 0%, #02060f 60%);
-    color: #f8fafc;
-    min-height: 100vh;
-    padding: 20px;
-}
+body { font-family: Arial, sans-serif; background: radial-gradient(circle at top, #0a2050 0%, #02060f 60%); color: #f8fafc; min-height: 100vh; padding: 20px; }
 .container { max-width: 1600px; margin: auto; }
-header {
-    text-align: center; padding: 18px 15px; margin-bottom: 18px;
-    background: rgba(8, 30, 60, 0.95);
-    border: 1px solid rgba(34, 211, 238, 0.35);
-    border-radius: 14px;
-}
-header h1 {
-    font-size: 22px; margin-bottom: 6px;
-    background: linear-gradient(90deg, #67e8f9, #22d3ee, #0891b2);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-}
+header { text-align: center; padding: 18px 15px; margin-bottom: 18px; background: rgba(8, 30, 60, 0.95); border: 1px solid rgba(34, 211, 238, 0.35); border-radius: 14px; }
+header h1 { font-size: 22px; margin-bottom: 6px; background: linear-gradient(90deg, #67e8f9, #22d3ee, #0891b2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 header .subtitle { color: #94a3b8; font-size: 12px; letter-spacing: 1px; }
-.status {
-    padding: 12px 16px; border-radius: 10px; margin-bottom: 14px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.08);
-    font-size: 13px;
-}
+.status { padding: 12px 16px; border-radius: 10px; margin-bottom: 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); font-size: 13px; }
 .status.success { background: rgba(34,197,94,0.12); border-color: rgba(34,197,94,0.35); color: #86efac; }
 .status.error { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.35); color: #fca5a5; }
 .status.warning { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.35); color: #fcd34d; }
 .status.hidden { display: none; }
-.card {
-    background: linear-gradient(145deg, rgba(15, 40, 75, 0.96), rgba(8, 25, 50, 0.96));
-    border: 1px solid rgba(34, 211, 238, 0.2);
-    border-radius: 16px;
-    padding: 18px;
-    margin-bottom: 16px;
-}
+.card { background: linear-gradient(145deg, rgba(15, 40, 75, 0.96), rgba(8, 25, 50, 0.96)); border: 1px solid rgba(34, 211, 238, 0.2); border-radius: 16px; padding: 18px; margin-bottom: 16px; }
 .card h2 { font-size: 18px; margin-bottom: 10px; color: #fff; }
 .card h2::first-letter { color: #67e8f9; }
 .small { font-size: 12px; color: #94a3b8; line-height: 1.6; margin-bottom: 12px; }
-.controls {
-    display: flex; flex-wrap: wrap; gap: 10px;
-    align-items: center; margin-bottom: 14px;
-}
-.controls select, .controls input {
-    padding: 10px 14px; border-radius: 10px;
-    border: 1px solid rgba(34, 211, 238, 0.3);
-    background: #02060f; color: #f8fafc;
-    font-size: 13px; outline: none;
-}
-.controls select:focus, .controls input:focus {
-    border-color: #22d3ee;
-    box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.15);
-}
-button {
-    border: 0; padding: 11px 18px; border-radius: 10px;
-    cursor: pointer; font-weight: bold; font-size: 13px;
-    color: white; transition: 0.2s;
-}
+.controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 14px; }
+.controls select, .controls input { padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(34, 211, 238, 0.3); background: #02060f; color: #f8fafc; font-size: 13px; outline: none; }
+.controls select:focus, .controls input:focus { border-color: #22d3ee; box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.15); }
+button { border: 0; padding: 11px 18px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 13px; color: white; transition: 0.2s; }
 button:hover { transform: translateY(-2px); }
 button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 .btn-blue { background: linear-gradient(135deg, #0891b2, #22d3ee); color: #000; }
@@ -76,128 +35,39 @@ button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 .btn-orange { background: linear-gradient(135deg, #d97706, #f59e0b); }
 .btn-gold { background: linear-gradient(135deg, #d4af37, #ffd700); color: #000; }
 .btn-pink { background: linear-gradient(135deg, #ec4899, #f472b6); }
-
-.table-wrap {
-    overflow-x: auto;
-    border-radius: 12px;
-    border: 1px solid rgba(34, 211, 238, 0.2);
-    background: rgba(0,0,0,0.3);
-    max-height: 70vh;
-}
-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-    min-width: 1200px;
-}
-thead {
-    background: rgba(8, 145, 178, 0.6);
-    position: sticky; top: 0;
-    z-index: 10;
-}
-th {
-    padding: 10px 8px;
-    text-align: left;
-    color: #67e8f9;
-    font-weight: bold;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 1px solid rgba(34, 211, 238, 0.3);
-}
-td {
-    padding: 6px 8px;
-    border-bottom: 1px solid rgba(34, 211, 238, 0.08);
-    vertical-align: middle;
-}
+.table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid rgba(34, 211, 238, 0.2); background: rgba(0,0,0,0.3); max-height: 70vh; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 1200px; }
+thead { background: rgba(8, 145, 178, 0.6); position: sticky; top: 0; z-index: 10; }
+th { padding: 10px 8px; text-align: left; color: #67e8f9; font-weight: bold; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid rgba(34, 211, 238, 0.3); }
+td { padding: 6px 8px; border-bottom: 1px solid rgba(34, 211, 238, 0.08); vertical-align: middle; }
 tr:hover { background: rgba(34, 211, 238, 0.08); }
 tr.saved { background: rgba(34,197,94,0.15); }
 tr.saved td { color: #86efac; }
 tr.new-row { background: rgba(251,191,36,0.1); border-left: 3px solid #fbbf24; }
-tr.new-row td:first-child::before { content: "🆕 "; color: #fbbf24; }
-
 .td-date { color: #94a3b8; font-size: 11px; white-space: nowrap; }
 .td-time { color: #22d3ee; font-weight: bold; white-space: nowrap; }
 .td-league { color: #7dd3fc; font-size: 11px; }
 .td-teams { color: #fff; font-weight: bold; font-size: 12px; }
 .td-logo { width: 28px; }
 .td-logo img { width: 24px; height: 24px; object-fit: contain; }
-
-td input {
-    padding: 7px 8px;
-    border-radius: 8px;
-    border: 1px solid rgba(34, 211, 238, 0.3);
-    background: #02060f;
-    color: #fff;
-    font-size: 12px;
-    width: 100%;
-    outline: none;
-    font-family: 'Courier New', monospace;
-}
+td input { padding: 7px 8px; border-radius: 8px; border: 1px solid rgba(34, 211, 238, 0.3); background: #02060f; color: #fff; font-size: 12px; width: 100%; outline: none; font-family: 'Courier New', monospace; }
 td input:focus { border-color: #22d3ee; box-shadow: 0 0 0 2px rgba(34,211,238,0.2); }
 td input.input-hdp { min-width: 90px; }
 td input.input-pred { min-width: 45px; max-width: 55px; text-align: center; }
 td input::placeholder { color: #475569; }
-
-.info-bar {
-    display: flex; flex-wrap: wrap; gap: 12px;
-    padding: 10px 14px;
-    background: rgba(34, 211, 238, 0.12);
-    border-radius: 10px;
-    margin-bottom: 14px;
-    font-size: 12px;
-}
+.info-bar { display: flex; flex-wrap: wrap; gap: 12px; padding: 10px 14px; background: rgba(34, 211, 238, 0.12); border-radius: 10px; margin-bottom: 14px; font-size: 12px; }
 .info-bar strong { color: #67e8f9; font-size: 14px; }
-
-.loading {
-    text-align: center; padding: 40px;
-    color: #94a3b8;
-    font-size: 14px;
-}
+.loading { text-align: center; padding: 40px; color: #94a3b8; font-size: 14px; }
 .hidden { display: none !important; }
 .login-box { text-align: center; padding: 40px 20px; }
 .login-box h2 { color: #67e8f9; margin-bottom: 10px; }
-
-.hint-box {
-    background: rgba(34, 211, 238, 0.1);
-    border: 1px solid rgba(34, 211, 238, 0.4);
-    border-radius: 10px;
-    padding: 10px 14px;
-    margin-bottom: 14px;
-    font-size: 12px;
-    color: #7dd3fc;
-    line-height: 1.7;
-}
+.hint-box { background: rgba(34, 211, 238, 0.1); border: 1px solid rgba(34, 211, 238, 0.4); border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; font-size: 12px; color: #7dd3fc; line-height: 1.7; }
 .hint-box b { color: #67e8f9; }
-
-.filter-tabs {
-    display: flex; gap: 6px; flex-wrap: wrap;
-    margin-bottom: 14px;
-}
-.filter-tab {
-    padding: 8px 14px; border-radius: 20px;
-    font-size: 12px; font-weight: bold;
-    background: rgba(30,20,60,0.7);
-    border: 1.5px solid rgba(34, 211, 238, 0.4);
-    color: #c8c8d4; cursor: pointer;
-    transition: all 0.3s;
-}
+.filter-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.filter-tab { padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; background: rgba(30,20,60,0.7); border: 1.5px solid rgba(34, 211, 238, 0.4); color: #c8c8d4; cursor: pointer; transition: all 0.3s; }
 .filter-tab:hover { color: #00d4ff; border-color: rgba(0,212,255,0.7); }
-.filter-tab.active {
-    color: #000;
-    background: linear-gradient(135deg, #67e8f9, #22d3ee, #67e8f9);
-    border-color: #67e8f9;
-}
-
-@media (max-width: 700px) {
-    body { padding: 10px; }
-    header { padding: 14px 10px; }
-    header h1 { font-size: 17px; }
-    .card { padding: 12px; }
-    .controls { flex-direction: column; align-items: stretch; }
-    .controls select, .controls input, button { width: 100%; }
-    .filter-tabs { display: grid; grid-template-columns: repeat(2, 1fr); }
-}
+.filter-tab.active { color: #000; background: linear-gradient(135deg, #67e8f9, #22d3ee, #67e8f9); border-color: #67e8f9; }
+@media (max-width: 700px) { body { padding: 10px; } header { padding: 14px 10px; } header h1 { font-size: 17px; } .card { padding: 12px; } .controls { flex-direction: column; align-items: stretch; } .controls select, .controls input, button { width: 100%; } .filter-tabs { display: grid; grid-template-columns: repeat(2, 1fr); } }
 </style>
 </head>
 <body>
@@ -206,7 +76,7 @@ td input::placeholder { color: #475569; }
 
 <header>
     <h1>⚡ ADMIN BULK INPUT — KIPER4D</h1>
-    <div class="subtitle">INPUT HDP & PREDIKSI VARIATIF REALISTIS</div>
+    <div class="subtitle">80+ LIGA ESPN + FIRESTORE</div>
 </header>
 
 <div id="loginStatus" class="status">Memeriksa login...</div>
@@ -241,7 +111,7 @@ td input::placeholder { color: #475569; }
         <h2>📊 Tabel Bulk Input</h2>
 
         <div class="hint-box">
-            💡 <b>Tips:</b> Klik <b>⚡ ISI SEMUA</b> → HDP & Pred terisi otomatis (variatif per tim). Edit manual yang perlu. Klik <b>💾 SIMPAN SEMUA</b>.
+            💡 <b>Tips:</b> Klik <b>⚡ ISI SEMUA</b> → HDP & Pred terisi otomatis. Edit manual yang perlu. Klik <b>💾 SIMPAN SEMUA</b>.
         </div>
 
         <div class="filter-tabs">
@@ -285,13 +155,8 @@ td input::placeholder { color: #475569; }
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-import {
-    getAuth, setPersistence, browserLocalPersistence,
-    onAuthStateChanged, signOut
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-import {
-    getFirestore, collection, getDocs, doc, writeBatch
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+import { getAuth, setPersistence, browserLocalPersistence, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc, writeBatch } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyB1i3mpTNKNlk54qQqk8xONAsaw66SOVs4",
@@ -308,7 +173,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 /* ============================================================
-   40+ LIGA ESPN
+   80+ LIGA ESPN — SAMA DENGAN INDEX.HTML
    ============================================================ */
 const ESPN_LIGAS = [
     { id: "eng.1", name: "Premier League" },
@@ -328,6 +193,8 @@ const ESPN_LIGAS = [
     { id: "uefa.nations", name: "UEFA Nations League" },
     { id: "uefa.euro", name: "UEFA Euro" },
     { id: "eng.2", name: "Championship" },
+    { id: "eng.3", name: "League One" },
+    { id: "eng.4", name: "League Two" },
     { id: "eng.fa", name: "FA Cup" },
     { id: "eng.league_cup", name: "Carabao Cup" },
     { id: "esp.2", name: "La Liga 2" },
@@ -335,6 +202,7 @@ const ESPN_LIGAS = [
     { id: "ita.2", name: "Serie B" },
     { id: "ita.coppa_italia", name: "Coppa Italia" },
     { id: "ger.2", name: "2. Bundesliga" },
+    { id: "ger.3", name: "3. Liga" },
     { id: "ger.dfb_pokal", name: "DFB Pokal" },
     { id: "fra.2", name: "Ligue 2" },
     { id: "fra.coupe_de_france", name: "Coupe de France" },
@@ -353,11 +221,21 @@ const ESPN_LIGAS = [
     { id: "isr.1", name: "Israeli Premier League" },
     { id: "usa.1", name: "MLS" },
     { id: "usa.nwsl", name: "NWSL" },
+    { id: "usa.usl.1", name: "USL Championship" },
     { id: "mex.1", name: "Liga MX" },
+    { id: "mex.2", name: "Liga de Expansión MX" },
+    { id: "crc.1", name: "Liga Promerica" },
+    { id: "hon.1", name: "Liga Nacional Honduras" },
+    { id: "gua.1", name: "Liga Nacional Guatemala" },
+    { id: "slv.1", name: "Primera División El Salvador" },
+    { id: "pan.1", name: "Liga Panameña" },
     { id: "bra.1", name: "Brasileirão" },
     { id: "bra.2", name: "Brasileirão Série B" },
+    { id: "bra.3", name: "Brasileirão Série C" },
+    { id: "bra.copa_do_brazil", name: "Copa do Brasil" },
     { id: "arg.1", name: "Liga Profesional" },
     { id: "arg.2", name: "Primera Nacional" },
+    { id: "arg.copa", name: "Copa Argentina" },
     { id: "chi.1", name: "Primera División Chile" },
     { id: "col.1", name: "Primera A Colombia" },
     { id: "uru.1", name: "Primera División Uruguay" },
@@ -369,10 +247,16 @@ const ESPN_LIGAS = [
     { id: "conmebol.libertadores", name: "Copa Libertadores" },
     { id: "conmebol.sudamericana", name: "Copa Sudamericana" },
     { id: "afc.champions", name: "AFC Champions" },
+    { id: "afc.cup", name: "AFC Cup" },
     { id: "jpn.1", name: "J-League" },
+    { id: "jpn.2", name: "J2 League" },
     { id: "kor.1", name: "K-League 1" },
+    { id: "kor.2", name: "K-League 2" },
     { id: "chn.1", name: "Chinese Super League" },
     { id: "sau.1", name: "Saudi Pro League" },
+    { id: "uae.1", name: "UAE Pro League" },
+    { id: "qat.1", name: "Qatar Stars League" },
+    { id: "irn.1", name: "Persian Gulf Pro League" },
     { id: "ind.1", name: "Indian Super League" },
     { id: "tha.1", name: "Thai League 1" },
     { id: "mys.1", name: "Malaysia Super League" },
@@ -386,7 +270,10 @@ const ESPN_LIGAS = [
     { id: "nga.1", name: "Nigeria Premier League" },
     { id: "caf.champions", name: "CAF Champions League" },
     { id: "fifa.world", name: "FIFA World Cup" },
-    { id: "fifa.friendly", name: "International Friendly" }
+    { id: "fifa.wwc", name: "FIFA Women's World Cup" },
+    { id: "fifa.cwc", name: "FIFA Club World Cup" },
+    { id: "fifa.friendly", name: "International Friendly" },
+    { id: "fifa.olympics", name: "Olympic Football" }
 ];
 
 let allMatches = [];
@@ -408,7 +295,6 @@ onAuthStateChanged(auth, async (user) => {
         loginStatus.textContent = "✅ Login: " + user.email;
         adminContent.classList.remove("hidden");
         notLogged.classList.add("hidden");
-        // AUTO-FETCH saat login
         loadAllData();
     } else {
         loginStatus.className = "status warning";
@@ -549,13 +435,11 @@ async function loadAllData(forceRefresh) {
     wrap.innerHTML = '<div class="loading">Memuat jadwal dari ESPN + Firestore...</div>';
 
     try {
-        // Fetch ESPN + Firestore PARALEL
         const [espn, _] = await Promise.all([
             fetchAllESPN(),
             loadExisting()
         ]);
 
-        // Gabung: ESPN dulu, terus data dari Firestore yang gak ada di ESPN
         const seen = new Set();
         const result = [];
 
@@ -566,7 +450,6 @@ async function loadAllData(forceRefresh) {
             result.push(m);
         });
 
-        // Tambahkan data Firestore yang gak ada di ESPN
         existingData.forEach((v, k) => {
             if (seen.has(k)) return;
             seen.add(k);
@@ -610,7 +493,6 @@ function renderTable() {
 
     let display = [...allMatches];
 
-    // Filter
     const today = getTodayStr();
     const tomorrow = getTomorrowStr();
 
@@ -637,7 +519,6 @@ function renderTable() {
         return;
     }
 
-    // Sort by date + time
     display.sort((a, b) => {
         const da = (a.date || "") + (a.time || "");
         const db2 = (b.date || "") + (b.time || "");
@@ -702,7 +583,6 @@ function renderTable() {
     html += `</tbody></table>`;
     wrap.innerHTML = html;
 
-    // Listeners
     wrap.querySelectorAll("input").forEach(input => {
         input.addEventListener("input", () => {
             const tr = input.closest("tr");
@@ -908,7 +788,6 @@ async function saveAll() {
 
         alert(`✅ Berhasil!\n\n📝 Update: ${updated}\n🆕 Baru: ${created}\n📊 Total: ${toSave.length}`);
 
-        // Reload data biar akurat
         await loadExisting();
         renderTable();
 
