@@ -9,7 +9,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
     font-family: Arial, sans-serif;
-    background: radial-gradient(circle at top, #2a1150 0%, #090611 60%);
+    background: radial-gradient(circle at top, #0a2050 0%, #02060f 60%);
     color: #f8fafc;
     min-height: 100vh;
     padding: 20px;
@@ -17,13 +17,13 @@ body {
 .container { max-width: 1500px; margin: auto; }
 header {
     text-align: center; padding: 18px 15px; margin-bottom: 18px;
-    background: rgba(19, 8, 38, 0.95);
-    border: 1px solid rgba(255, 215, 0, 0.25);
+    background: rgba(8, 30, 60, 0.95);
+    border: 1px solid rgba(34, 211, 238, 0.35);
     border-radius: 14px;
 }
 header h1 {
     font-size: 22px; margin-bottom: 6px;
-    background: linear-gradient(90deg, #ffd700, #c084fc);
+    background: linear-gradient(90deg, #67e8f9, #22d3ee, #0891b2);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
 }
 header .subtitle { color: #94a3b8; font-size: 12px; letter-spacing: 1px; }
@@ -38,14 +38,14 @@ header .subtitle { color: #94a3b8; font-size: 12px; letter-spacing: 1px; }
 .status.warning { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.35); color: #fcd34d; }
 .status.hidden { display: none; }
 .card {
-    background: linear-gradient(145deg, rgba(28, 17, 48, 0.96), rgba(15, 10, 27, 0.96));
-    border: 1px solid rgba(255,255,255,0.08);
+    background: linear-gradient(145deg, rgba(15, 40, 75, 0.96), rgba(8, 25, 50, 0.96));
+    border: 1px solid rgba(34, 211, 238, 0.2);
     border-radius: 16px;
     padding: 18px;
     margin-bottom: 16px;
 }
 .card h2 { font-size: 18px; margin-bottom: 10px; color: #fff; }
-.card h2::first-letter { color: #ffd700; }
+.card h2::first-letter { color: #67e8f9; }
 .small { font-size: 12px; color: #94a3b8; line-height: 1.6; margin-bottom: 12px; }
 .controls {
     display: flex; flex-wrap: wrap; gap: 10px;
@@ -53,13 +53,13 @@ header .subtitle { color: #94a3b8; font-size: 12px; letter-spacing: 1px; }
 }
 .controls select, .controls input {
     padding: 10px 14px; border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.15);
-    background: #08050f; color: #f8fafc;
+    border: 1px solid rgba(34, 211, 238, 0.3);
+    background: #02060f; color: #f8fafc;
     font-size: 13px; outline: none;
 }
 .controls select:focus, .controls input:focus {
-    border-color: #a855f7;
-    box-shadow: 0 0 0 3px rgba(168,85,247,0.15);
+    border-color: #22d3ee;
+    box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.15);
 }
 button {
     border: 0; padding: 11px 18px; border-radius: 10px;
@@ -68,11 +68,11 @@ button {
 }
 button:hover { transform: translateY(-2px); }
 button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-.btn-blue { background: linear-gradient(135deg, #2563eb, #3b82f6); }
+.btn-blue { background: linear-gradient(135deg, #0891b2, #22d3ee); color: #000; }
 .btn-green { background: linear-gradient(135deg, #16a34a, #22c55e); }
 .btn-red { background: linear-gradient(135deg, #dc2626, #ef4444); }
 .btn-dark { background: linear-gradient(135deg, #334155, #475569); }
-.btn-purple { background: linear-gradient(135deg, #7c3aed, #a855f7); }
+.btn-purple { background: linear-gradient(135deg, #0891b2, #67e8f9); color: #000; }
 .btn-orange { background: linear-gradient(135deg, #d97706, #f59e0b); }
 .btn-gold { background: linear-gradient(135deg, #d4af37, #ffd700); color: #000; }
 .btn-pink { background: linear-gradient(135deg, #ec4899, #f472b6); }
@@ -80,8 +80,8 @@ button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 .table-wrap {
     overflow-x: auto;
     border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.08);
-    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(34, 211, 238, 0.2);
+    background: rgba(0,0,0,0.3);
     max-height: 70vh;
 }
 table {
@@ -91,33 +91,32 @@ table {
     min-width: 1100px;
 }
 thead {
-    background: rgba(93,45,232,0.4);
+    background: rgba(8, 145, 178, 0.5);
     position: sticky; top: 0;
     z-index: 10;
 }
 th {
     padding: 10px 8px;
     text-align: left;
-    color: #ffd700;
+    color: #67e8f9;
     font-weight: bold;
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(34, 211, 238, 0.3);
 }
 td {
     padding: 6px 8px;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(34, 211, 238, 0.08);
     vertical-align: middle;
 }
-tr:hover { background: rgba(168,85,247,0.08); }
+tr:hover { background: rgba(34, 211, 238, 0.08); }
 tr.saved { background: rgba(34,197,94,0.15); }
 tr.saved td { color: #86efac; }
-tr.hot { background: rgba(236,72,153,0.15); border-left: 3px solid #ec4899; }
 
 .td-date { color: #94a3b8; font-size: 11px; white-space: nowrap; }
-.td-time { color: #4ade80; font-weight: bold; white-space: nowrap; }
-.td-league { color: #60a5fa; font-size: 11px; }
+.td-time { color: #22d3ee; font-weight: bold; white-space: nowrap; }
+.td-league { color: #7dd3fc; font-size: 11px; }
 .td-teams { color: #fff; font-weight: bold; font-size: 12px; }
 .td-logo { width: 28px; }
 .td-logo img { width: 24px; height: 24px; object-fit: contain; }
@@ -125,15 +124,15 @@ tr.hot { background: rgba(236,72,153,0.15); border-left: 3px solid #ec4899; }
 td input {
     padding: 7px 8px;
     border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.15);
-    background: #08050f;
+    border: 1px solid rgba(34, 211, 238, 0.3);
+    background: #02060f;
     color: #fff;
     font-size: 12px;
     width: 100%;
     outline: none;
     font-family: 'Courier New', monospace;
 }
-td input:focus { border-color: #a855f7; box-shadow: 0 0 0 2px rgba(168,85,247,0.2); }
+td input:focus { border-color: #22d3ee; box-shadow: 0 0 0 2px rgba(34,211,238,0.2); }
 td input.input-hdp { min-width: 90px; }
 td input.input-pred { min-width: 45px; max-width: 55px; text-align: center; }
 td input::placeholder { color: #475569; }
@@ -141,12 +140,12 @@ td input::placeholder { color: #475569; }
 .info-bar {
     display: flex; flex-wrap: wrap; gap: 12px;
     padding: 10px 14px;
-    background: rgba(93,45,232,0.15);
+    background: rgba(34, 211, 238, 0.12);
     border-radius: 10px;
     margin-bottom: 14px;
     font-size: 12px;
 }
-.info-bar strong { color: #ffd700; font-size: 14px; }
+.info-bar strong { color: #67e8f9; font-size: 14px; }
 
 .loading {
     text-align: center; padding: 40px;
@@ -155,38 +154,19 @@ td input::placeholder { color: #475569; }
 }
 .hidden { display: none !important; }
 .login-box { text-align: center; padding: 40px 20px; }
-.login-box h2 { color: #ffd700; margin-bottom: 10px; }
+.login-box h2 { color: #67e8f9; margin-bottom: 10px; }
 
 .hint-box {
-    background: rgba(255, 215, 0, 0.08);
-    border: 1px solid rgba(255, 215, 0, 0.3);
+    background: rgba(34, 211, 238, 0.1);
+    border: 1px solid rgba(34, 211, 238, 0.4);
     border-radius: 10px;
     padding: 10px 14px;
     margin-bottom: 14px;
     font-size: 12px;
-    color: #fcd34d;
+    color: #7dd3fc;
     line-height: 1.7;
 }
-.hint-box b { color: #ffd700; }
-
-.filter-tabs {
-    display: flex; gap: 6px; flex-wrap: wrap;
-    margin-bottom: 14px;
-}
-.filter-tab {
-    padding: 8px 14px; border-radius: 20px;
-    font-size: 12px; font-weight: bold;
-    background: rgba(30,20,60,0.7);
-    border: 1.5px solid rgba(93,45,232,0.4);
-    color: #c8c8d4; cursor: pointer;
-    transition: all 0.3s;
-}
-.filter-tab:hover { color: #00d4ff; border-color: rgba(0,212,255,0.7); }
-.filter-tab.active {
-    color: #0a0e27;
-    background: linear-gradient(135deg, #ffcc33, #fff5d0, #ffcc33);
-    border-color: #ffcc33;
-}
+.hint-box b { color: #67e8f9; }
 
 @media (max-width: 700px) {
     body { padding: 10px; }
@@ -195,7 +175,6 @@ td input::placeholder { color: #475569; }
     .card { padding: 12px; }
     .controls { flex-direction: column; align-items: stretch; }
     .controls select, .controls input, button { width: 100%; }
-    .filter-tabs { display: grid; grid-template-columns: repeat(2, 1fr); }
 }
 </style>
 </head>
@@ -204,8 +183,8 @@ td input::placeholder { color: #475569; }
 <div class="container">
 
 <header>
-    <h1>⚡ ADMIN BULK INPUT v2 — KIPER4D</h1>
-    <div class="subtitle">ESPN + FIRESTORE + MATCH TAKER</div>
+    <h1>⚡ ADMIN BULK INPUT — KIPER4D</h1>
+    <div class="subtitle">INPUT HDP & PREDIKSI VARIATIF REALISTIS</div>
 </header>
 
 <div id="loginStatus" class="status">Memeriksa login...</div>
@@ -219,72 +198,46 @@ td input::placeholder { color: #475569; }
 <div id="adminContent" class="hidden">
 
     <div class="card">
-        <h2>📅 Ambil Jadwal</h2>
-        <p class="small">Pilih sumber → klik Ambil → tabel muncul. Panel ini narik dari <b>ESPN + Firestore</b> sekaligus.</p>
+        <h2>📅 Ambil Jadwal ESPN</h2>
+        <p class="small">Pilih tanggal → klik Ambil Jadwal → muncul tabel semua pertandingan.</p>
 
         <div class="controls">
             <select id="tanggalSelect">
                 <option value="today">Hari Ini</option>
                 <option value="tomorrow">Besok</option>
                 <option value="7days" selected>7 Hari ke Depan</option>
-                <option value="all">Semua Data (ESPN + Firestore)</option>
             </select>
-            <button id="btnFetch" class="btn-blue">🔄 AMBIL JADWAL</button>
-            <button id="btnLoadExisting" class="btn-dark">📖 LOAD DARI FIRESTORE</button>
+            <button id="btnFetch" class="btn-blue">🔄 AMBIL JADWAL ESPN</button>
+            <button id="btnLoadExisting" class="btn-dark">📖 LOAD DATA TERSIMPAN</button>
         </div>
 
         <div id="fetchStatus" class="status hidden"></div>
     </div>
 
     <div class="card">
-        <h2>🎯 MATCH TAKER — Pilih Pertandingan Panas</h2>
-        <p class="small">Ambil <b>8 pertandingan paling panas</b> otomatis. Prioritas: UEFA Nations League, Champions League, dan liga top Eropa. Cuma 8 yang tampil di situs publik (biar fokus).</p>
-
-        <div class="controls">
-            <button id="btnMatchTaker" class="btn-pink">🔥 AMBIL 8 MATCH PANAS</button>
-            <button id="btnMatchTakerBig" class="btn-pink">💎 AMBIL 12 MATCH PANAS</button>
-        </div>
-
-        <div id="matchTakerInfo" class="status hidden"></div>
-    </div>
-
-    <div class="card">
         <h2>📊 Tabel Bulk Input</h2>
 
         <div class="hint-box">
-            💡 <b>Tips input cepat:</b><br>
-            1. Klik <b>🎲 ISI HDP</b> → 20 varian HDP random (0:1/4, 1/2:0, 1:0, 2:0, dll)<br>
-            2. Klik <b>🎯 ISI PRED</b> → prediksi random<br>
-            3. Klik <b>⚡ ISI SEMUA</b> → HDP + Pred sekaligus<br>
-            4. Edit manual yang perlu (Tab/Enter untuk navigasi)<br>
-            5. Klik <b>💾 SIMPAN SEMUA</b> → semua tersimpan!
+            💡 <b>Tips:</b> Klik <b>⚡ ISI SEMUA</b> → HDP & Pred terisi otomatis (variatif per tim). Edit manual yang perlu. Klik <b>💾 SIMPAN SEMUA</b>.
         </div>
 
         <div class="info-bar">
             <div>📋 Total: <strong id="statTotal">0</strong></div>
             <div>✅ Tersimpan: <strong id="statSaved">0</strong></div>
             <div>⏳ Belum: <strong id="statPending">0</strong></div>
-            <div>🔥 Panas: <strong id="statHot">0</strong></div>
-        </div>
-
-        <div class="filter-tabs">
-            <button class="filter-tab active" data-filter="all">📋 Semua</button>
-            <button class="filter-tab" data-filter="hot">🔥 Panas</button>
-            <button class="filter-tab" data-filter="today">📅 Hari Ini</button>
-            <button class="filter-tab" data-filter="tomorrow">📅 Besok</button>
-            <button class="filter-tab" data-filter="empty">⏳ Belum Diisi</button>
+            <div>🎯 Ada HDP: <strong id="statHdp">0</strong></div>
         </div>
 
         <div class="controls">
-            <button id="btnFillHdp" class="btn-orange">🎲 ISI HDP</button>
-            <button id="btnFillPred" class="btn-orange">🎯 ISI PRED</button>
+            <button id="btnFillHdp" class="btn-orange">🎲 ISI HDP VARIATIF</button>
+            <button id="btnFillPred" class="btn-orange">🎯 ISI PRED VARIATIF</button>
             <button id="btnFillBoth" class="btn-gold">⚡ ISI SEMUA (HDP+PRED)</button>
             <button id="btnSaveAll" class="btn-green">💾 SIMPAN SEMUA</button>
             <button id="btnClearAll" class="btn-red">🗑️ KOSONGKAN SEMUA</button>
         </div>
 
         <div id="tableWrap" class="table-wrap">
-            <div class="loading">Klik "AMBIL JADWAL" untuk mulai</div>
+            <div class="loading">Klik "AMBIL JADWAL ESPN" untuk mulai</div>
         </div>
     </div>
 
@@ -324,89 +277,54 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 /* ============================================================
-   20 VARIAN HDP
-   ============================================================ */
-const HDP_VARIANTS = [
-    "0 : 1/4", "1/4 : 0",
-    "0 : 1/2", "1/2 : 0",
-    "0 : 3/4", "3/4 : 0",
-    "0 : 1", "1 : 0",
-    "0 : 1 1/4", "1 1/4 : 0",
-    "0 : 1 1/2", "1 1/2 : 0",
-    "0 : 1 3/4", "1 3/4 : 0",
-    "0 : 2", "2 : 0",
-    "0 : 2 1/4", "2 1/4 : 0",
-    "0 : 2 1/2", "2 1/2 : 0"
-];
-
-/* ============================================================
    40+ LIGA ESPN
    ============================================================ */
 const ESPN_LIGAS = [
     { id: "eng.1", name: "Premier League" },
     { id: "eng.2", name: "Championship" },
-    { id: "eng.fa", name: "FA Cup" },
-    { id: "eng.league_cup", name: "Carabao Cup" },
     { id: "esp.1", name: "La Liga" },
     { id: "esp.2", name: "La Liga 2" },
-    { id: "esp.copa_del_rey", name: "Copa del Rey" },
     { id: "ita.1", name: "Serie A" },
     { id: "ita.2", name: "Serie B" },
-    { id: "ita.coppa_italia", name: "Coppa Italia" },
     { id: "ger.1", name: "Bundesliga" },
     { id: "ger.2", name: "2. Bundesliga" },
-    { id: "ger.dfb_pokal", name: "DFB Pokal" },
     { id: "fra.1", name: "Ligue 1" },
     { id: "fra.2", name: "Ligue 2" },
     { id: "ned.1", name: "Eredivisie" },
-    { id: "ned.2", name: "Eerste Divisie" },
     { id: "por.1", name: "Primeira Liga" },
-    { id: "por.2", name: "Liga Portugal 2" },
     { id: "uefa.champions", name: "Champions League" },
     { id: "uefa.europa", name: "Europa League" },
     { id: "uefa.europa.conf", name: "Conference League" },
     { id: "uefa.nations", name: "UEFA Nations League" },
-    { id: "uefa.euro", name: "UEFA Euro" },
     { id: "usa.1", name: "MLS" },
-    { id: "usa.nwsl", name: "NWSL" },
     { id: "mex.1", name: "Liga MX" },
     { id: "bra.1", name: "Brasileirão" },
-    { id: "bra.2", name: "Brasileirão Série B" },
     { id: "arg.1", name: "Liga Profesional" },
     { id: "conmebol.libertadores", name: "Copa Libertadores" },
     { id: "conmebol.sudamericana", name: "Copa Sudamericana" },
     { id: "afc.champions", name: "AFC Champions" },
     { id: "jpn.1", name: "J-League" },
     { id: "kor.1", name: "K-League 1" },
-    { id: "chn.1", name: "Chinese Super League" },
     { id: "sau.1", name: "Saudi Pro League" },
     { id: "fifa.world", name: "FIFA World Cup" }
 ];
 
 /* ============================================================
-   TIM & LIGA PANAS (untuk Match Taker)
+   TEAM STRENGTH — tim kuat/lemah untuk prediksi realistis
    ============================================================ */
-const HOT_LEAGUES = [
-    "UEFA Nations League", "Champions League", "Europa League", "Conference League",
-    "Premier League", "La Liga", "Serie A", "Bundesliga", "Ligue 1",
-    "Copa Libertadores", "Copa Sudamericana", "FIFA World Cup", "UEFA Euro"
-];
-
-const HOT_TEAMS = [
-    "real madrid", "barcelona", "atletico madrid", "sevilla", "villarreal",
-    "manchester", "liverpool", "arsenal", "chelsea", "tottenham", "newcastle",
+const STRONG_TEAMS = [
+    "real madrid", "barcelona", "atletico", "bayern", "dortmund",
+    "manchester city", "manchester united", "liverpool", "arsenal", "chelsea", "tottenham",
     "juventus", "inter", "milan", "napoli", "roma", "lazio", "atalanta",
-    "bayern", "dortmund", "leipzig", "leverkusen",
     "psg", "paris", "marseille", "lyon", "monaco", "lille",
     "ajax", "psv", "feyenoord", "porto", "benfica", "sporting",
+    "flamengo", "palmeiras", "boca", "river", "santos", "corinthians",
     "germany", "france", "italy", "spain", "england", "portugal",
-    "netherlands", "belgium", "croatia", "denmark", "switzerland",
-    "argentina", "brazil", "uruguay", "colombia", "mexico"
+    "netherlands", "belgium", "croatia", "brazil", "argentina", "uruguay"
 ];
 
 let allMatches = [];
 let existingData = new Map();
-let currentFilter = "all";
 
 /* ============================================================
    AUTH
@@ -462,30 +380,13 @@ function getYMD(offset = 0) {
     return wib.getUTCFullYear() + String(wib.getUTCMonth() + 1).padStart(2, "0") + String(wib.getUTCDate()).padStart(2, "0");
 }
 
-function getTodayStr() {
-    const wib = new Date(getNowWIBMs());
-    return wib.getUTCFullYear() + "-" + String(wib.getUTCMonth() + 1).padStart(2, "0") + "-" + String(wib.getUTCDate()).padStart(2, "0");
-}
-
-function getTomorrowStr() {
-    const wib = new Date(getNowWIBMs() + 86400000);
-    return wib.getUTCFullYear() + "-" + String(wib.getUTCMonth() + 1).padStart(2, "0") + "-" + String(wib.getUTCDate()).padStart(2, "0");
-}
-
 function makeLooseKey(date, home, away) {
     return [date, normalizeTeam(home), normalizeTeam(away)].join("|");
 }
 
-function isHotMatch(m) {
-    const liga = clean(m.league).toLowerCase();
-    const home = clean(m.home).toLowerCase();
-    const away = clean(m.away).toLowerCase();
-
-    // Cek liga panas
-    if (HOT_LEAGUES.some(l => liga.includes(l.toLowerCase()))) return true;
-    // Cek tim panas
-    if (HOT_TEAMS.some(t => home.includes(t) || away.includes(t))) return true;
-    return false;
+function isStrongTeam(name) {
+    const n = clean(name).toLowerCase();
+    return STRONG_TEAMS.some(t => n.includes(t));
 }
 
 /* ============================================================
@@ -520,8 +421,7 @@ async function fetchESPNDate(dateStr) {
                         home: home.team?.displayName || "?",
                         away: away.team?.displayName || "?",
                         homeLogo: home.team?.logo || "",
-                        awayLogo: away.team?.logo || "",
-                        source: "espn"
+                        awayLogo: away.team?.logo || ""
                     };
                 } catch (e) { return null; }
             }).filter(Boolean);
@@ -533,33 +433,21 @@ async function fetchESPNDate(dateStr) {
 
 async function fetchAllESPN() {
     const pilihan = document.getElementById("tanggalSelect").value;
-    if (pilihan === "all") {
-        // Ambil 7 hari
-        const all = [];
-        const promises = [];
-        for (let i = 0; i < 7; i++) {
-            promises.push(fetchESPNDate(getYMD(i)));
-        }
-        const results = await Promise.all(promises);
-        results.forEach(arr => all.push(...arr));
-        return all;
-    }
-
     let days = 1;
     if (pilihan === "7days") days = 7;
 
-    const all = [];
     const promises = [];
     for (let i = 0; i < days; i++) {
         promises.push(fetchESPNDate(getYMD(i)));
     }
     const results = await Promise.all(promises);
+    const all = [];
     results.forEach(arr => all.push(...arr));
     return all;
 }
 
 /* ============================================================
-   LOAD EXISTING (FIRESTORE)
+   LOAD EXISTING
    ============================================================ */
 async function loadExisting() {
     const snap = await getDocs(collection(db, "predictions"));
@@ -571,61 +459,6 @@ async function loadExisting() {
         const key = makeLooseKey(data.date, data.home, data.away);
         existingData.set(key, { id: d.id, ...data });
     });
-    console.log(`[Firestore] ${existingData.size} data loaded`);
-}
-
-async function loadFromFirestoreOnly() {
-    await loadExisting();
-    const list = [];
-    existingData.forEach(v => {
-        list.push({
-            league: v.league || "LAINNYA",
-            date: v.date,
-            time: v.time,
-            home: v.home,
-            away: v.away,
-            homeLogo: v.homeLogo || "",
-            awayLogo: v.awayLogo || "",
-            source: "firestore"
-        });
-    });
-    return list;
-}
-
-/* ============================================================
-   GABUNG ESPN + FIRESTORE
-   ============================================================ */
-function mergeData(espnData, firestoreData) {
-    const seen = new Set();
-    const result = [];
-
-    espnData.forEach(m => {
-        const key = makeLooseKey(m.date, m.home, m.away);
-        if (seen.has(key)) return;
-        seen.add(key);
-        const fs = existingData.get(key);
-        result.push({
-            ...m,
-            handicap: fs?.handicap || "",
-            predictionScoreHome: fs?.predictionScoreHome || "",
-            predictionScoreAway: fs?.predictionScoreAway || ""
-        });
-    });
-
-    firestoreData.forEach(m => {
-        const key = makeLooseKey(m.date, m.home, m.away);
-        if (seen.has(key)) return;
-        seen.add(key);
-        const fs = existingData.get(key);
-        result.push({
-            ...m,
-            handicap: fs?.handicap || "",
-            predictionScoreHome: fs?.predictionScoreHome || "",
-            predictionScoreAway: fs?.predictionScoreAway || ""
-        });
-    });
-
-    return result;
 }
 
 /* ============================================================
@@ -634,32 +467,13 @@ function mergeData(espnData, firestoreData) {
 function renderTable() {
     const wrap = document.getElementById("tableWrap");
 
-    // Filter
-    let display = [...allMatches];
-    const today = getTodayStr();
-    const tomorrow = getTomorrowStr();
-
-    if (currentFilter === "hot") {
-        display = display.filter(m => isHotMatch(m));
-    } else if (currentFilter === "today") {
-        display = display.filter(m => m.date === today);
-    } else if (currentFilter === "tomorrow") {
-        display = display.filter(m => m.date === tomorrow);
-    } else if (currentFilter === "empty") {
-        display = display.filter(m => {
-            const key = makeLooseKey(m.date, m.home, m.away);
-            const fs = existingData.get(key);
-            return !fs || !fs.handicap || !fs.predictionScoreHome || !fs.predictionScoreAway;
-        });
-    }
-
-    if (!display.length) {
-        wrap.innerHTML = '<div class="loading">Tidak ada pertandingan di filter ini</div>';
+    if (!allMatches.length) {
+        wrap.innerHTML = '<div class="loading">Tidak ada pertandingan</div>';
         updateStats();
         return;
     }
 
-    display.sort((a, b) => {
+    allMatches.sort((a, b) => {
         const da = (a.date || "") + (a.time || "");
         const db2 = (b.date || "") + (b.time || "");
         return da.localeCompare(db2);
@@ -671,7 +485,8 @@ function renderTable() {
                 <tr>
                     <th style="width:70px;">Tanggal</th>
                     <th style="width:55px;">Jam</th>
-                    <th style="width:120px;">Liga</th>
+                    <th style="width:20px;">🏆</th>
+                    <th style="width:110px;">Liga</th>
                     <th style="width:28px;"></th>
                     <th>Tim Home</th>
                     <th style="width:28px;"></th>
@@ -685,25 +500,24 @@ function renderTable() {
             <tbody>
     `;
 
-    display.forEach((m) => {
-        const idx = allMatches.indexOf(m);
+    allMatches.forEach((m, i) => {
         const key = makeLooseKey(m.date, m.home, m.away);
         const existing = existingData.get(key);
 
-        const hdp = existing?.handicap || m.handicap || "";
-        const pH = existing?.predictionScoreHome || m.predictionScoreHome || "";
-        const pA = existing?.predictionScoreAway || m.predictionScoreAway || "";
-        const saved = hdp && pH && pA;
-        const hot = isHotMatch(m);
+        const hdp = existing?.handicap || "";
+        const pH = existing?.predictionScoreHome || "";
+        const pA = existing?.predictionScoreAway || "";
+        const saved = existing?.handicap && existing?.predictionScoreHome && existing?.predictionScoreAway;
 
         const homeLogoHTML = m.homeLogo ? `<img src="${m.homeLogo}" onerror="this.style.display='none'">` : "";
         const awayLogoHTML = m.awayLogo ? `<img src="${m.awayLogo}" onerror="this.style.display='none'">` : "";
 
         html += `
-            <tr data-index="${idx}" data-key="${key}" class="${saved ? 'saved' : ''} ${hot ? 'hot' : ''}">
+            <tr data-index="${i}" data-key="${key}" class="${saved ? 'saved' : ''}">
                 <td class="td-date">${m.date}</td>
                 <td class="td-time">${m.time}</td>
-                <td class="td-league">${hot ? '🔥 ' : ''}${m.league}</td>
+                <td></td>
+                <td class="td-league">${m.league}</td>
                 <td class="td-logo">${homeLogoHTML}</td>
                 <td class="td-teams">${m.home}</td>
                 <td class="td-logo">${awayLogoHTML}</td>
@@ -741,53 +555,120 @@ function renderTable() {
     updateStats();
 }
 
-/* ============================================================
-   UPDATE STATS
-   ============================================================ */
 function updateStats() {
     const total = allMatches.length;
-    let saved = 0, pending = 0, hot = 0;
+    const inputs = document.querySelectorAll("tbody tr");
+    let saved = 0, pending = 0, adaHdp = 0;
 
-    allMatches.forEach(m => {
-        const key = makeLooseKey(m.date, m.home, m.away);
-        const fs = existingData.get(key);
-        if (fs && fs.handicap && fs.predictionScoreHome && fs.predictionScoreAway) {
-            saved++;
-        } else {
-            pending++;
-        }
-        if (isHotMatch(m)) hot++;
+    inputs.forEach(tr => {
+        const hdp = tr.querySelector(".input-hdp")?.value.trim();
+        const pH = tr.querySelector(".input-pred[data-field='predH']")?.value.trim();
+        const pA = tr.querySelector(".input-pred[data-field='predA']")?.value.trim();
+
+        if (hdp) adaHdp++;
+        if (hdp && pH && pA) saved++;
+        else pending++;
     });
 
     document.getElementById("statTotal").textContent = total;
     document.getElementById("statSaved").textContent = saved;
     document.getElementById("statPending").textContent = pending;
-    document.getElementById("statHot").textContent = hot;
+    document.getElementById("statHdp").textContent = adaHdp;
 }
 
 /* ============================================================
-   FILL FUNCTIONS
+   FILL HDP VARIATIF (berdasarkan kekuatan tim)
    ============================================================ */
-function fillHdpDefault() {
-    document.querySelectorAll("tbody tr").forEach(tr => {
+function fillHdpVariatif() {
+    const rows = document.querySelectorAll("tbody tr");
+    rows.forEach(tr => {
         const hdp = tr.querySelector(".input-hdp");
-        if (hdp && !hdp.value.trim()) {
-            hdp.value = HDP_VARIANTS[Math.floor(Math.random() * HDP_VARIANTS.length)];
-            hdp.dispatchEvent(new Event("input"));
+        if (hdp.value.trim()) return;
+
+        const idx = parseInt(tr.dataset.index, 10);
+        const m = allMatches[idx];
+        if (!m) return;
+
+        const homeStrong = isStrongTeam(m.home);
+        const awayStrong = isStrongTeam(m.away);
+
+        let value;
+        if (homeStrong && !awayStrong) {
+            // Home kuat → HDP untuk home
+            const homeHdp = ["1/4 : 0", "1/4 : 0", "1/2 : 0", "1/2 : 0", "3/4 : 0", "1 : 0", "1 1/4 : 0", "1 1/2 : 0"];
+            value = homeHdp[Math.floor(Math.random() * homeHdp.length)];
+        } else if (awayStrong && !homeStrong) {
+            // Away kuat → HDP untuk away
+            const awayHdp = ["0 : 1/4", "0 : 1/4", "0 : 1/2", "0 : 1/2", "0 : 3/4", "0 : 1", "0 : 1 1/4", "0 : 1 1/2"];
+            value = awayHdp[Math.floor(Math.random() * awayHdp.length)];
+        } else {
+            // Seimbang → mayoritas HDP kecil
+            const balanced = [
+                "0 : 1/4", "1/4 : 0", "0 : 1/4", "1/4 : 0", "0 : 1/4", "1/4 : 0",
+                "0 : 1/2", "1/2 : 0", "0 : 1/2", "1/2 : 0",
+                "0 : 3/4", "3/4 : 0",
+                "0 : 1", "1 : 0"
+            ];
+            value = balanced[Math.floor(Math.random() * balanced.length)];
         }
+
+        hdp.value = value;
+        hdp.dispatchEvent(new Event("input"));
     });
 }
 
-function fillPredRandom() {
-    document.querySelectorAll("tbody tr").forEach(tr => {
+/* ============================================================
+   FILL PREDIKSI VARIATIF & REALISTIS
+   ============================================================ */
+function fillPredVariatif() {
+    const rows = document.querySelectorAll("tbody tr");
+    rows.forEach(tr => {
         const pH = tr.querySelector(".input-pred[data-field='predH']");
         const pA = tr.querySelector(".input-pred[data-field='predA']");
-        if (pH && !pH.value.trim()) {
-            pH.value = Math.floor(Math.random() * 4);
+        if (pH.value.trim() && pA.value.trim()) return;
+
+        const idx = parseInt(tr.dataset.index, 10);
+        const m = allMatches[idx];
+        if (!m) return;
+
+        const homeStrong = isStrongTeam(m.home);
+        const awayStrong = isStrongTeam(m.away);
+
+        let homeGoal, awayGoal;
+
+        if (homeStrong && !awayStrong) {
+            // Home kuat → menang
+            const patterns = [
+                [2, 0], [2, 1], [3, 1], [1, 0], [3, 0], [2, 0], [3, 1], [2, 1],
+                [3, 0], [4, 1], [2, 1], [3, 1], [2, 0], [1, 0],
+                [1, 1], [0, 0], [2, 2]
+            ];
+            [homeGoal, awayGoal] = patterns[Math.floor(Math.random() * patterns.length)];
+        } else if (awayStrong && !homeStrong) {
+            // Away kuat → away menang
+            const patterns = [
+                [0, 1], [0, 2], [1, 2], [0, 3], [1, 3], [0, 2], [1, 2], [0, 1],
+                [0, 3], [1, 4], [1, 2], [0, 2], [1, 2], [0, 1],
+                [1, 1], [0, 0], [2, 2]
+            ];
+            [homeGoal, awayGoal] = patterns[Math.floor(Math.random() * patterns.length)];
+        } else {
+            // Seimbang → mayoritas skor kecil
+            const patterns = [
+                [0, 0], [1, 0], [0, 1], [1, 1], [2, 1], [1, 2],
+                [2, 0], [0, 2], [2, 2], [3, 1], [1, 3], [3, 0], [0, 3],
+                [0, 0], [1, 1], [2, 1], [1, 2], [0, 1], [1, 0],
+                [2, 0], [0, 2], [3, 2], [2, 3], [1, 1]
+            ];
+            [homeGoal, awayGoal] = patterns[Math.floor(Math.random() * patterns.length)];
+        }
+
+        if (!pH.value.trim()) {
+            pH.value = homeGoal;
             pH.dispatchEvent(new Event("input"));
         }
-        if (pA && !pA.value.trim()) {
-            pA.value = Math.floor(Math.random() * 4);
+        if (!pA.value.trim()) {
+            pA.value = awayGoal;
             pA.dispatchEvent(new Event("input"));
         }
     });
@@ -887,82 +768,6 @@ async function saveAll() {
 }
 
 /* ============================================================
-   MATCH TAKER — Pilih 8/12 Match Panas
-   ============================================================ */
-async function matchTaker(count) {
-    if (!allMatches.length) {
-        alert("Ambil jadwal dulu (klik AMBIL JADWAL)");
-        return;
-    }
-
-    await loadExisting();
-
-    // Filter pertandingan panas + yang belum disimpan
-    const candidates = allMatches.filter(m => {
-        if (!isHotMatch(m)) return false;
-        const key = makeLooseKey(m.date, m.home, m.away);
-        const fs = existingData.get(key);
-        // Prioritas yang belum punya HDP
-        return !fs || !fs.handicap;
-    });
-
-    // Kalau kurang, ambil dari semua
-    let finalists = candidates.slice(0, count);
-    if (finalists.length < count) {
-        const extra = allMatches.filter(m => {
-            if (finalists.includes(m)) return false;
-            const key = makeLooseKey(m.date, m.home, m.away);
-            const fs = existingData.get(key);
-            return !fs || !fs.handicap;
-        });
-        finalists = finalists.concat(extra.slice(0, count - finalists.length));
-    }
-
-    if (!finalists.length) {
-        document.getElementById("matchTakerInfo").className = "status warning";
-        document.getElementById("matchTakerInfo").textContent = "⚠️ Semua pertandingan sudah ada HDP. Reset dulu atau skip.";
-        document.getElementById("matchTakerInfo").classList.remove("hidden");
-        return;
-    }
-
-    // Set filter "hot" dan tampilkan
-    currentFilter = "all";
-    document.querySelectorAll(".filter-tab").forEach(t => t.classList.remove("active"));
-    document.querySelector(".filter-tab[data-filter='all']").classList.add("active");
-
-    // Auto-isi HDP & Pred untuk finalists
-    document.querySelectorAll("tbody tr").forEach(tr => {
-        const idx = parseInt(tr.dataset.index, 10);
-        const m = allMatches[idx];
-        if (finalists.includes(m)) {
-            const hdpInput = tr.querySelector(".input-hdp");
-            const pHInput = tr.querySelector(".input-pred[data-field='predH']");
-            const pAInput = tr.querySelector(".input-pred[data-field='predA']");
-
-            if (!hdpInput.value.trim()) {
-                hdpInput.value = HDP_VARIANTS[Math.floor(Math.random() * HDP_VARIANTS.length)];
-                hdpInput.dispatchEvent(new Event("input"));
-            }
-            if (!pHInput.value.trim()) {
-                pHInput.value = Math.floor(Math.random() * 4);
-                pHInput.dispatchEvent(new Event("input"));
-            }
-            if (!pAInput.value.trim()) {
-                pAInput.value = Math.floor(Math.random() * 4);
-                pAInput.dispatchEvent(new Event("input"));
-            }
-            tr.classList.add("hot");
-        }
-    });
-
-    document.getElementById("matchTakerInfo").className = "status success";
-    document.getElementById("matchTakerInfo").textContent = `🔥 ${finalists.length} match panas siap! Isi HDP/Pred sudah otomatis. Edit manual kalau perlu, lalu klik SIMPAN SEMUA.`;
-    document.getElementById("matchTakerInfo").classList.remove("hidden");
-
-    updateStats();
-}
-
-/* ============================================================
    EVENT LISTENERS
    ============================================================ */
 document.getElementById("btnFetch").addEventListener("click", async () => {
@@ -973,20 +778,22 @@ document.getElementById("btnFetch").addEventListener("click", async () => {
     wrap.innerHTML = '<div class="loading">Memuat jadwal dari ESPN...</div>';
 
     try {
-        const [espn, fsList] = await Promise.all([
+        const [espn] = await Promise.all([
             fetchAllESPN(),
-            loadFromFirestoreOnly()
+            loadExisting()
         ]);
 
-        allMatches = mergeData(espn, fsList);
-        allMatches.sort((a, b) => {
-            const da = (a.date || "") + (a.time || "");
-            const db2 = (b.date || "") + (b.time || "");
-            return da.localeCompare(db2);
+        const seen = new Set();
+        allMatches = [];
+        espn.forEach(m => {
+            const k = makeLooseKey(m.date, m.home, m.away);
+            if (seen.has(k)) return;
+            seen.add(k);
+            allMatches.push(m);
         });
 
         document.getElementById("fetchStatus").className = "status success";
-        document.getElementById("fetchStatus").textContent = `✅ ${espn.length} dari ESPN + ${fsList.length} dari Firestore = ${allMatches.length} total`;
+        document.getElementById("fetchStatus").textContent = `✅ ${allMatches.length} pertandingan dari ESPN | ${existingData.size} data existing`;
         document.getElementById("fetchStatus").classList.remove("hidden");
 
         renderTable();
@@ -999,7 +806,7 @@ document.getElementById("btnFetch").addEventListener("click", async () => {
     }
 
     btn.disabled = false;
-    btn.textContent = "🔄 AMBIL JADWAL";
+    btn.textContent = "🔄 AMBIL JADWAL ESPN";
 });
 
 document.getElementById("btnLoadExisting").addEventListener("click", async () => {
@@ -1008,50 +815,32 @@ document.getElementById("btnLoadExisting").addEventListener("click", async () =>
     btn.textContent = "⏳ Loading...";
 
     try {
-        const fsList = await loadFromFirestoreOnly();
-        allMatches = fsList;
-        renderTable();
-
+        await loadExisting();
         document.getElementById("fetchStatus").className = "status success";
-        document.getElementById("fetchStatus").textContent = `✅ ${fsList.length} data dari Firestore`;
+        document.getElementById("fetchStatus").textContent = `✅ ${existingData.size} data tersimpan dari Firestore`;
         document.getElementById("fetchStatus").classList.remove("hidden");
     } catch (err) {
         console.error(err);
     }
 
     btn.disabled = false;
-    btn.textContent = "📖 LOAD DARI FIRESTORE";
+    btn.textContent = "📖 LOAD DATA TERSIMPAN";
 });
 
-// MATCH TAKER
-document.getElementById("btnMatchTaker").addEventListener("click", () => matchTaker(8));
-document.getElementById("btnMatchTakerBig").addEventListener("click", () => matchTaker(12));
-
-// FILTER TABS
-document.querySelectorAll(".filter-tab").forEach(tab => {
-    tab.addEventListener("click", () => {
-        document.querySelectorAll(".filter-tab").forEach(t => t.classList.remove("active"));
-        tab.classList.add("active");
-        currentFilter = tab.dataset.filter;
-        renderTable();
-    });
-});
-
-// FILL BUTTONS
 document.getElementById("btnFillHdp").addEventListener("click", () => {
-    if (!confirm("Isi HDP random untuk semua yang kosong?")) return;
-    fillHdpDefault();
+    if (!confirm("Isi HDP variatif untuk semua yang kosong?")) return;
+    fillHdpVariatif();
 });
 
 document.getElementById("btnFillPred").addEventListener("click", () => {
-    if (!confirm("Isi prediksi random untuk semua yang kosong?")) return;
-    fillPredRandom();
+    if (!confirm("Isi prediksi variatif untuk semua yang kosong?")) return;
+    fillPredVariatif();
 });
 
 document.getElementById("btnFillBoth").addEventListener("click", () => {
-    if (!confirm("Isi HDP + Pred random untuk semua yang kosong?")) return;
-    fillHdpDefault();
-    fillPredRandom();
+    if (!confirm("Isi HDP + Prediksi variatif untuk semua yang kosong?")) return;
+    fillHdpVariatif();
+    fillPredVariatif();
 });
 
 document.getElementById("btnSaveAll").addEventListener("click", saveAll);
