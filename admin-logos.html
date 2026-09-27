@@ -24,10 +24,10 @@ h1 { color: #ffd700; text-align: center; margin-bottom: 20px; }
 </head>
 <body>
 <div class="container">
-<h1>🎨 AUTO FETCH LOGO (Multi-Source)</h1>
+<h1>🎨 AUTO FETCH LOGO v3 (dengan Proxy)</h1>
 
 <div class="card">
-    <p>Auto-cari logo dari <b>Wikipedia EN + ID + TheSportsDB</b>. Test dulu 1 tim sebelum proses massal.</p>
+    <p>Auto-cari logo pakai <b>CORS Proxy</b> — bypass blokir browser. Test 1 tim dulu.</p>
     <button id="btnFetch" class="btn btn-blue">🔍 MULAI AMBIL LOGO</button>
     <button id="btnFetchOne" class="btn btn-green">🎯 Test 1 Tim</button>
     <div id="status"></div>
@@ -65,6 +65,11 @@ const statusEl = document.getElementById("status");
 const logEl = document.getElementById("log");
 const previewEl = document.getElementById("preview");
 
+// === PROXY UNTUK BYPASS CORS ===
+const PROXY = "https://corsproxy.io/?url=";
+// Kalau corsproxy gagal, coba alternatif
+const PROXY_FALLBACK = "https://api.allorigins.win/raw?url=";
+
 function log(msg) {
     logEl.textContent += "\n" + msg;
     logEl.scrollTop = logEl.scrollHeight;
@@ -83,7 +88,26 @@ function cleanTeam(name) {
         .trim();
 }
 
-// === SUMBER 1: Wikipedia (EN + ID) ===
+// === FETCH dengan proxy ===
+async function fetchWithProxy(url) {
+    // Coba proxy utama dulu
+    try {
+        const res = await fetch(PROXY + encodeURIComponent(url));
+        if (res.ok) return await res.json();
+    } catch (e) {
+        console.warn("Proxy 1 gagal:", e.message);
+    }
+    // Coba proxy fallback
+    try {
+        const res = await fetch(PROXY_FALLBACK + encodeURIComponent(url));
+        if (res.ok) return await res.json();
+    } catch (e) {
+        console.warn("Proxy 2 gagal:", e.message);
+    }
+    return null;
+}
+
+// === WIKIPEDIA ===
 async function searchWikipedia(teamName, lang = "en") {
     const name = cleanTeam(teamName);
     if (!name) return null;
@@ -92,17 +116,14 @@ async function searchWikipedia(teamName, lang = "en") {
         name,
         name + " F.C.",
         name + " FC",
-        name + " (football club)",
-        name + " football club",
-        name + " (klub sepak bola)"
+        name + " (football club)"
     ];
 
     for (const title of candidates) {
         try {
-            const url = `https://${lang}.wikipedia.org/w/api.php?action=query&prop=pageimages&piprop=original&titles=${encodeURIComponent(title)}&format=json&origin=*`;
-            const res = await fetch(url);
-            if (!res.ok) continue;
-            const data = await res.json();
+            const url = `https://${lang}.wikipedia.org/w/api.php?action=query&prop=pageimages&piprop=original&titles=${encodeURIComponent(title)}&format=json`;
+            const data = await fetchWithProxy(url);
+            if (!data) continue;
             const pages = data.query?.pages || {};
             for (const id in pages) {
                 const page = pages[id];
@@ -119,16 +140,14 @@ async function searchWikipedia(teamName, lang = "en") {
     return null;
 }
 
-// === SUMBER 2: TheSportsDB ===
+// === THESPORTSDB ===
 async function searchTheSportsDB(teamName) {
     try {
         const name = cleanTeam(teamName);
         const url = `https://www.thesportsdb.com/api/v1/json/123/searchteams.php?t=${encodeURIComponent(name)}`;
-        const res = await fetch(url);
-        const data = await res.json();
-        if (!data.teams || !data.teams.length) return null;
+        const data = await fetchWithProxy(url);
+        if (!data || !data.teams || !data.teams.length) return null;
 
-        // Cari yang paling cocok (nama persis atau mengandung)
         const nameLower = name.toLowerCase();
         let best = data.teams[0];
         for (const t of data.teams) {
@@ -145,21 +164,27 @@ async function searchTheSportsDB(teamName) {
     }
 }
 
-// === COMBINED: Coba semua sumber ===
+// === COMBINED ===
 async function findLogo(teamName) {
-    // 1. Wikipedia EN
     let r = await searchWikipedia(teamName, "en");
     if (r) return r;
 
-    // 2. TheSportsDB
     r = await searchTheSportsDB(teamName);
     if (r) return r;
 
-    // 3. Wikipedia ID
     r = await searchWikipedia(teamName, "id");
     if (r) return r;
 
     return null;
+}
+
+function showPreview(team, r) {
+    previewEl.innerHTML = `
+        <div class="team-item">
+            <img src="${r.logo}" onerror="this.style.display='none'">
+            <span><b>${team}</b> → ${r.name} <small>(${r.source})</small></span>
+        </div>
+    `;
 }
 
 // === TEST 1 TIM ===
@@ -170,8 +195,7 @@ document.getElementById("btnFetchOne").addEventListener("click", async () => {
     setStatus("⏳ Cari: " + teamName, "wait");
     logEl.textContent = "Test: " + teamName;
 
-    // Coba satu-satu biar keliatan mana yang jalan
-    log("\n1. Coba Wikipedia EN...");
+    log("\n1. Wikipedia EN...");
     let r = await searchWikipedia(teamName, "en");
     if (r) {
         log("  ✅ " + r.name + " [" + r.source + "]");
@@ -181,7 +205,7 @@ document.getElementById("btnFetchOne").addEventListener("click", async () => {
     }
     log("  ❌ EN tidak ketemu");
 
-    log("\n2. Coba TheSportsDB...");
+    log("\n2. TheSportsDB...");
     r = await searchTheSportsDB(teamName);
     if (r) {
         log("  ✅ " + r.name + " [" + r.source + "]");
@@ -191,7 +215,7 @@ document.getElementById("btnFetchOne").addEventListener("click", async () => {
     }
     log("  ❌ TSDB tidak ketemu");
 
-    log("\n3. Coba Wikipedia ID...");
+    log("\n3. Wikipedia ID...");
     r = await searchWikipedia(teamName, "id");
     if (r) {
         log("  ✅ " + r.name + " [" + r.source + "]");
@@ -204,18 +228,9 @@ document.getElementById("btnFetchOne").addEventListener("click", async () => {
     setStatus("❌ Semua sumber gagal: " + teamName, "err");
 });
 
-function showPreview(team, r) {
-    previewEl.innerHTML = `
-        <div class="team-item">
-            <img src="${r.logo}" onerror="this.style.display='none'">
-            <span><b>${team}</b> → ${r.name} <small>(${r.source})</small></span>
-        </div>
-    `;
-}
-
-// === PROSES MASSAL ===
+// === MASSAL ===
 document.getElementById("btnFetch").addEventListener("click", async () => {
-    if (!confirm("Proses semua tim? Bisa makan waktu 10-20 menit.")) return;
+    if (!confirm("Proses semua tim? Bisa 10-20 menit.")) return;
 
     const btn = document.getElementById("btnFetch");
     btn.disabled = true;
@@ -241,11 +256,7 @@ document.getElementById("btnFetch").addEventListener("click", async () => {
         log("Tim unik: " + uniqueTeams.length);
 
         const logoMap = new Map();
-        let found = 0;
-        let notFound = 0;
-        let enFound = 0;
-        let tsdbFound = 0;
-        let idFound = 0;
+        let found = 0, notFound = 0;
 
         for (let i = 0; i < uniqueTeams.length; i++) {
             const team = uniqueTeams[i];
@@ -256,10 +267,6 @@ document.getElementById("btnFetch").addEventListener("click", async () => {
             if (result && result.logo) {
                 logoMap.set(team.toLowerCase(), result.logo);
                 found++;
-                if (result.source === "wiki-en") enFound++;
-                else if (result.source === "tsdb") tsdbFound++;
-                else if (result.source === "wiki-id") idFound++;
-
                 log(`  ✅ ${result.name} [${result.source}]`);
 
                 previewEl.innerHTML = `
@@ -273,17 +280,16 @@ document.getElementById("btnFetch").addEventListener("click", async () => {
                 log(`  ❌ Tidak ketemu`);
             }
 
-            await new Promise(r => setTimeout(r, 100));
+            await new Promise(r => setTimeout(r, 200));
         }
 
-        setStatus(`✅ Ditemukan: ${found} (EN: ${enFound}, TSDB: ${tsdbFound}, ID: ${idFound}) | Gagal: ${notFound}`, "ok");
+        setStatus(`✅ Ditemukan: ${found} | Gagal: ${notFound}`, "ok");
 
         log(`\n📝 Update Firestore...`);
         setStatus("📝 Update Firestore...", "wait");
 
         let batch = writeBatch(db);
-        let count = 0;
-        let updated = 0;
+        let count = 0, updated = 0;
 
         for (const d of docs) {
             const home = cleanTeam(d.data.home).toLowerCase();
@@ -308,7 +314,7 @@ document.getElementById("btnFetch").addEventListener("click", async () => {
         if (count > 0) await batch.commit();
 
         log(`✅ ${updated} dokumen di-update`);
-        setStatus(`🎉 SELESAI! ${found} logo ditemukan, ${updated} dokumen di-update. Buka situs + hard refresh!`, "ok");
+        setStatus(`🎉 SELESAI! ${found} logo, ${updated} dokumen. Hard refresh situs!`, "ok");
 
     } catch (err) {
         console.error(err);
