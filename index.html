@@ -3,189 +3,531 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel - KIPER4D</title>
+<title>KIPER4D — Prediksi Bola Hari Ini, Jadwal & Handicap Terbaru</title>
+<meta name="description" content="Prediksi bola hari ini terlengkap! Jadwal pertandingan, prediksi skor, handicap, informasi sepak bola terbaru hanya di KIPER4D.">
+<meta name="theme-color" content="#0a0e27">
 <link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://www.gstatic.com">
+<link rel="preconnect" href="https://firestore.googleapis.com">
+<link rel="preconnect" href="https://site.api.espn.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Teko:wght@500;600;700&family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@600;700;800;900&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 body {
-    font-family: Arial, sans-serif;
-    background: radial-gradient(circle at top, #2a1150 0%, #090611 60%);
-    color: #f8fafc;
+    font-family: 'Inter', Arial, sans-serif;
+    background: #0a0e27;
+    color: #fff;
     min-height: 100vh;
-    padding: 20px;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
 }
+.aurora-bg { position: fixed; inset: 0; z-index: -4; pointer-events: none; overflow: hidden; }
+.aurora-bg::before {
+    content: ""; position: absolute; inset: -50%;
+    background:
+        radial-gradient(ellipse 50% 40% at 20% 30%, rgba(93,45,232,0.45) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 80% 70%, rgba(0,212,255,0.35) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 50% 50%, rgba(255,204,51,0.20) 0%, transparent 60%),
+        linear-gradient(180deg, #0a0e27 0%, #050813 100%);
+    animation: auroraMove 25s ease-in-out infinite;
+    filter: blur(60px);
+}
+@keyframes auroraMove {
+    0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    33% { transform: translate(5%, -5%) rotate(120deg) scale(1.1); }
+    66% { transform: translate(-5%, 5%) rotate(240deg) scale(0.95); }
+}
+#particleCanvas { position: fixed; inset: 0; z-index: -2; pointer-events: none; opacity: 0.5; }
+#loadingScreen {
+    position: fixed; inset: 0; z-index: 99999;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: radial-gradient(circle at center, #151b3d 0%, #0a0e27 60%, #000 100%);
+    transition: opacity 0.6s, visibility 0.6s;
+}
+#loadingScreen.hide { opacity: 0; visibility: hidden; }
+.loading-logo-wrap { position: relative; display: flex; align-items: center; justify-content: center; margin-bottom: 30px; }
+.loading-ring {
+    position: absolute; width: 160px; height: 160px; border-radius: 50%;
+    border: 1.5px solid rgba(93,45,232,0.20); border-top-color: rgba(93,45,232,1);
+    animation: spin 1.5s linear infinite;
+}
+.loading-ring:nth-child(2) {
+    width: 200px; height: 200px;
+    border: 1.5px solid rgba(0,212,255,0.15); border-bottom-color: rgba(0,212,255,1);
+    animation-duration: 2.2s; animation-direction: reverse;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-logo-wrap img {
+    width: 120px; height: 120px; object-fit: contain;
+    filter: drop-shadow(0 0 30px rgba(93,45,232,1));
+    animation: float 2.5s ease-in-out infinite;
+}
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.loading-text { color: #00d4ff; font-family: 'Rajdhani'; font-size: 14px; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 20px; }
+.loading-bar { width: 280px; height: 4px; border-radius: 20px; background: rgba(93,45,232,0.20); overflow: hidden; }
+.loading-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #5d2de8, #00d4ff, #ffcc33); transition: width 0.3s; box-shadow: 0 0 15px rgba(0,212,255,0.8); }
 header {
-    text-align: center; padding: 20px 15px; margin-bottom: 20px;
-    background: rgba(19, 8, 38, 0.95);
-    border: 1px solid rgba(255, 215, 0, 0.25);
+    position: sticky; top: 0; z-index: 999;
+    background: rgba(10, 14, 39, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1.5px solid rgba(93,45,232,0.45);
+}
+.header-inner {
+    max-width: 1250px; margin: auto;
+    padding: 14px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 20px;
+}
+.logo { display: flex; flex-direction: column; text-decoration: none; }
+.logo img { width: 130px; height: 45px; object-fit: contain; filter: drop-shadow(0 0 15px rgba(93,45,232,0.8)); }
+.logo-subtitle {
+    margin-top: 2px; font-family: 'Rajdhani'; font-size: 9px;
+    font-weight: 700; letter-spacing: 2px;
+    background: linear-gradient(90deg, #ffcc33, #00d4ff, #ffcc33);
+    background-size: 200% auto;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 5s linear infinite;
+}
+@keyframes shine { to { background-position: 200% center; } }
+nav { display: flex; align-items: center; gap: 8px; }
+nav a { text-decoration: none; }
+nav a.nav-link {
+    color: #c8c8d4; padding: 8px 16px; border-radius: 20px;
+    font-family: 'Rajdhani'; font-size: 12px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+    transition: all 0.3s;
+}
+nav a.nav-link:hover { color: #00d4ff; background: rgba(0,212,255,0.1); }
+nav a.nav-login {
+    color: #00d4ff; padding: 8px 20px; border-radius: 22px;
+    font-family: 'Rajdhani'; font-size: 12px; font-weight: 800;
+    letter-spacing: 1px; text-transform: uppercase;
+    border: 1.5px solid rgba(0,212,255,0.8);
+}
+nav a.nav-login:hover { background: linear-gradient(135deg, #00d4ff, #5d2de8); color: #0a0e27; }
+nav a.nav-daftar {
+    color: #0a0e27; padding: 9px 24px; border-radius: 22px;
+    font-family: 'Rajdhani'; font-size: 12px; font-weight: 900;
+    letter-spacing: 1px; text-transform: uppercase;
+    background: linear-gradient(135deg, #ffcc33, #fff5d0, #ffcc33);
+    background-size: 200% auto;
+    animation: shine 3s ease-in-out infinite;
+}
+nav a.nav-daftar:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,204,51,0.6); }
+.container { max-width: 1250px; margin: auto; padding: 24px 16px 70px; }
+.lux-text-wrap {
+    position: relative; width: 100%; margin-bottom: 20px;
+    padding: 16px 50px;
+    border-radius: 16px; overflow: hidden;
+    background: rgba(10,14,39,0.75);
+    backdrop-filter: blur(15px);
+    border: 1.5px solid rgba(93,45,232,0.6);
+    min-height: 56px;
+    display: flex; align-items: center; justify-content: center;
+}
+.lux-text-slide { position: relative; width: 100%; height: 24px; display: flex; align-items: center; justify-content: center; }
+.lux-text-item {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    font-family: 'Rajdhani'; font-size: 14px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    opacity: 0; transform: translateY(15px);
+    transition: opacity 0.6s, transform 0.6s;
+    pointer-events: none;
+    background: linear-gradient(90deg, #ffcc33, #fff5d0, #00d4ff, #fff5d0, #ffcc33);
+    background-size: 250% auto;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 6s linear infinite;
+}
+.lux-text-item.active { opacity: 1; transform: translateY(0); }
+.lux-text-item.exit-up { opacity: 0; transform: translateY(-15px); }
+.banner {
+    position: relative; width: 100%;
+    border-radius: 20px; overflow: hidden;
+    margin-bottom: 20px;
+    border: 2px solid rgba(93,45,232,0.7);
+    background: #050813; line-height: 0;
+    box-shadow: 0 0 40px rgba(93,45,232,0.35);
+}
+.banner img { display: block; width: 100%; height: auto; }
+.stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 12px; margin-bottom: 24px;
+}
+.stat-box {
+    position: relative; padding: 16px 12px;
+    text-align: center; border-radius: 16px;
+    background: rgba(30,20,60,0.65);
+    backdrop-filter: blur(15px);
+    border: 1.5px solid rgba(93,45,232,0.45);
+}
+.stat-number {
+    display: block;
+    font-family: 'Teko'; font-size: 34px; font-weight: 700;
+    background: linear-gradient(180deg, #fff5d0, #ffcc33, #b8860b);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+}
+.stat-label {
+    color: #a0b8d0;
+    font-family: 'Rajdhani'; font-size: 10px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-top: 4px;
+}
+#pertandingan { scroll-margin-top: 20px; }
+.section-head { margin: 20px 0 16px; }
+.section-title {
+    font-family: 'Rajdhani'; font-size: 22px; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase;
+}
+.section-title span {
+    background: linear-gradient(90deg, #ffcc33, #00d4ff, #ffcc33);
+    background-size: 200% auto;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 4s linear infinite;
+}
+.filter-row {
+    display: flex; align-items: center; gap: 10px;
+    flex-wrap: wrap; padding: 12px;
     border-radius: 16px;
+    background: rgba(20,14,45,0.75);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(93,45,232,0.5);
+    margin-bottom: 16px;
 }
-header h1 {
-    font-size: 22px; margin-bottom: 6px;
-    background: linear-gradient(90deg, #ffd700, #c084fc);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+.tab-filter-wrap { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; flex: 1; }
+.tab-filter {
+    display: flex; align-items: center; gap: 5px;
+    padding: 8px 14px; border-radius: 12px;
+    font-family: 'Rajdhani'; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    color: #c8c8d4;
+    background: rgba(30,20,60,0.7);
+    border: 1.5px solid rgba(93,45,232,0.4);
+    cursor: pointer; transition: all 0.3s;
 }
-header .subtitle { color: #94a3b8; font-size: 12px; letter-spacing: 1px; }
-.container { max-width: 1100px; margin: auto; }
-.card {
-    background: linear-gradient(145deg, rgba(28, 17, 48, 0.96), rgba(15, 10, 27, 0.96));
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 18px;
+.tab-filter:hover { color: #00d4ff; border-color: rgba(0,212,255,0.7); }
+.tab-filter.active {
+    color: #0a0e27;
+    background: linear-gradient(135deg, #ffcc33, #fff5d0, #ffcc33);
+    border-color: #ffcc33;
+    box-shadow: 0 3px 20px rgba(255,204,51,0.5);
 }
-.card h2 { font-size: 18px; margin-bottom: 6px; color: #fff; }
-.card h2::first-letter { color: #ffd700; }
-.small { font-size: 12px; color: #94a3b8; line-height: 1.6; margin-bottom: 14px; }
-.status {
-    padding: 12px 16px; border-radius: 10px; margin-bottom: 16px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.08);
-    font-size: 13px;
-}
-.status.success { background: rgba(34,197,94,0.12); border-color: rgba(34,197,94,0.35); color: #86efac; }
-.status.error { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.35); color: #fca5a5; }
-.status.warning { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.35); color: #fcd34d; }
-.status.hidden { display: none; }
-input[type="text"], input[type="email"], input[type="password"], textarea, select {
-    width: 100%; padding: 12px 14px;
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 10px;
-    background: #08050f; color: #f8fafc;
-    font-size: 14px; outline: none;
-    font-family: 'Courier New', monospace;
-    transition: 0.25s;
-}
-input:focus, textarea:focus, select:focus {
-    border-color: #a855f7;
-    box-shadow: 0 0 0 3px rgba(168,85,247,0.15);
-}
-textarea { min-height: 180px; resize: vertical; line-height: 1.6; }
-.form-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
-.form-row label { color: #cbd5e1; font-size: 12px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; }
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
-button {
-    border: 0; padding: 12px 20px; border-radius: 10px;
-    cursor: pointer; font-weight: bold; font-size: 14px;
-    color: white; transition: 0.2s;
-}
-button:hover { transform: translateY(-2px); }
-button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-.btn-blue { background: linear-gradient(135deg, #2563eb, #3b82f6); }
-.btn-green { background: linear-gradient(135deg, #16a34a, #22c55e); }
-.btn-red { background: linear-gradient(135deg, #dc2626, #ef4444); }
-.btn-purple { background: linear-gradient(135deg, #7c3aed, #a855f7); }
-.btn-dark { background: linear-gradient(135deg, #334155, #475569); }
-.match-row {
-    border: 1px solid rgba(255,255,255,0.08);
+.tab-icon { font-size: 13px; }
+.search-box {
+    position: relative; display: flex; align-items: center;
+    min-width: 200px; flex: 1;
+    background: rgba(30,20,60,0.75);
+    border: 1.5px solid rgba(93,45,232,0.5);
     border-radius: 12px;
-    padding: 14px;
-    margin-bottom: 10px;
-    background: rgba(0,0,0,0.25);
 }
-.match-info {
-    display: flex; justify-content: space-between;
-    margin-bottom: 10px;
-    font-size: 13px; color: #cbd5e1;
+.search-icon { padding: 0 12px; color: #00d4ff; font-size: 14px; }
+#searchInput {
+    flex: 1; border: none; outline: none;
+    background: transparent; color: #fff;
+    padding: 10px 4px;
+    font-family: 'Rajdhani'; font-weight: 600; font-size: 13px;
 }
-.match-info .teams { color: #fff; font-weight: bold; }
-.match-info .time { color: #4ade80; font-weight: bold; }
-.match-inputs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-.match-inputs input {
-    padding: 8px 10px;
-    font-size: 13px;
-    font-family: Arial, sans-serif;
+#searchInput::placeholder { color: #6b7b9d; }
+.search-clear { background: transparent; border: none; color: #999; cursor: pointer; padding: 0 14px; font-size: 14px; }
+.search-clear.hidden { display: none; }
+.date-filter { display: flex; align-items: center; gap: 8px; }
+.date-filter label {
+    color: #b0a8d8;
+    font-family: 'Rajdhani'; font-size: 11px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
 }
-.match-inputs input::placeholder { color: #64748b; font-size: 11px; }
-.hidden { display: none !important; }
-.login-box { text-align: center; padding: 40px 20px; }
-.login-box h2 { color: #ffd700; margin-bottom: 10px; }
-.login-box p { color: #94a3b8; margin-bottom: 20px; }
-.login-box button { padding: 14px 40px; font-size: 15px; }
-@media (max-width: 600px) {
-    body { padding: 12px; }
-    .match-inputs { grid-template-columns: 1fr; }
-    .grid-2 { grid-template-columns: 1fr; }
+#ligaFilter {
+    appearance: none;
+    border: 1.5px solid rgba(93,45,232,0.6);
+    background-color: #0a0e27; color: #fff;
+    padding: 10px 32px 10px 14px;
+    border-radius: 12px;
+    font-family: 'Rajdhani'; font-weight: 700; font-size: 12px;
+    outline: none; cursor: pointer; max-width: 200px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2300d4ff' stroke-width='3'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+}
+#ligaFilter option { background: #0a0e27; }
+.date-group { margin-bottom: 24px; }
+.date-group-header {
+    font-family: 'Rajdhani'; font-size: 16px; font-weight: 800;
+    letter-spacing: 2px; color: #ffcc33;
+    text-transform: uppercase;
+    padding: 12px 18px; margin-bottom: 14px;
+    border-radius: 12px;
+    background: rgba(93,45,232,0.25);
+    border: 1.5px solid rgba(255,204,51,0.5);
+    text-align: center;
+    text-shadow: 0 0 15px rgba(255,204,51,0.8);
+}
+.league {
+    margin-bottom: 20px; border-radius: 18px; overflow: hidden;
+    background: rgba(15,10,40,0.75);
+    backdrop-filter: blur(15px);
+    border: 1.5px solid rgba(93,45,232,0.5);
+}
+.league-header {
+    padding: 14px 20px; text-align: center;
+    font-family: 'Rajdhani'; font-weight: 700; font-size: 14px;
+    letter-spacing: 3px; color: #fff5d0; text-transform: uppercase;
+    background: linear-gradient(90deg, rgba(93,45,232,0.25), rgba(0,212,255,0.15), rgba(93,45,232,0.25));
+    border-bottom: 1.5px solid rgba(93,45,232,0.5);
+    text-shadow: 0 0 20px rgba(0,212,255,1);
+}
+.single-column-wrap { display: flex; flex-direction: column; gap: 12px; padding: 16px 12px; }
+.match-row-single {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    grid-template-areas: "time teams hdp pred";
+    align-items: center;
+    gap: 12px;
+    padding: 18px 14px;
+    border-radius: 14px;
+    border: 2px solid rgba(0, 212, 255, 0.5);
+    background: rgba(0, 212, 255, 0.06);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s;
+}
+.match-row-single:hover {
+    border-color: rgba(255, 204, 51, 0.9);
+    box-shadow: 0 0 30px rgba(255,204,51,0.4);
+}
+.match-time-badge {
+    grid-area: time;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 2px; padding: 6px 10px;
+    min-width: 65px; border-radius: 10px;
+    background: rgba(30,20,60,0.75);
+    border: 1.5px solid rgba(93,45,232,0.7);
+}
+.match-time-badge .time-value { font-family: 'Teko'; font-size: 16px; font-weight: 600; color: #fff; line-height: 1; }
+.match-time-badge .time-date { font-family: 'Rajdhani'; font-size: 9px; font-weight: 700; color: #a0b8d0; letter-spacing: 1px; }
+.match-teams-block {
+    grid-area: teams;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center; gap: 12px;
+    min-width: 0;
+}
+.match-team-mini {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 4px;
+    min-width: 0;
+}
+.match-team-mini img {
+    width: 32px; height: 32px;
+    object-fit: contain;
+}
+.match-team-mini .mini-name {
+    font-family: 'Rajdhani'; font-size: 13px; font-weight: 700;
+    color: #fff; text-align: center;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    max-width: 100%; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.match-vs-mini { font-family: 'Orbitron'; font-size: 11px; font-weight: 800; color: #ffcc33; letter-spacing: 1.5px; }
+.match-value-box {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 3px; padding: 6px 12px;
+    min-width: 80px; border-radius: 10px;
+}
+.match-value-box.hdp { grid-area: hdp; background: rgba(93,45,232,0.25); border: 1.5px solid rgba(93,45,232,0.75); }
+.match-value-box.pred { grid-area: pred; background: rgba(0,212,255,0.22); border: 1.5px solid rgba(0,212,255,0.85); }
+.match-value-box .val-label { font-family: 'Rajdhani'; font-size: 8px; font-weight: 800; letter-spacing: 1.5px; color: #b0a8d8; text-transform: uppercase; }
+.match-value-box .val-number { font-family: 'Teko'; font-size: 18px; font-weight: 700; line-height: 1; color: #fff; }
+.match-value-box.empty { opacity: 0.4; }
+.match-value-box.empty .val-number { color: #555568; }
+.single-col-empty {
+    padding: 40px 16px; text-align: center;
+    font-family: 'Rajdhani'; font-size: 13px; font-weight: 700;
+    letter-spacing: 3px; color: #555568;
+    text-transform: uppercase;
+}
+.site-footer {
+    margin-top: 50px; padding: 40px 16px 30px;
+    text-align: center;
+    background: rgba(15,10,40,0.6);
+    border-top: 1.5px solid rgba(93,45,232,0.5);
+}
+.footer-logo-wrap img { width: 120px; height: 50px; object-fit: contain; filter: drop-shadow(0 0 25px rgba(93,45,232,0.9)); }
+.footer-title {
+    font-family: 'Rajdhani'; font-size: 22px; font-weight: 700;
+    letter-spacing: 8px; margin: 12px 0 10px;
+    background: linear-gradient(90deg, #ffcc33, #fff5d0, #00d4ff, #fff5d0, #ffcc33);
+    background-size: 250% auto;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: uppercase;
+    animation: shine 6s linear infinite;
+}
+.footer-tagline { font-family: 'Rajdhani'; font-size: 12px; font-weight: 700; letter-spacing: 3px; color: #a0b8d0; text-transform: uppercase; margin-bottom: 20px; }
+.footer-copy { font-family: 'Rajdhani'; font-size: 11px; font-weight: 600; letter-spacing: 2px; color: #6b7b9d; }
+.footer-copy span { color: #ffcc33; font-weight: 800; }
+@media (max-width: 800px) {
+    .header-inner { padding: 10px 12px; flex-wrap: wrap; }
+    .logo img { width: 100px; height: 38px; }
+    nav { gap: 4px; }
+    nav a.nav-link { padding: 6px 10px; font-size: 10px; }
+    nav a.nav-login { padding: 6px 12px; font-size: 10px; }
+    nav a.nav-daftar { padding: 7px 14px; font-size: 10px; }
+    .container { padding: 14px 10px 50px; }
+    .lux-text-wrap { padding: 12px 30px; min-height: 48px; margin-bottom: 14px; }
+    .lux-text-item { font-size: 11px; letter-spacing: 1px; line-height: 1.4; }
+    .stats { gap: 6px; margin-bottom: 18px; }
+    .stat-box { padding: 12px 6px; }
+    .stat-number { font-size: 24px; }
+    .stat-label { font-size: 8px; letter-spacing: 1px; }
+    .filter-row { padding: 10px; gap: 8px; }
+    .tab-filter-wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; width: 100%; }
+    .tab-filter { padding: 8px 6px; font-size: 10px; justify-content: center; }
+    .search-box { width: 100%; min-width: unset; }
+    .date-filter { width: 100%; }
+    #ligaFilter { flex: 1; width: 100%; max-width: unset; font-size: 11px; }
+    .section-title { font-size: 18px; }
+    .date-group-header { font-size: 13px; padding: 10px 14px; letter-spacing: 1.5px; }
+    .league-header { padding: 11px 16px; font-size: 12px; letter-spacing: 2px; }
+    .single-column-wrap { padding: 12px 8px; gap: 10px; }
+    .match-row-single {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: "time teams" "hdp pred";
+        padding: 14px 10px; gap: 10px;
+    }
+    .match-team-mini .mini-name { font-size: 11px; }
+    .match-team-mini img { width: 26px; height: 26px; }
+    .match-value-box { min-width: unset; padding: 6px 8px; }
+    .match-value-box .val-number { font-size: 16px; }
 }
 </style>
 </head>
-<body>
+<body id="top">
+
+<div class="aurora-bg"></div>
+<canvas id="particleCanvas"></canvas>
+
+<div id="loadingScreen">
+    <div class="loading-logo-wrap">
+        <div class="loading-ring"></div>
+        <div class="loading-ring"></div>
+        <img src="logo-kiper4d.png" alt="KIPER4D">
+    </div>
+    <div class="loading-text">Memuat Pertandingan</div>
+    <div class="loading-bar">
+        <div class="loading-bar-fill" id="loadingBarFill"></div>
+    </div>
+</div>
+
+<header>
+<div class="header-inner">
+    <a href="https://rotasy.link/Kiper4D" class="logo" target="_blank" rel="noopener noreferrer">
+        <img src="logo-kiper4d.png" alt="KIPER4D">
+        <div class="logo-subtitle">JADWAL BOLA UPDATE</div>
+    </a>
+    <nav>
+        <a href="#top" class="nav-link">Beranda</a>
+        <a href="#pertandingan" class="nav-link">Jadwal</a>
+        <a href="https://rotasy.link/Kiper4D" class="nav-login" target="_blank" rel="noopener noreferrer">Login</a>
+        <a href="https://rotasy.link/Kiper4D" class="nav-daftar" target="_blank" rel="noopener noreferrer">Daftar</a>
+    </nav>
+</div>
+</header>
 
 <div class="container">
 
-<header>
-    <h1>⚙️ ADMIN PANEL — KIPER4D</h1>
-    <div class="subtitle">INPUT HDP & PREDIKSI MANUAL</div>
-</header>
-
-<div id="loginStatus" class="status">Memeriksa login...</div>
-
-<div id="notLogged" class="card login-box hidden">
-    <h2>🔐 Belum Login</h2>
-    <p>Silakan login dulu untuk akses panel admin.</p>
-    <button id="btnLogin" class="btn-purple">🔑 LOGIN ADMIN</button>
+<div class="lux-text-wrap">
+    <div class="lux-text-slide" id="luxTextTop">
+        <div class="lux-text-item active">⚽ SELAMAT DATANG DI KIPER4D — JADWAL BOLA TERKINI! 🔥</div>
+        <div class="lux-text-item">🏆 JADWAL PERTANDINGAN UPDATE OTOMATIS SETIAP HARI</div>
+        <div class="lux-text-item">⚡ DATA LIVE DARI SUMBER TERPERCAYA</div>
+        <div class="lux-text-item">🌟 KIPER4D — JAGONYA PREDIKSI, JAGONYA BIKIN CUAN!</div>
+    </div>
 </div>
 
-<div id="adminContent" class="hidden">
+<div class="banner">
+    <img src="banner-kiper4d-baru.png" alt="KIPER4D">
+</div>
 
-    <div class="card">
-        <h2>📅 Ambil Jadwal ESPN</h2>
-        <p class="small">
-            Klik tombol di bawah untuk mengambil jadwal dari ESPN. Setelah muncul, isi HDP & prediksi per pertandingan.
-        </p>
-        <div class="form-row">
-            <label>Tanggal</label>
-            <select id="tanggalSelect">
-                <option value="today">Hari Ini</option>
-                <option value="tomorrow">Besok</option>
-                <option value="7days">7 Hari ke Depan</option>
+<div class="stats">
+    <div class="stat-box">
+        <span class="stat-number" id="totalPertandingan">0</span>
+        <span class="stat-label">Pertandingan</span>
+    </div>
+    <div class="stat-box">
+        <span class="stat-number" id="totalLiga">0</span>
+        <span class="stat-label">Liga</span>
+    </div>
+    <div class="stat-box">
+        <span class="stat-number" id="totalHari">0</span>
+        <span class="stat-label">Hari</span>
+    </div>
+</div>
+
+<section id="pertandingan">
+    <div class="section-head">
+        <div class="section-title">⚽ <span>JADWAL PERTANDINGAN</span></div>
+    </div>
+
+    <div class="filter-row">
+        <div class="tab-filter-wrap">
+            <button type="button" class="tab-filter active" data-date="today">
+                <span class="tab-icon">⚽</span><span class="tab-text">Hari Ini</span>
+            </button>
+            <button type="button" class="tab-filter" data-date="tomorrow">
+                <span class="tab-icon">📅</span><span class="tab-text">Besok</span>
+            </button>
+            <button type="button" class="tab-filter" data-date="7days">
+                <span class="tab-icon">⏰</span><span class="tab-text">7 Hari</span>
+            </button>
+            <button type="button" class="tab-filter" data-date="all">
+                <span class="tab-icon">📋</span><span class="tab-text">Semua</span>
+            </button>
+        </div>
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Cari tim..." autocomplete="off">
+            <button type="button" id="btnClearSearch" class="search-clear hidden">✕</button>
+        </div>
+        <div class="date-filter">
+            <label for="ligaFilter">🏆</label>
+            <select id="ligaFilter">
+                <option value="all">Semua Liga</option>
             </select>
         </div>
-        <div class="buttons">
-            <button id="btnFetch" class="btn-blue">🔄 AMBIL JADWAL ESPN</button>
-            <button id="btnRefresh" class="btn-dark">🔁 Refresh Data</button>
-        </div>
-        <div id="fetchStatus" class="status hidden"></div>
     </div>
 
-    <div class="card">
-        <h2>🎯 Daftar Pertandingan</h2>
-        <p class="small">
-            Isi <b>HDP</b>, <b>Pred Home</b>, dan <b>Pred Away</b> untuk masing-masing pertandingan.<br>
-            Format HDP: <code>1/4 : 0</code> atau <code>0 : 1/2</code> atau <code>1 1/2 : 0</code><br>
-            Klik <b>💾 Simpan</b> untuk menyimpan ke Firestore.
-        </p>
-        <div id="matchesList">
-            <p class="small">Belum ada jadwal. Klik "Ambil Jadwal ESPN" dulu.</p>
+    <div id="prediksiContainer">
+        <div class="single-column-wrap">
+            <div class="single-col-empty">Memuat data...</div>
         </div>
     </div>
-
-    <div class="card">
-        <h2>🗄️ Database</h2>
-        <p class="small">Kelola data prediksi di Firestore.</p>
-        <div class="buttons">
-            <button id="btnCekDuplikat" class="btn-dark">🔍 Cek Duplikat</button>
-            <button id="btnHapusSemua" class="btn-red">🗑️ Hapus Semua Data</button>
-            <button id="btnLogout" class="btn-dark">🚪 Logout</button>
-        </div>
-        <div id="dbStatus" class="status hidden" style="margin-top:14px"></div>
-    </div>
+</section>
 
 </div>
 
-</div>
+<footer class="site-footer">
+    <div class="footer-logo-wrap">
+        <img src="logo-kiper4d.png" alt="KIPER4D">
+    </div>
+    <div class="footer-title">KIPER4D</div>
+    <div class="footer-tagline">⚽ Jagonya Prediksi • Jagonya Bikin Cuan ⚽</div>
+    <div class="footer-copy">© 2026 <span>KIPER4D</span> • All Rights Reserved</div>
+</footer>
 
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-import {
-    getAuth, setPersistence, browserLocalPersistence,
-    onAuthStateChanged, signOut
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-import {
-    getFirestore, collection, getDocs, doc, writeBatch, query, where
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyB1i3mpTNKNlk54qQqk8xONAsaw66SOVs4",
@@ -198,368 +540,543 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 const db = getFirestore(app);
 
 const ESPN_LIGAS = [
-    "eng.1", "esp.1", "ita.1", "ger.1", "fra.1",
-    "uefa.champions", "uefa.europa", "por.1", "ned.1",
-    "usa.1", "bra.1", "arg.1", "afc.champions", "fifa.world"
+    { id: "eng.1", name: "Premier League" },
+    { id: "esp.1", name: "La Liga" },
+    { id: "ita.1", name: "Serie A" },
+    { id: "ger.1", name: "Bundesliga" },
+    { id: "fra.1", name: "Ligue 1" },
+    { id: "uefa.champions", name: "Champions League" },
+    { id: "uefa.europa", name: "Europa League" },
+    { id: "por.1", name: "Primeira Liga" },
+    { id: "ned.1", name: "Eredivisie" },
+    { id: "usa.1", name: "MLS" },
+    { id: "bra.1", name: "Brasileirão" },
+    { id: "arg.1", name: "Liga Profesional" },
+    { id: "afc.champions", name: "AFC Champions" },
+    { id: "fifa.world", name: "FIFA World Cup" }
 ];
 
-let espnMatches = [];
+let semuaData = [];
+let currentFilter = "today";
 
-/* ============================================================
-   AUTH
-   ============================================================ */
-await setPersistence(auth, browserLocalPersistence);
-
-onAuthStateChanged(auth, (user) => {
-    const loginStatus = document.getElementById("loginStatus");
-    const adminContent = document.getElementById("adminContent");
-    const notLogged = document.getElementById("notLogged");
-
-    if (user) {
-        loginStatus.className = "status success";
-        loginStatus.textContent = "✅ Login: " + user.email;
-        adminContent.classList.remove("hidden");
-        notLogged.classList.add("hidden");
-    } else {
-        loginStatus.className = "status warning";
-        loginStatus.textContent = "⚠️ Belum login";
-        adminContent.classList.add("hidden");
-        notLogged.classList.remove("hidden");
-    }
-});
-
-document.getElementById("btnLogin").addEventListener("click", () => {
-    window.location.href = "/login.html";
-});
-
-document.getElementById("btnLogout").addEventListener("click", async () => {
-    if (!confirm("Yakin logout?")) return;
-    await signOut(auth);
-    window.location.href = "/login.html";
-});
-
-/* ============================================================
-   UTILITY
-   ============================================================ */
 function clean(v) { return String(v || "").trim(); }
-
-function getNowWIBMs() { return Date.now() + (7 * 60 * 60 * 1000); }
-
-function getYMD(offset = 0) {
-    const wib = new Date(getNowWIBMs() + (offset * 86400000));
-    return wib.getUTCFullYear() + String(wib.getUTCMonth() + 1).padStart(2, "0") + String(wib.getUTCDate()).padStart(2, "0");
-}
-
-function makeKey(date, time, home, away) {
-    const norm = (s) => clean(s).toLowerCase().replace(/\s+/g, " ").trim();
-    return [date, time, norm(home), norm(away)].join("|");
-}
 
 function escapeHtml(s) {
     return clean(s)
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
-/* ============================================================
-   FETCH ESPN
-   ============================================================ */
-async function fetchESPNDay(dateStr) {
+function normalizeDate(input) {
+    if (!input) return "";
+    const s = String(input).trim();
+    if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(s)) {
+        const [y, m, d] = s.split("-");
+        return y + "-" + m.padStart(2, "0") + "-" + d.padStart(2, "0");
+    }
+    const dmy = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+    if (dmy) {
+        const d = dmy[1].padStart(2, "0");
+        const m = dmy[2].padStart(2, "0");
+        const y = dmy[3];
+        return y + "-" + m + "-" + d;
+    }
+    return s;
+}
+
+function normalizeTime(input) {
+    if (!input) return "";
+    let s = String(input).trim();
+    s = s.replace(/wib|utc|gmt/gi, "").trim();
+    const hm = s.match(/^(\d{1,2}):(\d{1,2})/);
+    if (hm) return hm[1].padStart(2, "0") + ":" + hm[2].padStart(2, "0");
+    return s;
+}
+
+function getNowWIBMs() { return Date.now() + (7 * 60 * 60 * 1000); }
+
+function getTodayString() {
+    const wib = new Date(getNowWIBMs());
+    return wib.getUTCFullYear() + "-" + String(wib.getUTCMonth() + 1).padStart(2, "0") + "-" + String(wib.getUTCDate()).padStart(2, "0");
+}
+
+function getTomorrowString() {
+    const wib = new Date(getNowWIBMs() + 86400000);
+    return wib.getUTCFullYear() + "-" + String(wib.getUTCMonth() + 1).padStart(2, "0") + "-" + String(wib.getUTCDate()).padStart(2, "0");
+}
+
+function get7DaysString() {
+    const wib = new Date(getNowWIBMs() + (7 * 86400000));
+    return wib.getUTCFullYear() + "-" + String(wib.getUTCMonth() + 1).padStart(2, "0") + "-" + String(wib.getUTCDate()).padStart(2, "0");
+}
+
+function getYMD(offsetDays = 0) {
+    const wib = new Date(getNowWIBMs() + (offsetDays * 86400000));
+    return wib.getUTCFullYear() + String(wib.getUTCMonth() + 1).padStart(2, "0") + String(wib.getUTCDate()).padStart(2, "0");
+}
+
+function getKickoffWIBMs(data) {
+    const date = normalizeDate(clean(data.date));
+    const time = normalizeTime(clean(data.time));
+    if (!date || !time) return null;
+    const [y, m, d] = date.split("-").map(Number);
+    const [h, mn] = time.split(":").map(Number);
+    if (isNaN(y) || isNaN(m) || isNaN(d) || isNaN(h) || isNaN(mn)) return null;
+    return Date.UTC(y, m - 1, d, h, mn, 0);
+}
+
+function getMatchStatus(data) {
+    const aH = clean(data.actualScoreHome);
+    const aA = clean(data.actualScoreAway);
+    if (aH !== "" && aA !== "") return "selesai";
+    const kickoff = getKickoffWIBMs(data);
+    if (!kickoff) return "akan";
+    const diff = kickoff - getNowWIBMs();
+    if (diff <= 0 && diff > -105 * 60 * 1000) return "live";
+    if (diff <= -105 * 60 * 1000) return "selesai";
+    return "akan";
+}
+
+const HARI_INDO = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+const BULAN_INDO = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+function formatTanggalShort(date) {
+    const value = normalizeDate(clean(date));
+    if (!value) return "-";
+    const p = value.split("-");
+    if (p.length !== 3) return value;
+    return p[2] + "/" + p[1];
+}
+
+function makeKey(date, time, home, away) {
+    const norm = (s) => clean(s).toLowerCase().replace(/\s+/g, " ").trim();
+    return [norm(normalizeDate(date)), norm(normalizeTime(time)), norm(home), norm(away)].join("|");
+}
+
+async function fetchESPNDate(dateStr) {
     const promises = ESPN_LIGAS.map(async (liga) => {
         try {
-            const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${liga}/scoreboard?dates=${dateStr}`;
+            const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${liga.id}/scoreboard?dates=${dateStr}`;
             const res = await fetch(url);
             if (!res.ok) return [];
             const data = await res.json();
-            if (!data.events) return [];
+            if (!data.events || data.events.length === 0) return [];
 
             return data.events.map(ev => {
                 try {
                     const comp = ev.competitions?.[0];
-                    const homeComp = comp?.competitors?.find(c => c.homeAway === "home");
-                    const awayComp = comp?.competitors?.find(c => c.homeAway === "away");
+                    if (!comp) return null;
+                    const homeComp = comp.competitors?.find(c => c.homeAway === "home");
+                    const awayComp = comp.competitors?.find(c => c.homeAway === "away");
                     if (!homeComp || !awayComp) return null;
 
-                    const kickoff = new Date(ev.date);
-                    const wib = new Date(kickoff.getTime() + (7 * 60 * 60 * 1000));
+                    const kickoffUTC = new Date(ev.date);
+                    if (isNaN(kickoffUTC.getTime())) return null;
+
+                    const wib = new Date(kickoffUTC.getTime() + (7 * 60 * 60 * 1000));
                     const dateWib = wib.toISOString().slice(0, 10);
                     const timeWib = String(wib.getUTCHours()).padStart(2, "0") + ":" + String(wib.getUTCMinutes()).padStart(2, "0");
 
                     return {
-                        league: ev.strLeague || liga,
+                        league: liga.name,
                         date: dateWib,
                         time: timeWib,
-                        home: homeComp.team?.displayName || "?",
-                        away: awayComp.team?.displayName || "?",
+                        home: homeComp.team?.displayName || homeComp.team?.name || "?",
+                        away: awayComp.team?.displayName || awayComp.team?.name || "?",
                         homeLogo: homeComp.team?.logo || "",
-                        awayLogo: awayComp.team?.logo || ""
+                        awayLogo: awayComp.team?.logo || "",
+                        handicap: "",
+                        predictionScoreHome: "",
+                        predictionScoreAway: "",
+                        actualScoreHome: comp.status?.type?.completed ? String(homeComp.score || "") : "",
+                        actualScoreAway: comp.status?.type?.completed ? String(awayComp.score || "") : "",
+                        source: "espn"
                     };
                 } catch (e) { return null; }
             }).filter(Boolean);
-        } catch (e) { return []; }
+        } catch (err) { return []; }
     });
-
     const hasil = await Promise.all(promises);
     return hasil.flat();
 }
 
-async function fetchAllESPN() {
-    const pilihan = document.getElementById("tanggalSelect").value;
-    let days = 1;
-    if (pilihan === "7days") days = 7;
-
+async function fetchESPN7Days() {
     const all = [];
-    for (let i = 0; i < days; i++) {
-        const arr = await fetchESPNDay(getYMD(i));
+    for (let i = 0; i < 7; i++) {
+        const arr = await fetchESPNDate(getYMD(i));
         all.push(...arr);
     }
     return all;
 }
 
-/* ============================================================
-   FETCH FIRESTORE
-   ============================================================ */
-async function fetchFirestoreMap() {
-    const snap = await getDocs(collection(db, "predictions"));
-    const map = new Map();
-    snap.forEach(d => {
-        const item = d.data();
-        const key = makeKey(item.date, item.time, item.home, item.away);
-        map.set(key, { id: d.id, ...item });
-    });
-    return map;
-}
-
-/* ============================================================
-   RENDER MATCHES
-   ============================================================ */
-function renderMatches(matches, fsMap) {
-    const list = document.getElementById("matchesList");
-    if (!matches.length) {
-        list.innerHTML = '<p class="small">Tidak ada pertandingan untuk ditampilkan.</p>';
-        return;
-    }
-
-    // Group per tanggal
-    const grouped = {};
-    matches.forEach(m => {
-        if (!grouped[m.date]) grouped[m.date] = [];
-        grouped[m.date].push(m);
-    });
-
-    let html = "";
-    Object.keys(grouped).sort().forEach(tanggal => {
-        html += `<h3 style="color:#fbbf24;margin:18px 0 10px;font-size:14px;">📅 ${tanggal}</h3>`;
-
-        grouped[tanggal].sort((a, b) => a.time.localeCompare(b.time)).forEach(m => {
-            const key = makeKey(m.date, m.time, m.home, m.away);
-            const fs = fsMap.get(key) || {};
-            const handicap = clean(fs.handicap);
-            const pH = clean(fs.predictionScoreHome);
-            const pA = clean(fs.predictionScoreAway);
-
-            html += `
-                <div class="match-row" data-key="${escapeHtml(key)}">
-                    <div class="match-info">
-                        <div>
-                            <span class="time">${escapeHtml(m.time)}</span>
-                            <span style="color:#94a3b8;font-size:11px;margin-left:8px;">${escapeHtml(m.league)}</span>
-                        </div>
-                    </div>
-                    <div class="match-info">
-                        <span class="teams">${escapeHtml(m.home)} VS ${escapeHtml(m.away)}</span>
-                    </div>
-                    <div class="match-inputs">
-                        <input type="text" class="input-hdp" placeholder="HDP (1/4 : 0)" value="${escapeHtml(handicap)}">
-                        <input type="text" class="input-predH" placeholder="Pred Home (2)" value="${escapeHtml(pH)}">
-                        <input type="text" class="input-predA" placeholder="Pred Away (1)" value="${escapeHtml(pA)}">
-                    </div>
-                    <div class="buttons">
-                        <button class="btn-green btn-save" data-date="${escapeHtml(m.date)}" data-time="${escapeHtml(m.time)}" data-home="${escapeHtml(m.home)}" data-away="${escapeHtml(m.away)}" data-league="${escapeHtml(m.league)}" data-homelogo="${escapeHtml(m.homeLogo)}" data-awaylogo="${escapeHtml(m.awayLogo)}">
-                            💾 Simpan
-                        </button>
-                    </div>
-                </div>
-            `;
-        });
-    });
-
-    list.innerHTML = html;
-
-    // Event listener
-    list.querySelectorAll(".btn-save").forEach(btn => {
-        btn.addEventListener("click", async (e) => {
-            const row = btn.closest(".match-row");
-            const hdp = row.querySelector(".input-hdp").value.trim();
-            const pH = row.querySelector(".input-predH").value.trim();
-            const pA = row.querySelector(".input-predA").value.trim();
-
-            await saveMatch({
-                date: btn.dataset.date,
-                time: btn.dataset.time,
-                home: btn.dataset.home,
-                away: btn.dataset.away,
-                league: btn.dataset.league,
-                homeLogo: btn.dataset.homelogo,
-                awayLogo: btn.dataset.awaylogo,
-                handicap: hdp,
-                predictionScoreHome: pH,
-                predictionScoreAway: pA
-            }, btn);
-        });
-    });
-}
-
-/* ============================================================
-   SAVE TO FIRESTORE
-   ============================================================ */
-async function saveMatch(match, btn) {
-    if (!auth.currentUser) {
-        alert("Login dulu bro");
-        return;
-    }
-
-    const originalText = btn.textContent;
-    btn.disabled = true;
-    btn.textContent = "⏳...";
-
+async function fetchFirestore() {
     try {
-        const fsMap = await fetchFirestoreMap();
-        const key = makeKey(match.date, match.time, match.home, match.away);
-        const existing = fsMap.get(key);
+        const snap = await getDocs(collection(db, "predictions"));
+        const data = [];
+        snap.forEach(d => {
+            const item = d.data();
+            const home = clean(item.home);
+            const away = clean(item.away);
+            if (!home || !away) return;
+            if (item.active === false) return;
 
-        const data = {
-            league: match.league,
-            date: match.date,
-            time: match.time,
-            home: match.home,
-            away: match.away,
-            homeLogo: match.homeLogo,
-            awayLogo: match.awayLogo,
-            handicap: match.handicap,
-            predictionScoreHome: match.predictionScoreHome,
-            predictionScoreAway: match.predictionScoreAway,
-            active: true,
-            updatedAt: new Date()
-        };
-
-        const batch = writeBatch(db);
-        if (existing) {
-            batch.update(doc(db, "predictions", existing.id), data);
-        } else {
-            batch.set(doc(collection(db, "predictions")), {
-                ...data,
-                prediction: "",
-                scoreHome: "",
-                scoreAway: ""
+            data.push({
+                league: clean(item.league) || "LAINNYA",
+                date: normalizeDate(item.date),
+                time: normalizeTime(item.time),
+                home: home,
+                away: away,
+                homeLogo: clean(item.homeLogo),
+                awayLogo: clean(item.awayLogo),
+                handicap: clean(item.handicap),
+                predictionScoreHome: clean(item.predictionScoreHome),
+                predictionScoreAway: clean(item.predictionScoreAway),
+                actualScoreHome: clean(item.actualScoreHome),
+                actualScoreAway: clean(item.actualScoreAway),
+                source: "firestore"
             });
-        }
-        await batch.commit();
-
-        btn.textContent = "✅ OK";
-        setTimeout(() => {
-            btn.textContent = originalText;
-            btn.disabled = false;
-        }, 1500);
-
-        showStatus("✅ Tersimpan: " + match.home + " vs " + match.away, "success");
-
+        });
+        console.log(`[Firestore] ${data.length} data loaded`);
+        return data;
     } catch (err) {
-        console.error(err);
-        alert("❌ Gagal simpan: " + err.message);
-        btn.textContent = originalText;
-        btn.disabled = false;
+        console.warn("[Firestore] Error:", err);
+        return [];
     }
 }
 
-/* ============================================================
-   LOAD DATA
-   ============================================================ */
-async function loadAll() {
-    const btn = document.getElementById("btnFetch");
-    btn.disabled = true;
-    btn.textContent = "⏳ Loading...";
+function gabungData(espnData, firestoreData) {
+    const mapFS = new Map();
+    firestoreData.forEach(item => {
+        const key = makeKey(item.date, item.time, item.home, item.away);
+        mapFS.set(key, item);
+    });
 
+    const hasil = [];
+    const espnKeys = new Set();
+
+    espnData.forEach(match => {
+        const key = makeKey(match.date, match.time, match.home, match.away);
+        espnKeys.add(key);
+        const fs = mapFS.get(key);
+
+        if (fs) {
+            hasil.push({
+                ...match,
+                league: fs.league || match.league,
+                handicap: fs.handicap || "",
+                predictionScoreHome: fs.predictionScoreHome || "",
+                predictionScoreAway: fs.predictionScoreAway || "",
+                actualScoreHome: fs.actualScoreHome || match.actualScoreHome,
+                actualScoreAway: fs.actualScoreAway || match.actualScoreAway
+            });
+        } else {
+            hasil.push(match);
+        }
+    });
+
+    firestoreData.forEach(item => {
+        const key = makeKey(item.date, item.time, item.home, item.away);
+        if (!espnKeys.has(key)) hasil.push(item);
+    });
+
+    return hasil;
+}
+
+function renderMatch(data) {
+    const home = clean(data.home);
+    const away = clean(data.away);
+    const time = normalizeTime(clean(data.time));
+    const date = normalizeDate(clean(data.date));
+    const handicap = clean(data.handicap);
+    const scoreHome = clean(data.predictionScoreHome);
+    const scoreAway = clean(data.predictionScoreAway);
+    const status = getMatchStatus(data);
+
+    const hasHdp = handicap !== "";
+    const hasPred = scoreHome !== "" && scoreAway !== "";
+
+    const homeLogo = clean(data.homeLogo);
+    const awayLogo = clean(data.awayLogo);
+
+    const homeLogoHTML = homeLogo ? `<img src="${escapeHtml(homeLogo)}" alt="" onerror="this.style.display='none'">` : "";
+    const awayLogoHTML = awayLogo ? `<img src="${escapeHtml(awayLogo)}" alt="" onerror="this.style.display='none'">` : "";
+
+    let badge = "";
+    if (status === "live") badge = `<div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:#dc2626;color:#fff;padding:2px 12px;border-radius:20px;font-size:9px;font-weight:800;letter-spacing:2px;z-index:2;">LIVE</div>`;
+    else if (status === "selesai") badge = `<div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:#10b981;color:#fff;padding:2px 12px;border-radius:20px;font-size:9px;font-weight:800;letter-spacing:2px;z-index:2;">SELESAI</div>`;
+
+    return `
+        <div class="match-row-single" style="position:relative;">
+            ${badge}
+            <div class="match-time-badge">
+                <span class="time-value">${escapeHtml(time)}</span>
+                <span class="time-date">${escapeHtml(formatTanggalShort(date))}</span>
+            </div>
+            <div class="match-teams-block">
+                <div class="match-team-mini">
+                    ${homeLogoHTML}
+                    <div class="mini-name">${escapeHtml(home)}</div>
+                </div>
+                <div class="match-vs-mini">VS</div>
+                <div class="match-team-mini">
+                    ${awayLogoHTML}
+                    <div class="mini-name">${escapeHtml(away)}</div>
+                </div>
+            </div>
+            <div class="match-value-box hdp ${hasHdp ? "" : "empty"}">
+                <span class="val-label">HDP</span>
+                <span class="val-number">${hasHdp ? escapeHtml(handicap) : "-"}</span>
+            </div>
+            <div class="match-value-box pred ${hasPred ? "" : "empty"}">
+                <span class="val-label">Pred</span>
+                <span class="val-number">${hasPred ? escapeHtml(scoreHome) + " - " + escapeHtml(scoreAway) : "-"}</span>
+            </div>
+        </div>
+    `;
+}
+
+function renderPrediksi(data) {
+    const container = document.getElementById("prediksiContainer");
+    if (!container) return;
+
+    if (!data.length) {
+        container.innerHTML = `<div class="single-column-wrap"><div class="single-col-empty">Tidak ada pertandingan</div></div>`;
+        return;
+    }
+
+    const groupTanggal = {};
+    data.forEach(item => {
+        const d = normalizeDate(clean(item.date)) || "0000-00-00";
+        if (!groupTanggal[d]) groupTanggal[d] = [];
+        groupTanggal[d].push(item);
+    });
+
+    const tanggalSorted = Object.keys(groupTanggal).sort();
+    let html = "";
+
+    tanggalSorted.forEach(tanggal => {
+        const matches = groupTanggal[tanggal];
+        let headerTgl = tanggal;
+        try {
+            const dateObj = new Date(tanggal + "T00:00:00Z");
+            if (!isNaN(dateObj.getTime())) {
+                headerTgl = `${HARI_INDO[dateObj.getUTCDay()]}, ${dateObj.getUTCDate()} ${BULAN_INDO[dateObj.getUTCMonth()]} ${dateObj.getUTCFullYear()}`;
+            }
+        } catch (e) {}
+
+        const groupLiga = {};
+        matches.forEach(item => {
+            const liga = clean(item.league) || "LAINNYA";
+            if (!groupLiga[liga]) groupLiga[liga] = [];
+            groupLiga[liga].push(item);
+        });
+
+        html += `<div class="date-group">`;
+        html += `<div class="date-group-header">📅 ${escapeHtml(headerTgl)}</div>`;
+
+        Object.keys(groupLiga).sort().forEach(liga => {
+            const matchList = groupLiga[liga].sort((a, b) => (getKickoffWIBMs(a) || 0) - (getKickoffWIBMs(b) || 0));
+            const rows = matchList.map(renderMatch).join("");
+            html += `<div class="league"><div class="league-header">${escapeHtml(liga)}</div><div class="single-column-wrap">${rows}</div></div>`;
+        });
+
+        html += `</div>`;
+    });
+
+    container.innerHTML = html;
+}
+
+function updateLigaFilter(data) {
+    const select = document.getElementById("ligaFilter");
+    if (!select) return;
+    const current = select.value;
+    const count = {};
+    data.forEach(item => {
+        const liga = clean(item.league) || "LAINNYA";
+        count[liga] = (count[liga] || 0) + 1;
+    });
+    const list = Object.keys(count).sort();
+    select.innerHTML = `<option value="all">Semua Liga (${data.length})</option>`;
+    list.forEach(liga => {
+        const opt = document.createElement("option");
+        opt.value = liga;
+        opt.textContent = liga + " (" + count[liga] + ")";
+        select.appendChild(opt);
+    });
+    if (list.includes(current)) select.value = current;
+}
+
+function applyFilter() {
+    const selectedLiga = document.getElementById("ligaFilter").value;
+    const keyword = clean(document.getElementById("searchInput").value).toLowerCase();
+    const btnClear = document.getElementById("btnClearSearch");
+    const today = getTodayString();
+    const tomorrow = getTomorrowString();
+    let filtered = [...semuaData];
+
+    if (currentFilter === "today") {
+        filtered = filtered.filter(item => {
+            const d = normalizeDate(clean(item.date));
+            return d === today || d === tomorrow;
+        });
+    } else if (currentFilter === "tomorrow") {
+        filtered = filtered.filter(item => normalizeDate(clean(item.date)) === tomorrow);
+    } else if (currentFilter === "7days") {
+        const limit = get7DaysString();
+        filtered = filtered.filter(item => {
+            const d = normalizeDate(clean(item.date));
+            return d >= today && d <= limit;
+        });
+    } else if (currentFilter === "all") {
+        filtered = filtered.filter(item => normalizeDate(clean(item.date)) >= today);
+    }
+
+    if (selectedLiga !== "all") {
+        filtered = filtered.filter(item => (clean(item.league) || "LAINNYA") === selectedLiga);
+    }
+    if (keyword) {
+        filtered = filtered.filter(item => {
+            const h = clean(item.home).toLowerCase();
+            const a = clean(item.away).toLowerCase();
+            const l = clean(item.league).toLowerCase();
+            return h.includes(keyword) || a.includes(keyword) || l.includes(keyword);
+        });
+    }
+
+    if (keyword) btnClear.classList.remove("hidden");
+    else btnClear.classList.add("hidden");
+
+    renderPrediksi(filtered);
+}
+
+function animateNumber(el, target, duration) {
+    if (!el) return;
+    const start = performance.now();
+    function update(now) {
+        const p = Math.min((now - start) / duration, 1);
+        el.textContent = Math.floor(target * p);
+        if (p < 1) requestAnimationFrame(update);
+        else el.textContent = target;
+    }
+    requestAnimationFrame(update);
+}
+
+function updateStats(data) {
+    const total = data.length;
+    const liga = new Set(data.map(i => clean(i.league) || "LAINNYA")).size;
+    const hari = new Set(data.map(i => normalizeDate(clean(i.date)))).size;
+    animateNumber(document.getElementById("totalPertandingan"), total, 1200);
+    animateNumber(document.getElementById("totalLiga"), liga, 1000);
+    animateNumber(document.getElementById("totalHari"), hari, 1400);
+}
+
+let progress = 0;
+let finished = false;
+
+function updateLoading(target, duration) {
+    const start = progress;
+    const startTime = performance.now();
+    function update(now) {
+        const p = Math.min((now - startTime) / duration, 1);
+        progress = Math.floor(start + (target - start) * p);
+        const fill = document.getElementById("loadingBarFill");
+        if (fill) fill.style.width = progress + "%";
+        if (p < 1) requestAnimationFrame(update);
+        else if (progress >= 100) finishLoading();
+    }
+    requestAnimationFrame(update);
+}
+
+function finishLoading() {
+    if (finished) return;
+    finished = true;
+    setTimeout(() => {
+        const el = document.getElementById("loadingScreen");
+        if (el) el.classList.add("hide");
+    }, 300);
+}
+
+updateLoading(30, 400);
+setTimeout(() => updateLoading(60, 400), 400);
+setTimeout(() => updateLoading(85, 400), 800);
+setTimeout(() => updateLoading(100, 400), 1200);
+setTimeout(finishLoading, 2500);
+
+(function() {
+    const container = document.getElementById("luxTextTop");
+    if (!container) return;
+    const items = Array.from(container.querySelectorAll(".lux-text-item"));
+    if (!items.length) return;
+    let idx = 0;
+    setInterval(() => {
+        items[idx].classList.remove("active");
+        items[idx].classList.add("exit-up");
+        const old = idx;
+        setTimeout(() => items[old].classList.remove("exit-up"), 800);
+        idx = (idx + 1) % items.length;
+        items[idx].classList.add("active");
+    }, 4000);
+})();
+
+async function init() {
     try {
-        const [espn, fsMap] = await Promise.all([
-            fetchAllESPN(),
-            fetchFirestoreMap()
+        console.log("[LOAD] Mulai...");
+        updateLoading(40, 400);
+
+        const [espnData, fsData] = await Promise.all([
+            fetchESPN7Days(),
+            fetchFirestore()
         ]);
 
-        espnMatches = espn;
-        renderMatches(espn, fsMap);
-        showStatus(`✅ ${espn.length} pertandingan loaded dari ESPN, ${fsMap.size} data existing di Firestore`, "success");
+        console.log(`[ESPN] ${espnData.length} pertandingan`);
+        console.log(`[Firestore] ${fsData.length} pertandingan`);
+
+        updateLoading(75, 400);
+
+        semuaData = gabungData(espnData, fsData);
+        semuaData.sort((a, b) => (getKickoffWIBMs(a) || 0) - (getKickoffWIBMs(b) || 0));
+
+        console.log(`[Total] ${semuaData.length} pertandingan`);
+
+        updateLigaFilter(semuaData);
+        updateStats(semuaData);
+        applyFilter();
+
+        updateLoading(100, 400);
 
     } catch (err) {
-        console.error(err);
-        showStatus("❌ Error: " + err.message, "error");
+        console.error("[LOAD] Error:", err);
+        document.getElementById("prediksiContainer").innerHTML =
+            `<div class="single-column-wrap"><div class="single-col-empty">Gagal memuat. Refresh.</div></div>`;
+        updateLoading(100, 300);
     }
-
-    btn.disabled = false;
-    btn.textContent = "🔄 AMBIL JADWAL ESPN";
 }
 
-function showStatus(msg, type) {
-    const el = document.getElementById("fetchStatus");
-    el.className = "status " + type;
-    el.textContent = msg;
-    el.classList.remove("hidden");
-}
-
-/* ============================================================
-   EVENT LISTENERS
-   ============================================================ */
-document.getElementById("btnFetch").addEventListener("click", loadAll);
-document.getElementById("btnRefresh").addEventListener("click", loadAll);
-
-document.getElementById("btnCekDuplikat").addEventListener("click", async () => {
-    const el = document.getElementById("dbStatus");
-    el.className = "status warning";
-    el.textContent = "⏳ Cek duplikat...";
-    el.classList.remove("hidden");
-
-    const snap = await getDocs(collection(db, "predictions"));
-    const map = new Map();
-    let dup = 0;
-    snap.forEach(d => {
-        const item = d.data();
-        const key = makeKey(item.date, item.time, item.home, item.away);
-        if (map.has(key)) dup++;
-        else map.set(key, d.id);
+document.querySelectorAll(".tab-filter").forEach(tab => {
+    tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab-filter").forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        currentFilter = tab.dataset.date;
+        applyFilter();
     });
-
-    el.className = "status success";
-    el.textContent = `✅ Total: ${snap.size} | Duplikat: ${dup}`;
 });
 
-document.getElementById("btnHapusSemua").addEventListener("click", async () => {
-    if (!confirm("⚠️ HAPUS SEMUA data predictions? Tidak bisa dibatalkan!")) return;
-    if (!confirm("Yakin banget bro?")) return;
-
-    const el = document.getElementById("dbStatus");
-    el.className = "status warning";
-    el.textContent = "⏳ Menghapus...";
-    el.classList.remove("hidden");
-
-    const snap = await getDocs(collection(db, "predictions"));
-    let batch = writeBatch(db);
-    let count = 0, total = 0;
-    for (const d of snap.docs) {
-        batch.delete(d.ref);
-        count++; total++;
-        if (count >= 400) { await batch.commit(); batch = writeBatch(db); count = 0; }
-    }
-    if (count > 0) await batch.commit();
-
-    el.className = "status success";
-    el.textContent = `✅ ${total} dokumen dihapus`;
+document.getElementById("searchInput").addEventListener("input", applyFilter);
+document.getElementById("ligaFilter").addEventListener("change", applyFilter);
+document.getElementById("btnClearSearch").addEventListener("click", () => {
+    document.getElementById("searchInput").value = "";
+    applyFilter();
 });
+
+setInterval(init, 5 * 60 * 1000);
+
+init();
 
 </script>
 </body>
