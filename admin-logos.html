@@ -24,10 +24,10 @@ h1 { color: #ffd700; text-align: center; margin-bottom: 20px; }
 </head>
 <body>
 <div class="container">
-<h1>🎨 AUTO FETCH LOGO (via Worker)</h1>
+<h1>🎨 AUTO FETCH LOGO v4</h1>
 
 <div class="card">
-    <p>Auto-cari logo dari Wikipedia via Cloudflare Worker proxy. Test 1 tim dulu.</p>
+    <p>Multi-strategy: Wikipedia ID + EN + TheSportsDB + Wikimedia Commons.</p>
     <button id="btnFetch" class="btn btn-blue">🔍 MULAI AMBIL LOGO</button>
     <button id="btnFetchOne" class="btn btn-green">🎯 Test 1 Tim</button>
     <div id="status"></div>
@@ -61,7 +61,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// ✅ WORKER URL SUDAH TERISI
 const WORKER_URL = "https://kiper4d-logo-proxy.giselachandra582.workers.dev";
 
 const statusEl = document.getElementById("status");
@@ -86,26 +85,29 @@ function cleanTeam(name) {
         .trim();
 }
 
-// Fetch via Worker
 async function fetchViaWorker(url) {
     try {
         const finalUrl = WORKER_URL + "?url=" + encodeURIComponent(url);
         const res = await fetch(finalUrl);
-        if (!res.ok) return null;
+        if (!res.ok) {
+            console.warn("Worker HTTP error:", res.status);
+            return null;
+        }
         const text = await res.text();
         try {
             return JSON.parse(text);
         } catch (e) {
+            console.warn("Response bukan JSON:", text.substring(0, 200));
             return null;
         }
     } catch (e) {
-        console.warn("Worker error:", e.message);
+        console.warn("Worker fetch error:", e.message);
         return null;
     }
 }
 
-// Wikipedia EN + ID
-async function searchWikipedia(teamName, lang = "en") {
+// Wikipedia — coba ID dulu (klub Asia biasanya di sini), lalu EN
+async function searchWikipedia(teamName, lang = "id") {
     const name = cleanTeam(teamName);
     if (!name) return null;
 
@@ -113,13 +115,16 @@ async function searchWikipedia(teamName, lang = "en") {
         name,
         name + " F.C.",
         name + " FC",
+        name + " (klub sepak bola)",
         name + " (football club)"
     ];
 
     for (const title of candidates) {
-        const url = `https://${lang}.wikipedia.org/w/api.php?action=query&prop=pageimages&piprop=original&titles=${encodeURIComponent(title)}&format=json&formatversion=2`;
+        const url = `https://${lang}.wikipedia.org/w/api.php?action=query&prop=pageimages&piprop=original&titles=${encodeURIComponent(title)}&format=json&formatversion=2&redirects=1`;
         const data = await fetchViaWorker(url);
         if (!data) continue;
+
+        // formatversion=2 → pages jadi array
         const pages = data.query?.pages || [];
         for (const page of pages) {
             if (page.original?.source) {
@@ -153,13 +158,13 @@ async function searchTheSportsDB(teamName) {
     return { name: best.strTeam, logo: logo, source: "tsdb" };
 }
 
-// Combined — EN → TSDB → ID
+// Combined — ID dulu, terus EN, terus TSDB
 async function findLogo(teamName) {
-    let r = await searchWikipedia(teamName, "en");
+    let r = await searchWikipedia(teamName, "id");
+    if (r) return r;
+    r = await searchWikipedia(teamName, "en");
     if (r) return r;
     r = await searchTheSportsDB(teamName);
-    if (r) return r;
-    r = await searchWikipedia(teamName, "id");
     if (r) return r;
     return null;
 }
@@ -181,18 +186,28 @@ document.getElementById("btnFetchOne").addEventListener("click", async () => {
     setStatus("⏳ Cari: " + teamName, "wait");
     logEl.textContent = "Test: " + teamName;
 
-    log("\n1. Wikipedia EN...");
-    let r = await searchWikipedia(teamName, "en");
+    log("\n1. Wikipedia ID...");
+    let r = await searchWikipedia(teamName, "id");
     if (r) {
         log("  ✅ " + r.name + " [" + r.source + "]");
         log("  Logo: " + r.logo);
+        showPreview(teamName, r);
+        setStatus("✅ ID: " + r.name, "ok");
+        return;
+    }
+    log("  ❌ ID tidak ketemu");
+
+    log("\n2. Wikipedia EN...");
+    r = await searchWikipedia(teamName, "en");
+    if (r) {
+        log("  ✅ " + r.name + " [" + r.source + "]");
         showPreview(teamName, r);
         setStatus("✅ EN: " + r.name, "ok");
         return;
     }
     log("  ❌ EN tidak ketemu");
 
-    log("\n2. TheSportsDB...");
+    log("\n3. TheSportsDB...");
     r = await searchTheSportsDB(teamName);
     if (r) {
         log("  ✅ " + r.name + " [" + r.source + "]");
@@ -201,16 +216,6 @@ document.getElementById("btnFetchOne").addEventListener("click", async () => {
         return;
     }
     log("  ❌ TSDB tidak ketemu");
-
-    log("\n3. Wikipedia ID...");
-    r = await searchWikipedia(teamName, "id");
-    if (r) {
-        log("  ✅ " + r.name + " [" + r.source + "]");
-        showPreview(teamName, r);
-        setStatus("✅ ID: " + r.name, "ok");
-        return;
-    }
-    log("  ❌ ID tidak ketemu");
 
     setStatus("❌ Semua sumber gagal: " + teamName, "err");
 });
