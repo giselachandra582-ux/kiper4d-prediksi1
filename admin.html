@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel - KIPER4D</title>
+<title>Admin Bulk Input - KIPER4D</title>
 <link rel="icon" type="image/png" href="favicon.png">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -14,11 +14,12 @@ body {
     min-height: 100vh;
     padding: 20px;
 }
+.container { max-width: 1500px; margin: auto; }
 header {
-    text-align: center; padding: 20px 15px; margin-bottom: 20px;
+    text-align: center; padding: 18px 15px; margin-bottom: 18px;
     background: rgba(19, 8, 38, 0.95);
     border: 1px solid rgba(255, 215, 0, 0.25);
-    border-radius: 16px;
+    border-radius: 14px;
 }
 header h1 {
     font-size: 22px; margin-bottom: 6px;
@@ -26,19 +27,8 @@ header h1 {
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
 }
 header .subtitle { color: #94a3b8; font-size: 12px; letter-spacing: 1px; }
-.container { max-width: 1100px; margin: auto; }
-.card {
-    background: linear-gradient(145deg, rgba(28, 17, 48, 0.96), rgba(15, 10, 27, 0.96));
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 18px;
-}
-.card h2 { font-size: 18px; margin-bottom: 6px; color: #fff; }
-.card h2::first-letter { color: #ffd700; }
-.small { font-size: 12px; color: #94a3b8; line-height: 1.6; margin-bottom: 14px; }
 .status {
-    padding: 12px 16px; border-radius: 10px; margin-bottom: 16px;
+    padding: 12px 16px; border-radius: 10px; margin-bottom: 14px;
     background: rgba(255,255,255,0.06);
     border: 1px solid rgba(255,255,255,0.08);
     font-size: 13px;
@@ -47,27 +37,33 @@ header .subtitle { color: #94a3b8; font-size: 12px; letter-spacing: 1px; }
 .status.error { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.35); color: #fca5a5; }
 .status.warning { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.35); color: #fcd34d; }
 .status.hidden { display: none; }
-input[type="text"], input[type="email"], input[type="password"], textarea, select {
-    width: 100%; padding: 12px 14px;
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 10px;
-    background: #08050f; color: #f8fafc;
-    font-size: 14px; outline: none;
-    font-family: 'Courier New', monospace;
-    transition: 0.25s;
+.card {
+    background: linear-gradient(145deg, rgba(28, 17, 48, 0.96), rgba(15, 10, 27, 0.96));
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 16px;
 }
-input:focus, textarea:focus, select:focus {
+.card h2 { font-size: 18px; margin-bottom: 10px; color: #fff; }
+.card h2::first-letter { color: #ffd700; }
+.small { font-size: 12px; color: #94a3b8; line-height: 1.6; margin-bottom: 12px; }
+.controls {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    align-items: center; margin-bottom: 14px;
+}
+.controls select, .controls input {
+    padding: 10px 14px; border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: #08050f; color: #f8fafc;
+    font-size: 13px; outline: none;
+}
+.controls select:focus, .controls input:focus {
     border-color: #a855f7;
     box-shadow: 0 0 0 3px rgba(168,85,247,0.15);
 }
-textarea { min-height: 180px; resize: vertical; line-height: 1.6; }
-.form-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
-.form-row label { color: #cbd5e1; font-size: 12px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; }
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
 button {
-    border: 0; padding: 12px 20px; border-radius: 10px;
-    cursor: pointer; font-weight: bold; font-size: 14px;
+    border: 0; padding: 11px 18px; border-radius: 10px;
+    cursor: pointer; font-weight: bold; font-size: 13px;
     color: white; transition: 0.2s;
 }
 button:hover { transform: translateY(-2px); }
@@ -75,38 +71,109 @@ button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 .btn-blue { background: linear-gradient(135deg, #2563eb, #3b82f6); }
 .btn-green { background: linear-gradient(135deg, #16a34a, #22c55e); }
 .btn-red { background: linear-gradient(135deg, #dc2626, #ef4444); }
-.btn-purple { background: linear-gradient(135deg, #7c3aed, #a855f7); }
 .btn-dark { background: linear-gradient(135deg, #334155, #475569); }
-.match-row {
-    border: 1px solid rgba(255,255,255,0.08);
+.btn-purple { background: linear-gradient(135deg, #7c3aed, #a855f7); }
+.btn-orange { background: linear-gradient(135deg, #d97706, #f59e0b); }
+.btn-gold { background: linear-gradient(135deg, #d4af37, #ffd700); color: #000; }
+
+.table-wrap {
+    overflow-x: auto;
     border-radius: 12px;
-    padding: 14px;
-    margin-bottom: 10px;
-    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(0,0,0,0.2);
+    max-height: 70vh;
 }
-.match-info {
-    display: flex; justify-content: space-between;
-    margin-bottom: 10px;
-    font-size: 13px; color: #cbd5e1;
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    min-width: 1100px;
 }
-.match-info .teams { color: #fff; font-weight: bold; }
-.match-info .time { color: #4ade80; font-weight: bold; }
-.match-inputs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-.match-inputs input {
-    padding: 8px 10px;
-    font-size: 13px;
-    font-family: Arial, sans-serif;
+thead {
+    background: rgba(93,45,232,0.4);
+    position: sticky; top: 0;
+    z-index: 10;
 }
-.match-inputs input::placeholder { color: #64748b; font-size: 11px; }
+th {
+    padding: 10px 8px;
+    text-align: left;
+    color: #ffd700;
+    font-weight: bold;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+td {
+    padding: 6px 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    vertical-align: middle;
+}
+tr:hover { background: rgba(168,85,247,0.08); }
+tr.saved { background: rgba(34,197,94,0.15); }
+tr.saved td { color: #86efac; }
+
+.td-date { color: #94a3b8; font-size: 11px; white-space: nowrap; }
+.td-time { color: #4ade80; font-weight: bold; white-space: nowrap; }
+.td-league { color: #60a5fa; font-size: 11px; }
+.td-teams { color: #fff; font-weight: bold; font-size: 12px; }
+.td-logo { width: 28px; }
+.td-logo img { width: 24px; height: 24px; object-fit: contain; }
+
+td input {
+    padding: 7px 8px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: #08050f;
+    color: #fff;
+    font-size: 12px;
+    width: 100%;
+    outline: none;
+    font-family: 'Courier New', monospace;
+}
+td input:focus { border-color: #a855f7; box-shadow: 0 0 0 2px rgba(168,85,247,0.2); }
+td input.input-hdp { min-width: 90px; }
+td input.input-pred { min-width: 45px; max-width: 55px; text-align: center; }
+td input::placeholder { color: #475569; }
+
+.info-bar {
+    display: flex; flex-wrap: wrap; gap: 12px;
+    padding: 10px 14px;
+    background: rgba(93,45,232,0.15);
+    border-radius: 10px;
+    margin-bottom: 14px;
+    font-size: 12px;
+}
+.info-bar strong { color: #ffd700; font-size: 14px; }
+
+.loading {
+    text-align: center; padding: 40px;
+    color: #94a3b8;
+    font-size: 14px;
+}
 .hidden { display: none !important; }
 .login-box { text-align: center; padding: 40px 20px; }
 .login-box h2 { color: #ffd700; margin-bottom: 10px; }
-.login-box p { color: #94a3b8; margin-bottom: 20px; }
-.login-box button { padding: 14px 40px; font-size: 15px; }
-@media (max-width: 600px) {
-    body { padding: 12px; }
-    .match-inputs { grid-template-columns: 1fr; }
-    .grid-2 { grid-template-columns: 1fr; }
+
+.hint-box {
+    background: rgba(255, 215, 0, 0.08);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    font-size: 12px;
+    color: #fcd34d;
+    line-height: 1.7;
+}
+.hint-box b { color: #ffd700; }
+
+@media (max-width: 700px) {
+    body { padding: 10px; }
+    header { padding: 14px 10px; }
+    header h1 { font-size: 17px; }
+    .card { padding: 12px; }
+    .controls { flex-direction: column; align-items: stretch; }
+    .controls select, .controls input, button { width: 100%; }
 }
 </style>
 </head>
@@ -115,61 +182,73 @@ button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 <div class="container">
 
 <header>
-    <h1>⚙️ ADMIN PANEL — KIPER4D</h1>
-    <div class="subtitle">INPUT HDP & PREDIKSI MANUAL</div>
+    <h1>⚡ ADMIN BULK INPUT — KIPER4D</h1>
+    <div class="subtitle">INPUT HDP & PREDIKSI BANYAK SEKALIGUS</div>
 </header>
 
 <div id="loginStatus" class="status">Memeriksa login...</div>
 
 <div id="notLogged" class="card login-box hidden">
     <h2>🔐 Belum Login</h2>
-    <p>Silakan login dulu untuk akses panel admin.</p>
-    <button id="btnLogin" class="btn-purple">🔑 LOGIN ADMIN</button>
+    <p class="small">Silakan login dulu untuk akses panel admin.</p>
+    <button id="btnLogin" class="btn-purple" style="padding:14px 40px;font-size:15px;">🔑 LOGIN</button>
 </div>
 
 <div id="adminContent" class="hidden">
 
     <div class="card">
-        <h2>📅 Ambil Jadwal ESPN</h2>
-        <p class="small">
-            Klik tombol di bawah untuk mengambil jadwal dari ESPN. Setelah muncul, isi HDP & prediksi per pertandingan.
-        </p>
-        <div class="form-row">
-            <label>Tanggal</label>
+        <h2>📅 Ambil Jadwal dari ESPN</h2>
+        <p class="small">Pilih tanggal → klik Ambil Jadwal → muncul tabel semua pertandingan.</p>
+
+        <div class="controls">
             <select id="tanggalSelect">
                 <option value="today">Hari Ini</option>
                 <option value="tomorrow">Besok</option>
-                <option value="7days">7 Hari ke Depan</option>
+                <option value="7days" selected>7 Hari ke Depan</option>
             </select>
-        </div>
-        <div class="buttons">
             <button id="btnFetch" class="btn-blue">🔄 AMBIL JADWAL ESPN</button>
-            <button id="btnRefresh" class="btn-dark">🔁 Refresh Data</button>
+            <button id="btnLoadExisting" class="btn-dark">📖 LOAD DATA TERSIMPAN</button>
         </div>
+
         <div id="fetchStatus" class="status hidden"></div>
     </div>
 
     <div class="card">
-        <h2>🎯 Daftar Pertandingan</h2>
-        <p class="small">
-            Isi <b>HDP</b>, <b>Pred Home</b>, dan <b>Pred Away</b> untuk masing-masing pertandingan.<br>
-            Format HDP: <code>1/4 : 0</code> atau <code>0 : 1/2</code> atau <code>1 1/2 : 0</code><br>
-            Klik <b>💾 Simpan</b> untuk menyimpan ke Firestore.
-        </p>
-        <div id="matchesList">
-            <p class="small">Belum ada jadwal. Klik "Ambil Jadwal ESPN" dulu.</p>
+        <h2>📊 Tabel Bulk Input</h2>
+
+        <div class="hint-box">
+            💡 <b>Tips input cepat:</b><br>
+            1. Klik <b>🎲 ISI HDP DEFAULT</b> → semua baris dapat HDP "0 : 1/4"<br>
+            2. Klik <b>🎯 ISI PRED RANDOM</b> → semua baris dapat prediksi acak<br>
+            3. Klik <b>⚡ ISI SEMUA</b> → HDP + Pred sekaligus<br>
+            4. Edit manual yang perlu diubah (tab/enter untuk navigasi)<br>
+            5. Klik <b>💾 SIMPAN SEMUA</b> → 1x klik, semua tersimpan!
+        </div>
+
+        <div class="info-bar">
+            <div>📋 Total: <strong id="statTotal">0</strong></div>
+            <div>✅ Tersimpan: <strong id="statSaved">0</strong></div>
+            <div>⏳ Belum: <strong id="statPending">0</strong></div>
+            <div>🎯 Ada HDP: <strong id="statHdp">0</strong></div>
+        </div>
+
+        <div class="controls">
+            <button id="btnFillHdp" class="btn-orange">🎲 ISI HDP DEFAULT</button>
+            <button id="btnFillPred" class="btn-orange">🎯 ISI PRED RANDOM</button>
+            <button id="btnFillBoth" class="btn-gold">⚡ ISI SEMUA (HDP+PRED)</button>
+            <button id="btnSaveAll" class="btn-green">💾 SIMPAN SEMUA</button>
+            <button id="btnClearAll" class="btn-red">🗑️ KOSONGKAN SEMUA</button>
+        </div>
+
+        <div id="tableWrap" class="table-wrap">
+            <div class="loading">Klik "AMBIL JADWAL ESPN" untuk mulai</div>
         </div>
     </div>
 
     <div class="card">
-        <h2>🗄️ Database</h2>
-        <p class="small">Kelola data prediksi di Firestore.</p>
-        <div class="buttons">
-            <button id="btnCekDuplikat" class="btn-dark">🔍 Cek Duplikat</button>
-            <button id="btnHapusSemua" class="btn-red">🗑️ Hapus Semua Data</button>
-            <button id="btnLogout" class="btn-dark">🚪 Logout</button>
+        <div class="controls">
+            <button id="btnLogout" class="btn-red">🚪 LOGOUT</button>
         </div>
-        <div id="dbStatus" class="status hidden" style="margin-top:14px"></div>
     </div>
 
 </div>
@@ -184,7 +263,7 @@ import {
     onAuthStateChanged, signOut
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 import {
-    getFirestore, collection, getDocs, doc, writeBatch, query, where
+    getFirestore, collection, getDocs, doc, writeBatch
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -201,20 +280,59 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// ============================================================
+// 40+ LIGA ESPN
+// ============================================================
 const ESPN_LIGAS = [
-    "eng.1", "esp.1", "ita.1", "ger.1", "fra.1",
-    "uefa.champions", "uefa.europa", "por.1", "ned.1",
-    "usa.1", "bra.1", "arg.1", "afc.champions", "fifa.world"
+    { id: "eng.1", name: "Premier League" },
+    { id: "eng.2", name: "Championship" },
+    { id: "eng.fa", name: "FA Cup" },
+    { id: "eng.league_cup", name: "Carabao Cup" },
+    { id: "esp.1", name: "La Liga" },
+    { id: "esp.2", name: "La Liga 2" },
+    { id: "esp.copa_del_rey", name: "Copa del Rey" },
+    { id: "ita.1", name: "Serie A" },
+    { id: "ita.2", name: "Serie B" },
+    { id: "ita.coppa_italia", name: "Coppa Italia" },
+    { id: "ger.1", name: "Bundesliga" },
+    { id: "ger.2", name: "2. Bundesliga" },
+    { id: "ger.dfb_pokal", name: "DFB Pokal" },
+    { id: "fra.1", name: "Ligue 1" },
+    { id: "fra.2", name: "Ligue 2" },
+    { id: "ned.1", name: "Eredivisie" },
+    { id: "ned.2", name: "Eerste Divisie" },
+    { id: "por.1", name: "Primeira Liga" },
+    { id: "por.2", name: "Liga Portugal 2" },
+    { id: "uefa.champions", name: "Champions League" },
+    { id: "uefa.europa", name: "Europa League" },
+    { id: "uefa.europa.conf", name: "Conference League" },
+    { id: "uefa.nations", name: "UEFA Nations League" },
+    { id: "uefa.euro", name: "UEFA Euro" },
+    { id: "usa.1", name: "MLS" },
+    { id: "usa.nwsl", name: "NWSL" },
+    { id: "mex.1", name: "Liga MX" },
+    { id: "bra.1", name: "Brasileirão" },
+    { id: "bra.2", name: "Brasileirão Série B" },
+    { id: "arg.1", name: "Liga Profesional" },
+    { id: "conmebol.libertadores", name: "Copa Libertadores" },
+    { id: "conmebol.sudamericana", name: "Copa Sudamericana" },
+    { id: "afc.champions", name: "AFC Champions" },
+    { id: "jpn.1", name: "J-League" },
+    { id: "kor.1", name: "K-League 1" },
+    { id: "chn.1", name: "Chinese Super League" },
+    { id: "sau.1", name: "Saudi Pro League" },
+    { id: "fifa.world", name: "FIFA World Cup" }
 ];
 
-let espnMatches = [];
+let allMatches = [];
+let existingData = new Map();
 
 /* ============================================================
    AUTH
    ============================================================ */
 await setPersistence(auth, browserLocalPersistence);
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
     const loginStatus = document.getElementById("loginStatus");
     const adminContent = document.getElementById("adminContent");
     const notLogged = document.getElementById("notLogged");
@@ -237,7 +355,7 @@ document.getElementById("btnLogin").addEventListener("click", () => {
 });
 
 document.getElementById("btnLogout").addEventListener("click", async () => {
-    if (!confirm("Yakin logout?")) return;
+    if (!confirm("Logout?")) return;
     await signOut(auth);
     window.location.href = "/login.html";
 });
@@ -247,6 +365,15 @@ document.getElementById("btnLogout").addEventListener("click", async () => {
    ============================================================ */
 function clean(v) { return String(v || "").trim(); }
 
+function normalizeTeam(name) {
+    return clean(name).toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/\[[^\]]*\]/g, "")
+        .replace(/\([^)]*\)/g, "")
+        .replace(/[^a-z0-9\s]/g, " ")
+        .replace(/\s+/g, " ").trim();
+}
+
 function getNowWIBMs() { return Date.now() + (7 * 60 * 60 * 1000); }
 
 function getYMD(offset = 0) {
@@ -254,26 +381,17 @@ function getYMD(offset = 0) {
     return wib.getUTCFullYear() + String(wib.getUTCMonth() + 1).padStart(2, "0") + String(wib.getUTCDate()).padStart(2, "0");
 }
 
-function makeKey(date, time, home, away) {
-    const norm = (s) => clean(s).toLowerCase().replace(/\s+/g, " ").trim();
-    return [date, time, norm(home), norm(away)].join("|");
-}
-
-function escapeHtml(s) {
-    return clean(s)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
+function makeLooseKey(date, home, away) {
+    return [date, normalizeTeam(home), normalizeTeam(away)].join("|");
 }
 
 /* ============================================================
    FETCH ESPN
    ============================================================ */
-async function fetchESPNDay(dateStr) {
+async function fetchESPNDate(dateStr) {
     const promises = ESPN_LIGAS.map(async (liga) => {
         try {
-            const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${liga}/scoreboard?dates=${dateStr}`;
+            const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${liga.id}/scoreboard?dates=${dateStr}`;
             const res = await fetch(url);
             if (!res.ok) return [];
             const data = await res.json();
@@ -282,9 +400,10 @@ async function fetchESPNDay(dateStr) {
             return data.events.map(ev => {
                 try {
                     const comp = ev.competitions?.[0];
-                    const homeComp = comp?.competitors?.find(c => c.homeAway === "home");
-                    const awayComp = comp?.competitors?.find(c => c.homeAway === "away");
-                    if (!homeComp || !awayComp) return null;
+                    if (!comp) return null;
+                    const home = comp.competitors?.find(c => c.homeAway === "home");
+                    const away = comp.competitors?.find(c => c.homeAway === "away");
+                    if (!home || !away) return null;
 
                     const kickoff = new Date(ev.date);
                     const wib = new Date(kickoff.getTime() + (7 * 60 * 60 * 1000));
@@ -292,19 +411,18 @@ async function fetchESPNDay(dateStr) {
                     const timeWib = String(wib.getUTCHours()).padStart(2, "0") + ":" + String(wib.getUTCMinutes()).padStart(2, "0");
 
                     return {
-                        league: ev.strLeague || liga,
+                        league: liga.name,
                         date: dateWib,
                         time: timeWib,
-                        home: homeComp.team?.displayName || "?",
-                        away: awayComp.team?.displayName || "?",
-                        homeLogo: homeComp.team?.logo || "",
-                        awayLogo: awayComp.team?.logo || ""
+                        home: home.team?.displayName || "?",
+                        away: away.team?.displayName || "?",
+                        homeLogo: home.team?.logo || "",
+                        awayLogo: away.team?.logo || ""
                     };
                 } catch (e) { return null; }
             }).filter(Boolean);
         } catch (e) { return []; }
     });
-
     const hasil = await Promise.all(promises);
     return hasil.flat();
 }
@@ -315,250 +433,364 @@ async function fetchAllESPN() {
     if (pilihan === "7days") days = 7;
 
     const all = [];
+    const promises = [];
     for (let i = 0; i < days; i++) {
-        const arr = await fetchESPNDay(getYMD(i));
-        all.push(...arr);
+        promises.push(fetchESPNDate(getYMD(i)));
     }
+    const results = await Promise.all(promises);
+    results.forEach(arr => all.push(...arr));
     return all;
 }
 
 /* ============================================================
-   FETCH FIRESTORE
+   LOAD EXISTING
    ============================================================ */
-async function fetchFirestoreMap() {
+async function loadExisting() {
     const snap = await getDocs(collection(db, "predictions"));
-    const map = new Map();
+    existingData.clear();
     snap.forEach(d => {
-        const item = d.data();
-        const key = makeKey(item.date, item.time, item.home, item.away);
-        map.set(key, { id: d.id, ...item });
-    });
-    return map;
-}
-
-/* ============================================================
-   RENDER MATCHES
-   ============================================================ */
-function renderMatches(matches, fsMap) {
-    const list = document.getElementById("matchesList");
-    if (!matches.length) {
-        list.innerHTML = '<p class="small">Tidak ada pertandingan untuk ditampilkan.</p>';
-        return;
-    }
-
-    // Group per tanggal
-    const grouped = {};
-    matches.forEach(m => {
-        if (!grouped[m.date]) grouped[m.date] = [];
-        grouped[m.date].push(m);
-    });
-
-    let html = "";
-    Object.keys(grouped).sort().forEach(tanggal => {
-        html += `<h3 style="color:#fbbf24;margin:18px 0 10px;font-size:14px;">📅 ${tanggal}</h3>`;
-
-        grouped[tanggal].sort((a, b) => a.time.localeCompare(b.time)).forEach(m => {
-            const key = makeKey(m.date, m.time, m.home, m.away);
-            const fs = fsMap.get(key) || {};
-            const handicap = clean(fs.handicap);
-            const pH = clean(fs.predictionScoreHome);
-            const pA = clean(fs.predictionScoreAway);
-
-            html += `
-                <div class="match-row" data-key="${escapeHtml(key)}">
-                    <div class="match-info">
-                        <div>
-                            <span class="time">${escapeHtml(m.time)}</span>
-                            <span style="color:#94a3b8;font-size:11px;margin-left:8px;">${escapeHtml(m.league)}</span>
-                        </div>
-                    </div>
-                    <div class="match-info">
-                        <span class="teams">${escapeHtml(m.home)} VS ${escapeHtml(m.away)}</span>
-                    </div>
-                    <div class="match-inputs">
-                        <input type="text" class="input-hdp" placeholder="HDP (1/4 : 0)" value="${escapeHtml(handicap)}">
-                        <input type="text" class="input-predH" placeholder="Pred Home (2)" value="${escapeHtml(pH)}">
-                        <input type="text" class="input-predA" placeholder="Pred Away (1)" value="${escapeHtml(pA)}">
-                    </div>
-                    <div class="buttons">
-                        <button class="btn-green btn-save" data-date="${escapeHtml(m.date)}" data-time="${escapeHtml(m.time)}" data-home="${escapeHtml(m.home)}" data-away="${escapeHtml(m.away)}" data-league="${escapeHtml(m.league)}" data-homelogo="${escapeHtml(m.homeLogo)}" data-awaylogo="${escapeHtml(m.awayLogo)}">
-                            💾 Simpan
-                        </button>
-                    </div>
-                </div>
-            `;
-        });
-    });
-
-    list.innerHTML = html;
-
-    // Event listener
-    list.querySelectorAll(".btn-save").forEach(btn => {
-        btn.addEventListener("click", async (e) => {
-            const row = btn.closest(".match-row");
-            const hdp = row.querySelector(".input-hdp").value.trim();
-            const pH = row.querySelector(".input-predH").value.trim();
-            const pA = row.querySelector(".input-predA").value.trim();
-
-            await saveMatch({
-                date: btn.dataset.date,
-                time: btn.dataset.time,
-                home: btn.dataset.home,
-                away: btn.dataset.away,
-                league: btn.dataset.league,
-                homeLogo: btn.dataset.homelogo,
-                awayLogo: btn.dataset.awaylogo,
-                handicap: hdp,
-                predictionScoreHome: pH,
-                predictionScoreAway: pA
-            }, btn);
-        });
+        const data = d.data();
+        if (!data.home || !data.away) return;
+        if (data.active === false) return;
+        const key = makeLooseKey(data.date, data.home, data.away);
+        existingData.set(key, { id: d.id, ...data });
     });
 }
 
 /* ============================================================
-   SAVE TO FIRESTORE
+   RENDER TABLE
    ============================================================ */
-async function saveMatch(match, btn) {
-    if (!auth.currentUser) {
-        alert("Login dulu bro");
+function renderTable() {
+    const wrap = document.getElementById("tableWrap");
+
+    if (!allMatches.length) {
+        wrap.innerHTML = '<div class="loading">Tidak ada pertandingan</div>';
+        updateStats();
         return;
     }
 
-    const originalText = btn.textContent;
+    allMatches.sort((a, b) => {
+        const da = (a.date || "") + (a.time || "");
+        const db2 = (b.date || "") + (b.time || "");
+        return da.localeCompare(db2);
+    });
+
+    let html = `
+        <table>
+            <thead>
+                <tr>
+                    <th style="width:70px;">Tanggal</th>
+                    <th style="width:55px;">Jam</th>
+                    <th style="width:20px;">🏆</th>
+                    <th style="width:110px;">Liga</th>
+                    <th style="width:28px;"></th>
+                    <th>Tim Home</th>
+                    <th style="width:28px;"></th>
+                    <th>Tim Away</th>
+                    <th style="width:100px;">HDP</th>
+                    <th style="width:55px;">Pred H</th>
+                    <th style="width:55px;">Pred A</th>
+                    <th style="width:60px;">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    allMatches.forEach((m, i) => {
+        const key = makeLooseKey(m.date, m.home, m.away);
+        const existing = existingData.get(key);
+
+        const hdp = existing?.handicap || "";
+        const pH = existing?.predictionScoreHome || "";
+        const pA = existing?.predictionScoreAway || "";
+        const saved = existing?.handicap && existing?.predictionScoreHome && existing?.predictionScoreAway;
+
+        const homeLogoHTML = m.homeLogo ? `<img src="${m.homeLogo}" onerror="this.style.display='none'">` : "";
+        const awayLogoHTML = m.awayLogo ? `<img src="${m.awayLogo}" onerror="this.style.display='none'">` : "";
+
+        html += `
+            <tr data-index="${i}" data-key="${key}" class="${saved ? 'saved' : ''}">
+                <td class="td-date">${m.date}</td>
+                <td class="td-time">${m.time}</td>
+                <td></td>
+                <td class="td-league">${m.league}</td>
+                <td class="td-logo">${homeLogoHTML}</td>
+                <td class="td-teams">${m.home}</td>
+                <td class="td-logo">${awayLogoHTML}</td>
+                <td class="td-teams">${m.away}</td>
+                <td><input type="text" class="input-hdp" value="${hdp}" placeholder="1/4 : 0" data-field="hdp"></td>
+                <td><input type="text" class="input-pred" value="${pH}" placeholder="2" data-field="predH" maxlength="2"></td>
+                <td><input type="text" class="input-pred" value="${pA}" placeholder="1" data-field="predA" maxlength="2"></td>
+                <td>${saved ? '✅' : '⏳'}</td>
+            </tr>
+        `;
+    });
+
+    html += `</tbody></table>`;
+    wrap.innerHTML = html;
+
+    // Event listeners untuk auto-update status
+    wrap.querySelectorAll("input").forEach(input => {
+        input.addEventListener("input", () => {
+            const tr = input.closest("tr");
+            const hdp = tr.querySelector(".input-hdp").value.trim();
+            const pH = tr.querySelector(".input-pred[data-field='predH']").value.trim();
+            const pA = tr.querySelector(".input-pred[data-field='predA']").value.trim();
+            const status = tr.querySelector("td:last-child");
+
+            if (hdp && pH && pA) {
+                tr.classList.add("saved");
+                status.textContent = "✅";
+            } else {
+                tr.classList.remove("saved");
+                status.textContent = "⏳";
+            }
+            updateStats();
+        });
+    });
+
+    updateStats();
+}
+
+/* ============================================================
+   UPDATE STATS
+   ============================================================ */
+function updateStats() {
+    const total = allMatches.length;
+    const inputs = document.querySelectorAll("tbody tr");
+    let saved = 0, pending = 0, adaHdp = 0;
+
+    inputs.forEach(tr => {
+        const hdp = tr.querySelector(".input-hdp")?.value.trim();
+        const pH = tr.querySelector(".input-pred[data-field='predH']")?.value.trim();
+        const pA = tr.querySelector(".input-pred[data-field='predA']")?.value.trim();
+
+        if (hdp) adaHdp++;
+        if (hdp && pH && pA) saved++;
+        else pending++;
+    });
+
+    document.getElementById("statTotal").textContent = total;
+    document.getElementById("statSaved").textContent = saved;
+    document.getElementById("statPending").textContent = pending;
+    document.getElementById("statHdp").textContent = adaHdp;
+}
+
+/* ============================================================
+   FILL FUNCTIONS (BULK)
+   ============================================================ */
+function fillHdpDefault() {
+    const variants = ["0 : 1/4", "1/4 : 0", "0 : 1/2", "1/2 : 0", "0 : 3/4", "3/4 : 0"];
+    const rows = document.querySelectorAll("tbody tr");
+    rows.forEach(tr => {
+        const hdp = tr.querySelector(".input-hdp");
+        if (!hdp.value.trim()) {
+            hdp.value = variants[Math.floor(Math.random() * variants.length)];
+            hdp.dispatchEvent(new Event("input"));
+        }
+    });
+}
+
+function fillPredRandom() {
+    const rows = document.querySelectorAll("tbody tr");
+    rows.forEach(tr => {
+        const pH = tr.querySelector(".input-pred[data-field='predH']");
+        const pA = tr.querySelector(".input-pred[data-field='predA']");
+        if (!pH.value.trim()) {
+            pH.value = Math.floor(Math.random() * 4); // 0-3
+            pH.dispatchEvent(new Event("input"));
+        }
+        if (!pA.value.trim()) {
+            pA.value = Math.floor(Math.random() * 4);
+            pA.dispatchEvent(new Event("input"));
+        }
+    });
+}
+
+/* ============================================================
+   SAVE ALL
+   ============================================================ */
+async function saveAll() {
+    if (!auth.currentUser) { alert("Login dulu"); return; }
+
+    const rows = document.querySelectorAll("tbody tr");
+    if (!rows.length) { alert("Belum ada data"); return; }
+
+    const toSave = [];
+    rows.forEach(tr => {
+        const idx = parseInt(tr.dataset.index, 10);
+        const m = allMatches[idx];
+        if (!m) return;
+
+        const hdp = tr.querySelector(".input-hdp").value.trim();
+        const pH = tr.querySelector(".input-pred[data-field='predH']").value.trim();
+        const pA = tr.querySelector(".input-pred[data-field='predA']").value.trim();
+
+        if (hdp || pH || pA) {
+            toSave.push({ match: m, hdp, pH, pA });
+        }
+    });
+
+    if (!toSave.length) {
+        alert("Gak ada input yang diisi");
+        return;
+    }
+
+    if (!confirm(`Simpan ${toSave.length} data ke Firestore?`)) return;
+
+    const btn = document.getElementById("btnSaveAll");
     btn.disabled = true;
-    btn.textContent = "⏳...";
+    btn.textContent = "⏳ Menyimpan...";
 
     try {
-        const fsMap = await fetchFirestoreMap();
-        const key = makeKey(match.date, match.time, match.home, match.away);
-        const existing = fsMap.get(key);
+        await loadExisting();
 
-        const data = {
-            league: match.league,
-            date: match.date,
-            time: match.time,
-            home: match.home,
-            away: match.away,
-            homeLogo: match.homeLogo,
-            awayLogo: match.awayLogo,
-            handicap: match.handicap,
-            predictionScoreHome: match.predictionScoreHome,
-            predictionScoreAway: match.predictionScoreAway,
-            active: true,
-            updatedAt: new Date()
-        };
+        let batch = writeBatch(db);
+        let count = 0;
+        let updated = 0, created = 0;
 
-        const batch = writeBatch(db);
-        if (existing) {
-            batch.update(doc(db, "predictions", existing.id), data);
-        } else {
-            batch.set(doc(collection(db, "predictions")), {
-                ...data,
-                prediction: "",
-                scoreHome: "",
-                scoreAway: ""
-            });
+        for (const item of toSave) {
+            const { match, hdp, pH, pA } = item;
+            const key = makeLooseKey(match.date, match.home, match.away);
+            const existing = existingData.get(key);
+
+            const data = {
+                league: match.league,
+                date: match.date,
+                time: match.time,
+                home: match.home,
+                away: match.away,
+                homeLogo: match.homeLogo || "",
+                awayLogo: match.awayLogo || "",
+                handicap: hdp,
+                predictionScoreHome: pH,
+                predictionScoreAway: pA,
+                active: true,
+                updatedAt: new Date()
+            };
+
+            if (existing) {
+                batch.update(doc(db, "predictions", existing.id), data);
+                updated++;
+            } else {
+                batch.set(doc(collection(db, "predictions")), {
+                    ...data,
+                    prediction: "",
+                    scoreHome: "",
+                    scoreAway: ""
+                });
+                created++;
+            }
+            count++;
+            if (count >= 400) {
+                await batch.commit();
+                batch = writeBatch(db);
+                count = 0;
+            }
         }
-        await batch.commit();
+        if (count > 0) await batch.commit();
 
-        btn.textContent = "✅ OK";
-        setTimeout(() => {
-            btn.textContent = originalText;
-            btn.disabled = false;
-        }, 1500);
+        alert(`✅ Berhasil!\n\n📝 Update: ${updated}\n🆕 Baru: ${created}\n📊 Total: ${toSave.length}`);
 
-        showStatus("✅ Tersimpan: " + match.home + " vs " + match.away, "success");
+        await loadExisting();
+        renderTable();
 
     } catch (err) {
         console.error(err);
         alert("❌ Gagal simpan: " + err.message);
-        btn.textContent = originalText;
-        btn.disabled = false;
-    }
-}
-
-/* ============================================================
-   LOAD DATA
-   ============================================================ */
-async function loadAll() {
-    const btn = document.getElementById("btnFetch");
-    btn.disabled = true;
-    btn.textContent = "⏳ Loading...";
-
-    try {
-        const [espn, fsMap] = await Promise.all([
-            fetchAllESPN(),
-            fetchFirestoreMap()
-        ]);
-
-        espnMatches = espn;
-        renderMatches(espn, fsMap);
-        showStatus(`✅ ${espn.length} pertandingan loaded dari ESPN, ${fsMap.size} data existing di Firestore`, "success");
-
-    } catch (err) {
-        console.error(err);
-        showStatus("❌ Error: " + err.message, "error");
     }
 
     btn.disabled = false;
-    btn.textContent = "🔄 AMBIL JADWAL ESPN";
-}
-
-function showStatus(msg, type) {
-    const el = document.getElementById("fetchStatus");
-    el.className = "status " + type;
-    el.textContent = msg;
-    el.classList.remove("hidden");
+    btn.textContent = "💾 SIMPAN SEMUA";
 }
 
 /* ============================================================
    EVENT LISTENERS
    ============================================================ */
-document.getElementById("btnFetch").addEventListener("click", loadAll);
-document.getElementById("btnRefresh").addEventListener("click", loadAll);
+document.getElementById("btnFetch").addEventListener("click", async () => {
+    const btn = document.getElementById("btnFetch");
+    btn.disabled = true;
+    btn.textContent = "⏳ Loading...";
+    const wrap = document.getElementById("tableWrap");
+    wrap.innerHTML = '<div class="loading">Memuat jadwal dari ESPN...</div>';
 
-document.getElementById("btnCekDuplikat").addEventListener("click", async () => {
-    const el = document.getElementById("dbStatus");
-    el.className = "status warning";
-    el.textContent = "⏳ Cek duplikat...";
-    el.classList.remove("hidden");
+    try {
+        const [espn] = await Promise.all([
+            fetchAllESPN(),
+            loadExisting()
+        ]);
 
-    const snap = await getDocs(collection(db, "predictions"));
-    const map = new Map();
-    let dup = 0;
-    snap.forEach(d => {
-        const item = d.data();
-        const key = makeKey(item.date, item.time, item.home, item.away);
-        if (map.has(key)) dup++;
-        else map.set(key, d.id);
-    });
+        const seen = new Set();
+        allMatches = [];
+        espn.forEach(m => {
+            const k = makeLooseKey(m.date, m.home, m.away);
+            if (seen.has(k)) return;
+            seen.add(k);
+            allMatches.push(m);
+        });
 
-    el.className = "status success";
-    el.textContent = `✅ Total: ${snap.size} | Duplikat: ${dup}`;
+        document.getElementById("fetchStatus").className = "status success";
+        document.getElementById("fetchStatus").textContent = `✅ ${allMatches.length} pertandingan dari ESPN | ${existingData.size} data existing`;
+        document.getElementById("fetchStatus").classList.remove("hidden");
+
+        renderTable();
+
+    } catch (err) {
+        console.error(err);
+        document.getElementById("fetchStatus").className = "status error";
+        document.getElementById("fetchStatus").textContent = "❌ Error: " + err.message;
+        document.getElementById("fetchStatus").classList.remove("hidden");
+    }
+
+    btn.disabled = false;
+    btn.textContent = "🔄 AMBIL JADWAL ESPN";
 });
 
-document.getElementById("btnHapusSemua").addEventListener("click", async () => {
-    if (!confirm("⚠️ HAPUS SEMUA data predictions? Tidak bisa dibatalkan!")) return;
-    if (!confirm("Yakin banget bro?")) return;
+document.getElementById("btnLoadExisting").addEventListener("click", async () => {
+    const btn = document.getElementById("btnLoadExisting");
+    btn.disabled = true;
+    btn.textContent = "⏳ Loading...";
 
-    const el = document.getElementById("dbStatus");
-    el.className = "status warning";
-    el.textContent = "⏳ Menghapus...";
-    el.classList.remove("hidden");
-
-    const snap = await getDocs(collection(db, "predictions"));
-    let batch = writeBatch(db);
-    let count = 0, total = 0;
-    for (const d of snap.docs) {
-        batch.delete(d.ref);
-        count++; total++;
-        if (count >= 400) { await batch.commit(); batch = writeBatch(db); count = 0; }
+    try {
+        await loadExisting();
+        document.getElementById("fetchStatus").className = "status success";
+        document.getElementById("fetchStatus").textContent = `✅ ${existingData.size} data tersimpan dari Firestore`;
+        document.getElementById("fetchStatus").classList.remove("hidden");
+    } catch (err) {
+        console.error(err);
     }
-    if (count > 0) await batch.commit();
 
-    el.className = "status success";
-    el.textContent = `✅ ${total} dokumen dihapus`;
+    btn.disabled = false;
+    btn.textContent = "📖 LOAD DATA TERSIMPAN";
+});
+
+// BULK FILL BUTTONS
+document.getElementById("btnFillHdp").addEventListener("click", () => {
+    if (!confirm("Isi HDP random untuk semua yang kosong?")) return;
+    fillHdpDefault();
+});
+
+document.getElementById("btnFillPred").addEventListener("click", () => {
+    if (!confirm("Isi prediksi random untuk semua yang kosong?")) return;
+    fillPredRandom();
+});
+
+document.getElementById("btnFillBoth").addEventListener("click", () => {
+    if (!confirm("Isi HDP + Prediksi random untuk semua yang kosong?")) return;
+    fillHdpDefault();
+    fillPredRandom();
+});
+
+document.getElementById("btnSaveAll").addEventListener("click", saveAll);
+
+document.getElementById("btnClearAll").addEventListener("click", () => {
+    if (!confirm("Kosongkan semua input di tabel?")) return;
+    document.querySelectorAll("tbody input").forEach(i => i.value = "");
+    document.querySelectorAll("tbody tr").forEach(tr => {
+        tr.classList.remove("saved");
+        tr.querySelector("td:last-child").textContent = "⏳";
+    });
+    updateStats();
 });
 
 </script>
