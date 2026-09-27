@@ -24,10 +24,10 @@ h1 { color: #ffd700; text-align: center; margin-bottom: 20px; }
 </head>
 <body>
 <div class="container">
-<h1>🎨 AUTO FETCH LOGO v3 (dengan Proxy)</h1>
+<h1>🎨 AUTO FETCH LOGO (via Worker)</h1>
 
 <div class="card">
-    <p>Auto-cari logo pakai <b>CORS Proxy</b> — bypass blokir browser. Test 1 tim dulu.</p>
+    <p>Auto-cari logo dari Wikipedia via Cloudflare Worker proxy. Test 1 tim dulu.</p>
     <button id="btnFetch" class="btn btn-blue">🔍 MULAI AMBIL LOGO</button>
     <button id="btnFetchOne" class="btn btn-green">🎯 Test 1 Tim</button>
     <div id="status"></div>
@@ -61,14 +61,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// ✅ WORKER URL SUDAH TERISI
+const WORKER_URL = "https://kiper4d-logo-proxy.giselachandra582.workers.dev";
+
 const statusEl = document.getElementById("status");
 const logEl = document.getElementById("log");
 const previewEl = document.getElementById("preview");
-
-// === PROXY UNTUK BYPASS CORS ===
-const PROXY = "https://corsproxy.io/?url=";
-// Kalau corsproxy gagal, coba alternatif
-const PROXY_FALLBACK = "https://api.allorigins.win/raw?url=";
 
 function log(msg) {
     logEl.textContent += "\n" + msg;
@@ -88,26 +86,25 @@ function cleanTeam(name) {
         .trim();
 }
 
-// === FETCH dengan proxy ===
-async function fetchWithProxy(url) {
-    // Coba proxy utama dulu
+// Fetch via Worker
+async function fetchViaWorker(url) {
     try {
-        const res = await fetch(PROXY + encodeURIComponent(url));
-        if (res.ok) return await res.json();
+        const finalUrl = WORKER_URL + "?url=" + encodeURIComponent(url);
+        const res = await fetch(finalUrl);
+        if (!res.ok) return null;
+        const text = await res.text();
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            return null;
+        }
     } catch (e) {
-        console.warn("Proxy 1 gagal:", e.message);
+        console.warn("Worker error:", e.message);
+        return null;
     }
-    // Coba proxy fallback
-    try {
-        const res = await fetch(PROXY_FALLBACK + encodeURIComponent(url));
-        if (res.ok) return await res.json();
-    } catch (e) {
-        console.warn("Proxy 2 gagal:", e.message);
-    }
-    return null;
 }
 
-// === WIKIPEDIA ===
+// Wikipedia EN + ID
 async function searchWikipedia(teamName, lang = "en") {
     const name = cleanTeam(teamName);
     if (!name) return null;
@@ -120,61 +117,50 @@ async function searchWikipedia(teamName, lang = "en") {
     ];
 
     for (const title of candidates) {
-        try {
-            const url = `https://${lang}.wikipedia.org/w/api.php?action=query&prop=pageimages&piprop=original&titles=${encodeURIComponent(title)}&format=json`;
-            const data = await fetchWithProxy(url);
-            if (!data) continue;
-            const pages = data.query?.pages || {};
-            for (const id in pages) {
-                const page = pages[id];
-                if (page.original?.source) {
-                    return {
-                        name: page.title,
-                        logo: page.original.source,
-                        source: "wiki-" + lang
-                    };
-                }
+        const url = `https://${lang}.wikipedia.org/w/api.php?action=query&prop=pageimages&piprop=original&titles=${encodeURIComponent(title)}&format=json&formatversion=2`;
+        const data = await fetchViaWorker(url);
+        if (!data) continue;
+        const pages = data.query?.pages || [];
+        for (const page of pages) {
+            if (page.original?.source) {
+                return {
+                    name: page.title,
+                    logo: page.original.source,
+                    source: "wiki-" + lang
+                };
             }
-        } catch (e) {}
+        }
     }
     return null;
 }
 
-// === THESPORTSDB ===
+// TheSportsDB
 async function searchTheSportsDB(teamName) {
-    try {
-        const name = cleanTeam(teamName);
-        const url = `https://www.thesportsdb.com/api/v1/json/123/searchteams.php?t=${encodeURIComponent(name)}`;
-        const data = await fetchWithProxy(url);
-        if (!data || !data.teams || !data.teams.length) return null;
+    const name = cleanTeam(teamName);
+    const url = `https://www.thesportsdb.com/api/v1/json/123/searchteams.php?t=${encodeURIComponent(name)}`;
+    const data = await fetchViaWorker(url);
+    if (!data || !data.teams || !data.teams.length) return null;
 
-        const nameLower = name.toLowerCase();
-        let best = data.teams[0];
-        for (const t of data.teams) {
-            if (t.strSport !== "Soccer") continue;
-            if (t.strTeam.toLowerCase() === nameLower) { best = t; break; }
-            if (t.strTeam.toLowerCase().includes(nameLower)) best = t;
-        }
-
-        const logo = best.strTeamBadge || best.strTeamLogo || "";
-        if (!logo) return null;
-        return { name: best.strTeam, logo: logo, source: "tsdb" };
-    } catch (e) {
-        return null;
+    const nameLower = name.toLowerCase();
+    let best = data.teams[0];
+    for (const t of data.teams) {
+        if (t.strSport !== "Soccer") continue;
+        if (t.strTeam.toLowerCase() === nameLower) { best = t; break; }
+        if (t.strTeam.toLowerCase().includes(nameLower)) best = t;
     }
+    const logo = best.strTeamBadge || best.strTeamLogo || "";
+    if (!logo) return null;
+    return { name: best.strTeam, logo: logo, source: "tsdb" };
 }
 
-// === COMBINED ===
+// Combined — EN → TSDB → ID
 async function findLogo(teamName) {
     let r = await searchWikipedia(teamName, "en");
     if (r) return r;
-
     r = await searchTheSportsDB(teamName);
     if (r) return r;
-
     r = await searchWikipedia(teamName, "id");
     if (r) return r;
-
     return null;
 }
 
@@ -187,7 +173,7 @@ function showPreview(team, r) {
     `;
 }
 
-// === TEST 1 TIM ===
+// TEST 1 TIM
 document.getElementById("btnFetchOne").addEventListener("click", async () => {
     const teamName = prompt("Nama tim:", "Persija Jakarta");
     if (!teamName) return;
@@ -199,6 +185,7 @@ document.getElementById("btnFetchOne").addEventListener("click", async () => {
     let r = await searchWikipedia(teamName, "en");
     if (r) {
         log("  ✅ " + r.name + " [" + r.source + "]");
+        log("  Logo: " + r.logo);
         showPreview(teamName, r);
         setStatus("✅ EN: " + r.name, "ok");
         return;
@@ -228,9 +215,9 @@ document.getElementById("btnFetchOne").addEventListener("click", async () => {
     setStatus("❌ Semua sumber gagal: " + teamName, "err");
 });
 
-// === MASSAL ===
+// MASSAL
 document.getElementById("btnFetch").addEventListener("click", async () => {
-    if (!confirm("Proses semua tim? Bisa 10-20 menit.")) return;
+    if (!confirm("Proses semua tim? Bisa 5-15 menit.")) return;
 
     const btn = document.getElementById("btnFetch");
     btn.disabled = true;
@@ -268,7 +255,6 @@ document.getElementById("btnFetch").addEventListener("click", async () => {
                 logoMap.set(team.toLowerCase(), result.logo);
                 found++;
                 log(`  ✅ ${result.name} [${result.source}]`);
-
                 previewEl.innerHTML = `
                     <div class="team-item">
                         <img src="${result.logo}" onerror="this.style.display='none'">
@@ -280,7 +266,7 @@ document.getElementById("btnFetch").addEventListener("click", async () => {
                 log(`  ❌ Tidak ketemu`);
             }
 
-            await new Promise(r => setTimeout(r, 200));
+            await new Promise(r => setTimeout(r, 100));
         }
 
         setStatus(`✅ Ditemukan: ${found} | Gagal: ${notFound}`, "ok");
