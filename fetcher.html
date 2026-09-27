@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="favicon.png">
+<title>Fetch Jadwal Otomatis - KIPER4D</title>
+<style>
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background:
+        radial-gradient(circle at top left, #24104f 0%, transparent 35%),
+        radial-gradient(circle at top right, #3a0b42 0%, transparent 30%),
+        #090611;
+    color: #f8fafc;
+    min-height: 100vh;
+}
+header {
+    background: linear-gradient(135deg, rgba(19, 8, 38, 0.98), rgba(35, 10, 55, 0.98));
+    border-bottom: 1px solid rgba(255, 215, 0, 0.25);
+    padding: 24px 15px;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+}
+.logo { width: 95px; height: 95px; object-fit: contain; display: block; margin: 0 auto 10px; }
+header h1 {
+    margin: 0; font-size: 24px; font-weight: 900; letter-spacing: 1px;
+    background: linear-gradient(90deg, #ffd700, #ffffff, #c084fc);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.header-subtitle { margin-top: 7px; color: #cbd5e1; font-size: 12px; letter-spacing: 1.5px; }
+.container { max-width: 1000px; margin: 30px auto; padding: 0 15px; }
+.status {
+    padding: 14px 17px; border-radius: 12px; margin-bottom: 20px;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
+    color: #e2e8f0; font-size: 14px;
+}
+.status.success { background: rgba(34,197,94,0.12); border-color: rgba(34,197,94,0.35); color: #86efac; }
+.status.error { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.35); color: #fca5a5; }
+.status.warning { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.35); color: #fcd34d; }
+.card {
+    background: linear-gradient(145deg, rgba(28, 17, 48, 0.96), rgba(15, 10, 27, 0.96));
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px; padding: 22px; margin-bottom: 22px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.35);
+}
+.card h2 { margin-top: 0; margin-bottom: 10px; font-size: 19px; color: #fff; }
+.card h2::first-letter { color: #ffd700; }
+.small { font-size: 13px; color: #94a3b8; line-height: 1.6; }
+.fetch-card { border-top: 3px solid #3b82f6; }
+.preview-card { border-top: 3px solid #a855f7; }
+.result-card { border-top: 3px solid #22c55e; }
+.section-label {
+    display: inline-block; padding: 6px 12px; border-radius: 30px;
+    background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.18);
+    color: #ffd700; font-size: 11px; font-weight: bold; letter-spacing: 1px; margin-bottom: 12px;
+}
+.form-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+.form-row label { color: #cbd5e1; font-size: 13px; font-weight: bold; min-width: 140px; }
+input[type="date"], select {
+    padding: 11px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.15);
+    background: #08050f; color: #f8fafc; font-size: 14px; outline: none; min-width: 220px;
+}
+input[type="date"]:focus, select:focus { border-color: #a855f7; box-shadow: 0 0 0 3px rgba(168,85,247,0.15); }
+.buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+button {
+    border: 0; padding: 13px 20px; border-radius: 10px; cursor: pointer;
+    font-weight: bold; font-size: 14px; color: white;
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+button:hover { transform: translateY(-2px); }
+button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn-blue { background: linear-gradient(135deg, #2563eb, #3b82f6); box-shadow: 0 7px 20px rgba(37,99,235,0.25); }
+.btn-green { background: linear-gradient(135deg, #16a34a, #22c55e); box-shadow: 0 7px 20px rgba(34,197,94,0.2); }
+.btn-red { background: linear-gradient(135deg, #dc2626, #ef4444); box-shadow: 0 7px 20px rgba(239,68,68,0.2); }
+.btn-dark { background: linear-gradient(135deg, #334155, #475569); }
+.match-item {
+    display: flex; align-items: center; gap: 12px;
+    border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;
+    padding: 12px 14px; margin-bottom: 8px; background: rgba(0,0,0,0.22);
+    cursor: pointer; transition: 0.2s;
+}
+.match-item:hover { border-color: rgba(168,85,247,0.5); background: rgba(168,85,247,0.06); }
+.match-item.checked { border-color: #22c55e; background: rgba(34,197,94,0.08); }
+.match-item.duplicate { opacity: 0.5; cursor: not-allowed; }
+.match-item input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; accent-color: #22c55e; }
+.match-info { flex: 1; min-width: 0; }
+.match-league {
+    font-size: 10px; color: #60a5fa; font-weight: bold;
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;
+}
+.match-teams { font-size: 15px; font-weight: bold; color: #fff; margin-bottom: 3px; }
+.match-meta { font-size: 12px; color: #94a3b8; }
+.match-meta .time-wib { color: #4ade80; font-weight: bold; }
+.match-meta .time-utc { color: #64748b; font-size: 11px; }
+.dup-badge {
+    display: inline-block; padding: 3px 8px; border-radius: 20px;
+    background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.4);
+    color: #fcd34d; font-size: 10px; font-weight: bold; margin-left: 8px;
+}
+.hidden { display: none !important; }
+.login-box { text-align: center; padding: 45px 20px; }
+.login-box h2 { color: #ffd700; }
+.login-box button { background: linear-gradient(135deg, #7c3aed, #a855f7); padding: 13px 35px; }
+.result-item { padding: 8px 12px; border-radius: 8px; margin-bottom: 5px; font-size: 13px; }
+.result-item.ok { background: rgba(34,197,94,0.12); color: #86efac; }
+.result-item.skip { background: rgba(245,158,11,0.12); color: #fcd34d; }
+.result-item.fail { background: rgba(239,68,68,0.12); color: #fca5a5; }
+@media (max-width: 600px) {
+    .form-row { flex-direction: column; align-items: flex-start; }
+    input[type="date"], select { width: 100%; min-width: unset; }
+    .buttons { flex-direction: column; }
+    .buttons button { width: 100%; }
+    header h1 { font-size: 19px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <img class="logo" src="logo-kiper4d.png" alt="KIPER4D">
+    <h1>🔄 FETCH JADWAL OTOMATIS</h1>
+    <div class="header-subtitle">THESPORTSDB → FIRESTORE</div>
+</header>
+
+<div class="container">
+
+    <div id="loginStatus" class="status">Memeriksa login Firebase...</div>
+
+    <div id="notLogged" class="card login-box hidden">
+        <h2>🔐 Belum Login</h2>
+        <p class="small">Silakan login dulu untuk mengakses halaman ini.</p>
+        <button id="btnLogin">🔑 LOGIN ADMIN</button>
+    </div>
+
+    <div id="appContent" class="hidden">
+
+        <div class="card fetch-card">
+            <div class="section-label">🌐 SUMBER DATA</div>
+            <h2>Ambil Jadwal dari TheSportsDB</h2>
+            <p class="small">
+                Pilih tanggal → klik <b>Fetch</b> → centang pertandingan → simpan ke Firestore.<br>
+                🔸 HDP & prediksi diisi manual nanti lewat <b>admin.html</b>.<br>
+                🔸 Waktu otomatis dikonversi dari UTC ke <b>WIB (+7)</b>.
+            </p>
+
+            <div class="form-row">
+                <label>📅 Tanggal:</label>
+                <input type="date" id="fetchDate">
+            </div>
+
+            <div class="form-row">
+                <label>🏆 Liga:</label>
+                <select id="fetchLeague">
+                    <option value="">⚽ Semua Liga Sepak Bola</option>
+                    <option value="4328">🏴 English Premier League</option>
+                    <option value="4335">🇪🇸 Spanish La Liga</option>
+                    <option value="4332">🇮🇹 Italian Serie A</option>
+                    <option value="4331">🇩🇪 German Bundesliga</option>
+                    <option value="4334">🇫🇷 French Ligue 1</option>
+                    <option value="4480">⭐ UEFA Champions League</option>
+                    <option value="4481">🥈 UEFA Europa League</option>
+                    <option value="4344">🇵🇹 Portuguese Primeira Liga</option>
+                    <option value="4346">🇳🇱 Dutch Eredivisie</option>
+                    <option value="4351">🇹🇷 Turkish Super Lig</option>
+                </select>
+            </div>
+
+            <div class="buttons">
+                <button id="btnFetch" class="btn-blue">🔄 FETCH DARI API</button>
+                <button id="btnToday" class="btn-dark">📅 Hari Ini</button>
+                <button id="btnTomorrow" class="btn-dark">📅 Besok</button>
+            </div>
+
+            <div id="fetchStatus" class="status hidden" style="margin-top:15px"></div>
+        </div>
+
+        <div class="card preview-card hidden" id="previewCard">
+            <div class="section-label">👁️ PREVIEW</div>
+            <h2>Pilih Pertandingan yang Mau Disimpan</h2>
+            <p class="small">
+                Centang pertandingan yang mau disimpan. Yang sudah ada di database otomatis di-skip.
+            </p>
+
+            <div class="buttons" style="margin-bottom:15px">
+                <button id="btnSelectAll" class="btn-dark">✅ Pilih Semua</button>
+                <button id="btnDeselectAll" class="btn-dark">❌ Hapus Semua</button>
+            </div>
+
+            <div id="previewList"></div>
+
+            <div class="buttons">
+                <button id="btnSave" class="btn-green">💾 SIMPAN KE FIRESTORE</button>
+            </div>
+        </div>
+
+        <div class="card result-card hidden" id="resultCard">
+            <div class="section-label">📊 HASIL</div>
+            <h2>Ringkasan Simpan</h2>
+            <div id="resultContent"></div>
+        </div>
+
+        <div class="card">
+            <div class="buttons">
+                <button id="btnLogout" class="btn-red">🚪 LOGOUT</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import {
+    getAuth, setPersistence, browserLocalPersistence,
+    onAuthStateChanged, signOut
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import {
+    getFirestore, collection, getDocs, doc, writeBatch
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+/* ============================================================
+   FIREBASE CONFIG
+   ============================================================ */
+const firebaseConfig = {
+    apiKey: "AIzaSyB1i3mpTNKNlk54qQqk8xONAsaw66SOVs4",
+    authDomain: "prediksipanel.firebaseapp.com",
+    projectId: "prediksipanel",
+    storageBucket: "prediksipanel.firebasestorage.app",
+    messagingSenderId: "487032542947",
+    appId: "1:487032542947:web:46a3d64e3abdece53e17d6",
+    measurementId: "G-TQTEN9LEDW"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+/* ============================================================
+   THESPORTSDB CONFIG
+   ============================================================ */
+const TSDB_KEY = "123";
+const TSDB_BASE = `https://www.thesportsdb.com/api/v1/json/${TSDB_KEY}`;
+
+/* ============================================================
+   ELEMENT REFS
+   ============================================================ */
+const loginStatus = document.getElementById("loginStatus");
+const appContent = document.getElementById("appContent");
+const notLogged = document.getElementById("notLogged");
+const btnLogin = document.getElementById("btnLogin");
+const btnLogout = document.getElementById("btnLogout");
+const btnFetch = document.getElementById("btnFetch");
+const btnToday = document.getElementById("btnToday");
+const btnTomorrow = document.getElementById("btnTomorrow");
+const btnSelectAll = document.getElementById("btnSelectAll");
+const btnDeselectAll = document.getElementById("btnDeselectAll");
+const btnSave = document.getElementById("btnSave");
+const fetchDate = document.getElementById("fetchDate");
+const fetchLeague = document.getElementById("fetchLeague");
+const fetchStatus = document.getElementById("fetchStatus");
+const previewCard = document.getElementById("previewCard");
+const previewList = document.getElementById("previewList");
+const resultCard = document.getElementById("resultCard");
+const resultContent = document.getElementById("resultContent");
+
+let fetchedMatches = [];
+let existingKeys = new Set();
+
+/* ============================================================
+   AUTH
+   ============================================================ */
+await setPersistence(auth, browserLocalPersistence);
+
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        loginStatus.className = "status success";
+        loginStatus.textContent = "✅ Login: " + user.email;
+        appContent.classList.remove("hidden");
+        notLogged.classList.add("hidden");
+        setDefaultDate();
+        await loadExistingKeys();
+    } else {
+        loginStatus.className = "status warning";
+        loginStatus.textContent = "⚠️ Belum login";
+        appContent.classList.add("hidden");
+        notLogged.classList.remove("hidden");
+    }
+});
+
+btnLogin.addEventListener("click", () => {
+    window.location.href = "/login.html";
+});
+
+btnLogout.addEventListener("click", async () => {
+    if (!confirm("Yakin mau logout?")) return;
+    try {
+        await signOut(auth);
+        window.location.href = "/login.html";
+    } catch (e) {
+        alert("Gagal logout: " + e.message);
+    }
+});
+
+/* ============================================================
+   DEFAULT TANGGAL
+   ============================================================ */
+function setDefaultDate() {
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, "0");
+    const dd = String(now.getDate()).padStart(2, "0");
+    fetchDate.value = `${yyyy}-${mm}-${dd}`;
+}
+
+btnToday.addEventListener("click", setDefaultDate);
+
+btnTomorrow.addEventListener("click", () => {
+    const tmr = new Date();
+    tmr.setDate(tmr.getDate() + 1);
+    const yyyy = tmr.getFullYear();
+    const mm = String(tmr.getMonth() + 1).padStart(2, "0");
+    const dd = String(tmr.getDate()).padStart(2, "0");
+    fetchDate.value = `${yyyy}-${mm}-${dd}`;
+});
+
+/* ============================================================
+   LOAD EXISTING KEYS (untuk cek duplikat)
+   ============================================================ */
+async function loadExistingKeys() {
+    try {
+        const snap = await getDocs(collection(db, "predictions"));
+        existingKeys.clear();
+        snap.forEach(d => {
+            const data = d.data();
+            const key = makeKey(data.date, data.time, data.home, data.away);
+            existingKeys.add(key);
+        });
+        console.log(`[FETCH] ${existingKeys.size} key existing loaded`);
+    } catch (e) {
+        console.warn("[FETCH] Gagal load existing keys:", e);
+    }
+}
+
+/* ============================================================
+   UTILITY
+   ============================================================ */
+function clean(v) { return String(v || "").trim(); }
+
+function padTime(h, m) {
+    return String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0");
+}
+
+function utcToWib(timeStr) {
+    if (!timeStr) return "";
+    const parts = String(timeStr).split(":");
+    if (parts.length < 2) return "";
+    let h = parseInt(parts[0], 10);
+    let m = parseInt(parts[1], 10);
+    h += 7;
+    if (h >= 24) h -= 24;
+    return padTime(h, m);
+}
+
+function makeKey(date, time, home, away) {
+    const norm = (s) => clean(s).toLowerCase().replace(/\s+/g, " ").trim();
+    return [date, time, norm(home), norm(away)].join("|");
+}
+
+function escapeHtml(s) {
+    return clean(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function showFetchStatus(msg, type = "success") {
+    fetchStatus.className = "status " + type;
+    fetchStatus.textContent = msg;
+    fetchStatus.classList.remove("hidden");
+}
+
+/* ============================================================
+   🔄 FETCH DARI THESPORTSDB
+   ============================================================ */
+btnFetch.addEventListener("click", async () => {
+    const date = fetchDate.value;
+    if (!date) {
+        showFetchStatus("❌ Pilih tanggal dulu bro!", "error");
+        return;
+    }
+
+    btnFetch.disabled = true;
+    btnFetch.textContent = "⏳ Fetching...";
+    previewCard.classList.add("hidden");
+    resultCard.classList.add("hidden");
+    showFetchStatus("⏳ Mengambil jadwal dari TheSportsDB...", "warning");
+
+    try {
+        const leagueId = fetchLeague.value;
+        let url;
+        if (leagueId) {
+            url = `${TSDB_BASE}/eventsday.php?d=${date}&l=${leagueId}`;
+        } else {
+            url = `${TSDB_BASE}/eventsday.php?d=${date}&s=Soccer`;
+        }
+
+        console.log("[FETCH] URL:", url);
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (!data.events || data.events.length === 0) {
+            showFetchStatus(`⚠️ Tidak ada pertandingan pada tanggal ${date}`, "warning");
+            btnFetch.disabled = false;
+            btnFetch.textContent = "🔄 FETCH DARI API";
+            return;
+        }
+
+        // Convert ke format internal
+        fetchedMatches = data.events.map(ev => {
+            const timeUtc = ev.strTime || "";
+            const timeWib = utcToWib(timeUtc);
+
+            return {
+                idEvent: ev.idEvent,
+                league: ev.strLeague || "LAINNYA",
+                date: ev.dateEvent || date,
+                time: timeWib,
+                timeUtc: timeUtc,
+                home: ev.strHomeTeam || "",
+                away: ev.strAwayTeam || "",
+                checked: false
+            };
+        }).filter(m => m.home && m.away);
+
+        // Urutkan berdasarkan jam
+        fetchedMatches.sort((a, b) => (a.time || "").localeCompare(b.time || ""));
+
+        showFetchStatus(`✅ Berhasil ambil ${fetchedMatches.length} pertandingan`, "success");
+        renderPreview();
+
+    } catch (err) {
+        console.error(err);
+        showFetchStatus("❌ Gagal fetch: " + err.message, "error");
+    }
+
+    btnFetch.disabled = false;
+    btnFetch.textContent = "🔄 FETCH DARI API";
+});
+
+/* ============================================================
+   RENDER PREVIEW
+   ============================================================ */
+function renderPreview() {
+    previewCard.classList.remove("hidden");
+
+    let html = "";
+    fetchedMatches.forEach((m, i) => {
+        const key = makeKey(m.date, m.time, m.home, m.away);
+        const isDup = existingKeys.has(key);
+
+        html += `
+            <div class="match-item ${isDup ? "duplicate" : ""}" data-index="${i}">
+                <input type="checkbox" 
+                    ${isDup ? "disabled" : ""} 
+                    ${m.checked ? "checked" : ""}
+                    data-index="${i}">
+                <div class="match-info">
+                    <div class="match-league">🏆 ${escapeHtml(m.league)}</div>
+                    <div class="match-teams">${escapeHtml(m.home)} VS ${escapeHtml(m.away)}
+                        ${isDup ? '<span class="dup-badge">SUDAH ADA</span>' : ''}
+                    </div>
+                    <div class="match-meta">
+                        📅 ${escapeHtml(m.date)} · 
+                        🕐 <span class="time-wib">${escapeHtml(m.time)} WIB</span> 
+                        <span class="time-utc">(${escapeHtml(m.timeUtc)} UTC)</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    previewList.innerHTML = html;
+
+    // Event listener checkbox
+    previewList.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.addEventListener("change", (e) => {
+            const idx = parseInt(e.target.dataset.index, 10);
+            fetchedMatches[idx].checked = e.target.checked;
+            e.target.closest(".match-item").classList.toggle("checked", e.target.checked);
+        });
+    });
+
+    // Klik item = toggle checkbox
+    previewList.querySelectorAll(".match-item").forEach(item => {
+        item.addEventListener("click", (e) => {
+            if (e.target.tagName === "INPUT") return;
+            const cb = item.querySelector('input[type="checkbox"]');
+            if (!cb.disabled) {
+                cb.checked = !cb.checked;
+                cb.dispatchEvent(new Event("change"));
+            }
+        });
+    });
+}
+
+btnSelectAll.addEventListener("click", () => {
+    fetchedMatches.forEach((m, i) => {
+        const key = makeKey(m.date, m.time, m.home, m.away);
+        if (!existingKeys.has(key)) m.checked = true;
+    });
+    renderPreview();
+});
+
+btnDeselectAll.addEventListener("click", () => {
+    fetchedMatches.forEach(m => m.checked = false);
+    renderPreview();
+});
+
+/* ============================================================
+   💾 SIMPAN KE FIRESTORE
+   ============================================================ */
+btnSave.addEventListener("click", async () => {
+    if (!auth.currentUser) {
+        alert("Silakan login dulu.");
+        return;
+    }
+
+    const selected = fetchedMatches.filter(m => m.checked);
+    if (selected.length === 0) {
+        alert("Belum ada pertandingan yang dipilih.");
+        return;
+    }
+
+    if (!confirm(`Simpan ${selected.length} pertandingan ke Firestore?`)) return;
+
+    btnSave.disabled = true;
+    btnSave.textContent = "⏳ Menyimpan...";
+
+    try {
+        let batch = writeBatch(db);
+        let count = 0;
+        let sukses = 0;
+        let skip = 0;
+        const results = [];
+
+        for (const m of selected) {
+            const key = makeKey(m.date, m.time, m.home, m.away);
+            if (existingKeys.has(key)) {
+                skip++;
+                results.push({ type: "skip", msg: `⚠️ Skip (sudah ada): ${m.home} vs ${m.away}` });
+                continue;
+            }
+
+            const ref = doc(collection(db, "predictions"));
+            batch.set(ref, {
+                league: m.league,
+                date: m.date,
+                time: m.time,
+                home: m.home,
+                homeLogo: "",
+                away: m.away,
+                awayLogo: "",
+                handicap: "",
+                prediction: "",
+                predictionScoreHome: "",
+                predictionScoreAway: "",
+                scoreHome: "",
+                scoreAway: "",
+                jadwalActive: true,
+                prediksiActive: false,
+                active: true,
+                status: "PREDIKSI AKTIF",
+                source: "thesportsdb",
+                updatedAt: new Date()
+            });
+
+            existingKeys.add(key);
+            sukses++;
+            count++;
+            results.push({ type: "ok", msg: `✅ ${m.home} vs ${m.away} (${m.date} ${m.time} WIB)` });
+
+            if (count >= 400) {
+                await batch.commit();
+                batch = writeBatch(db);
+                count = 0;
+            }
+        }
+
+        if (count > 0) await batch.commit();
+
+        resultCard.classList.remove("hidden");
+        resultContent.innerHTML = `
+            <div class="status success">
+                ✅ Selesai! Sukses: ${sukses}, Skip: ${skip}
+            </div>
+            ${results.map(r => `<div class="result-item ${r.type}">${escapeHtml(r.msg)}</div>`).join("")}
+        `;
+
+        // Reset
+        fetchedMatches.forEach(m => m.checked = false);
+        renderPreview();
+
+        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+
+    } catch (err) {
+        console.error(err);
+        alert("❌ Gagal simpan: " + err.message);
+    }
+
+    btnSave.disabled = false;
+    btnSave.textContent = "💾 SIMPAN KE FIRESTORE";
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Logos Manual - KIPER4D</title>
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Arial, sans-serif; background: radial-gradient(circle at top, #24204a 0%, #0b0b18 35%, #000 100%); color: #fff; min-height: 100vh; }
+header { background: linear-gradient(135deg, rgba(19,8,38,0.98), rgba(35,10,55,0.98)); border-bottom: 1px solid rgba(255,215,0,0.25); padding: 20px; text-align: center; }
+header h1 { margin: 0; font-size: 24px; background: linear-gradient(90deg, #ffd700, #fff, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+header p { margin: 5px 0 0; color: #94a3b8; font-size: 12px; }
+.container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
+.status { padding: 14px; border-radius: 12px; margin-bottom: 15px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); font-size: 13px; }
+.success { background: rgba(34,197,94,0.12); border-color: rgba(34,197,94,0.35); color: #86efac; }
+.error { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.35); color: #fca5a5; }
+.warning { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.35); color: #fcd34d; }
+.card { background: linear-gradient(145deg, rgba(28,17,48,0.96), rgba(15,10,27,0.96)); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 22px; margin-bottom: 20px; }
+.card h2 { margin-top: 0; color: #fff; }
+.card h2::first-letter { color: #ffd700; }
+.small { font-size: 13px; color: #94a3b8; line-height: 1.6; }
+textarea { width: 100%; min-height: 400px; padding: 14px; border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; resize: vertical; font-size: 13px; line-height: 1.6; outline: none; background: #08050f; color: #f8fafc; font-family: 'Courier New', monospace; }
+textarea:focus { border-color: #a855f7; box-shadow: 0 0 0 3px rgba(168,85,247,0.12); }
+.buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+button { border: 0; padding: 12px 18px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 13px; color: white; transition: 0.2s; }
+button:hover { transform: translateY(-2px); }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-blue { background: linear-gradient(135deg, #2563eb, #3b82f6); }
+.btn-green { background: linear-gradient(135deg, #16a34a, #22c55e); }
+.btn-purple { background: linear-gradient(135deg, #7c3aed, #a855f7); }
+.btn-red { background: linear-gradient(135deg, #dc2626, #ef4444); }
+.btn-dark { background: linear-gradient(135deg, #334155, #475569); }
+.stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
+.stat-box { padding: 12px; border-radius: 12px; text-align: center; background: rgba(0,0,0,0.3); border: 1px solid rgba(229,189,82,0.22); }
+.stat-num { display: block; font-size: 22px; font-weight: 1000; color: #f1ce6b; }
+.stat-label { font-size: 10px; color: #9696a5; text-transform: uppercase; }
+.hidden { display: none; }
+.footer { text-align: center; color: #64748b; font-size: 12px; padding: 15px 0 30px; }
+.warnbox { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.4); border-radius: 12px; padding: 14px; margin-top: 15px; color: #fcd34d; font-size: 12.5px; line-height: 1.6; }
+@media (max-width: 600px) { .stat-grid { grid-template-columns: 1fr; } .buttons { flex-direction: column; } button { width: 100%; } }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>🎨 ADMIN LOGOS MANUAL</h1>
+    <p>Input URL logo tim ke Firestore — KIPER4D</p>
+</header>
+
+<div class="container">
+
+    <div id="loginStatus" class="status">Memeriksa login Firebase...</div>
+
+    <div id="notLogged" class="card hidden" style="text-align:center; padding:40px;">
+        <h2>🔐 Belum Login</h2>
+        <p class="small">Silakan login dulu lewat halaman admin.</p>
+        <button id="btnLogin" class="btn-purple" style="padding:12px 30px; margin-top:10px;">🔑 LOGIN</button>
+    </div>
+
+    <div id="adminContent" class="hidden">
+
+        <div class="card">
+            <h2>📝 Input URL Logo</h2>
+            <p class="small">
+                Format: <b>Nama Tim | URL Logo</b> (1 baris per tim)
+                <br>
+                Contoh: <code>Lecce | https://res.cloudinary.com/.../Lecce.png</code>
+            </p>
+            <textarea id="inputLogos" placeholder="Lecce | https://res.cloudinary.com/kc9b3mmz/image/upload/v.../Lecce.png&#10;Monza | https://res.cloudinary.com/kc9b3mmz/image/upload/v.../Monza.png&#10;Napoli | https://res.cloudinary.com/kc9b3mmz/image/upload/v.../Napoli.png"></textarea>
+            <div class="buttons">
+                <button id="btnParse" class="btn-blue">👁️ Preview</button>
+                <button id="btnSave" class="btn-green">💾 Save ke Firestore</button>
+                <button id="btnCek" class="btn-purple">🔍 Cek Firestore</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>👁️ Preview</h2>
+            <div id="previewArea" class="small">Belum ada data.</div>
+        </div>
+
+        <div class="card">
+            <h2>📊 Statistik Firestore</h2>
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <span class="stat-num" id="statTotal">0</span>
+                    <span class="stat-label">Total Logo</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-num" id="statAda" style="color:#86efac">0</span>
+                    <span class="stat-label">Ada URL</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-num" id="statKosong" style="color:#fca5a5">0</span>
+                    <span class="stat-label">Kosong</span>
+                </div>
+            </div>
+            <div class="buttons">
+                <button id="btnLogout" class="btn-dark">🚪 Logout</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🧹 Bersihkan Data Lama</h2>
+            <p class="small">
+                Hapus dokumen dengan <b>Document ID acak</b> (dari versi lama panel admin).<br>
+                Dokumen dengan ID rapi (contoh: <code>lecce</code>, <code>monza</code>, <code>napoli</code>) <b>tidak akan dihapus</b>.
+            </p>
+            <div class="warnbox">
+                ⚠️ <b>PERINGATAN:</b> Pastikan kamu sudah <b>Save ulang</b> semua logo dengan tombol "💾 Save ke Firestore" di atas sebelum klik tombol merah ini. Kalau belum, data akan hilang!
+            </div>
+            <div class="buttons">
+                <button id="btnCleanOld" class="btn-red">🗑️ Hapus Data Lama (ID Acak)</button>
+                <button id="btnAnalyze" class="btn-dark">📊 Analisa Data</button>
+            </div>
+            <div id="analyzeResult" class="small" style="margin-top:12px;"></div>
+        </div>
+
+    </div>
+
+    <div class="footer">⚽ KIPER4D • Admin Logos Manual</div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import { getAuth, setPersistence, browserLocalPersistence, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc, writeBatch } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyB1i3mpTNKNlk54qQqk8xONAsaw66SOVs4",
+    authDomain: "prediksipanel.firebaseapp.com",
+    projectId: "prediksipanel",
+    storageBucket: "prediksipanel.firebasestorage.app",
+    messagingSenderId: "487032542947",
+    appId: "1:487032542947:web:46a3d64e3abdece53e17d6",
+    measurementId: "G-TQTEN9LEDW"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+await setPersistence(auth, browserLocalPersistence);
+
+const loginStatus = document.getElementById("loginStatus");
+const notLogged = document.getElementById("notLogged");
+const adminContent = document.getElementById("adminContent");
+const inputLogos = document.getElementById("inputLogos");
+const previewArea = document.getElementById("previewArea");
+const statTotal = document.getElementById("statTotal");
+const statAda = document.getElementById("statAda");
+const statKosong = document.getElementById("statKosong");
+const btnLogin = document.getElementById("btnLogin");
+const btnParse = document.getElementById("btnParse");
+const btnSave = document.getElementById("btnSave");
+const btnCek = document.getElementById("btnCek");
+const btnLogout = document.getElementById("btnLogout");
+const btnCleanOld = document.getElementById("btnCleanOld");
+const btnAnalyze = document.getElementById("btnAnalyze");
+const analyzeResult = document.getElementById("analyzeResult");
+
+function clean(v) { return String(v || "").trim(); }
+
+function normalizeTeamKey(name) {
+    return clean(name).toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/&/g, " and ")
+        .replace(/[.'’`]/g, "")
+        .replace(/[-_/]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
+function slugify(name) {
+    return clean(name).toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/&/g, " and ")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "");
+}
+
+// Deteksi apakah ID dokumen = ID acak (Firebase auto-ID)
+function isRandomId(id) {
+    if (!id) return false;
+    // Firebase auto-ID: 20 char alfanumerik, tanpa tanda hubung
+    if (id.length >= 20 && /^[a-zA-Z0-9]+$/.test(id) && !id.includes("-")) return true;
+    return false;
+}
+
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        loginStatus.className = "status success";
+        loginStatus.textContent = "✅ Login: " + user.email;
+        adminContent.classList.remove("hidden");
+        notLogged.classList.add("hidden");
+        loadStats();
+    } else {
+        loginStatus.className = "status warning";
+        loginStatus.textContent = "⚠️ Belum login";
+        adminContent.classList.add("hidden");
+        notLogged.classList.remove("hidden");
+    }
+});
+
+btnLogin.addEventListener("click", () => { window.location.href = "/login.html"; });
+
+async function loadStats() {
+    try {
+        const snap = await getDocs(collection(db, "team-logos"));
+        let total = 0, ada = 0, kosong = 0;
+        snap.forEach((item) => {
+            total++;
+            const d = item.data();
+            const url = clean(d.logo || d.url || "");
+            if (url) ada++; else kosong++;
+        });
+        statTotal.textContent = total;
+        statAda.textContent = ada;
+        statKosong.textContent = kosong;
+    } catch (e) { console.error(e); }
+}
+
+function parseInput(text) {
+    const lines = text.split(/\r?\n/);
+    const hasil = [];
+    for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith("#")) continue;
+        const parts = trimmed.split("|").map(p => p.trim());
+        if (parts.length < 2) continue;
+        const nama = parts[0];
+        const url = parts[1];
+        if (!nama || !url) continue;
+        hasil.push({ nama, url, key: slugify(nama) });
+    }
+    return hasil;
+}
+
+btnParse.addEventListener("click", () => {
+    const text = inputLogos.value.trim();
+    if (!text) { alert("Paste data dulu."); return; }
+    const data = parseInput(text);
+    if (data.length === 0) {
+        previewArea.innerHTML = '<div class="status error">❌ Tidak ada data valid.</div>';
+        return;
+    }
+    let html = '<div class="status success">✅ ' + data.length + ' tim terdeteksi.</div>';
+    data.forEach((d, i) => {
+        html += '<div style="padding:6px 10px; background:rgba(0,0,0,0.3); border-radius:6px; margin-bottom:4px; display:flex; align-items:center; gap:8px;">'
+            + '<img src="' + d.url + '" style="width:24px; height:24px; object-fit:contain; background:white; border-radius:50%;" onerror="this.style.display=\'none\'">'
+            + '<b style="flex:1;">' + (i+1) + '. ' + d.nama + '</b>'
+            + '<span style="color:#8a8a9a; font-size:10px;">' + d.key + '</span>'
+            + '</div>';
+    });
+    previewArea.innerHTML = html;
+});
+
+btnSave.addEventListener("click", async () => {
+    if (!auth.currentUser) { alert("Login dulu."); return; }
+    const text = inputLogos.value.trim();
+    if (!text) { alert("Paste data dulu."); return; }
+    const data = parseInput(text);
+    if (data.length === 0) { alert("Tidak ada data valid."); return; }
+    if (!confirm("Save " + data.length + " logo ke Firestore?\n\nDocument ID akan dibuat otomatis dari nama tim (contoh: 'lecce', 'monza', 'napoli').")) return;
+
+    try {
+        btnSave.disabled = true;
+        btnSave.textContent = "⏳ Menyimpan...";
+
+        let batch = writeBatch(db);
+        let count = 0;
+        let saved = 0;
+
+        for (const d of data) {
+            if (!d.key) continue;
+            const ref = doc(db, "team-logos", d.key);
+            // 🔥 SIMPAN DENGAN 4 FIELD BIAR KOMPATIBEL
+            batch.set(ref, {
+                name: d.nama,       // ← field "name"
+                teamName: d.nama,   // ← field "teamName" (backup)
+                logo: d.url,        // ← field "logo"
+                url: d.url,         // ← field "url" (backup)
+                updatedAt: new Date()
+            });
+            count++;
+            saved++;
+            if (count >= 400) {
+                await batch.commit();
+                batch = writeBatch(db);
+                count = 0;
+            }
+        }
+        if (count > 0) await batch.commit();
+
+        alert("✅ Berhasil save " + saved + " logo!");
+        loadStats();
+    } catch (e) {
+        alert("❌ Gagal: " + e.message);
+        console.error(e);
+    }
+    btnSave.disabled = false;
+    btnSave.textContent = "💾 Save ke Firestore";
+});
+
+btnCek.addEventListener("click", loadStats);
+
+btnLogout.addEventListener("click", async () => {
+    if (!confirm("Logout?")) return;
+    await signOut(auth);
+    window.location.href = "/login.html";
+});
+
+// ============================================================
+// ANALISA DATA — cek berapa yang ID acak vs ID rapi
+// ============================================================
+btnAnalyze?.addEventListener("click", async () => {
+    if (!auth.currentUser) { alert("Login dulu."); return; }
+
+    btnAnalyze.disabled = true;
+    btnAnalyze.textContent = "⏳ Menganalisa...";
+    analyzeResult.innerHTML = '<div class="status">Memuat data...</div>';
+
+    try {
+        const snap = await getDocs(collection(db, "team-logos"));
+        let randomIdCount = 0;
+        let slugIdCount = 0;
+        const randomSamples = [];
+        const slugSamples = [];
+
+        snap.forEach(docSnap => {
+            const id = docSnap.id;
+            const d = docSnap.data();
+            if (isRandomId(id)) {
+                randomIdCount++;
+                if (randomSamples.length < 5) randomSamples.push({ id: id.slice(0, 30) + "...", name: d.teamName || d.name || "?" });
+            } else {
+                slugIdCount++;
+                if (slugSamples.length < 5) slugSamples.push({ id, name: d.name || d.teamName || "?" });
+            }
+        });
+
+        let html = '<div class="status success">';
+        html += '📊 <b>Hasil Analisa:</b><br>';
+        html += '• Total dokumen: <b>' + snap.size + '</b><br>';
+        html += '• 🔴 ID acak (perlu dihapus): <b style="color:#fca5a5">' + randomIdCount + '</b><br>';
+        html += '• ✅ ID rapi (slug): <b style="color:#86efac">' + slugIdCount + '</b>';
+        html += '</div>';
+
+        if (randomSamples.length > 0) {
+            html += '<div style="margin-top:10px; font-size:11px; color:#94a3b8;">';
+            html += '<b>Contoh ID acak (perlu dihapus):</b><br>';
+            randomSamples.forEach(s => {
+                html += '• <code>' + s.id + '</code> → ' + s.name + '<br>';
+            });
+            html += '</div>';
+        }
+
+        if (slugSamples.length > 0) {
+            html += '<div style="margin-top:10px; font-size:11px; color:#94a3b8;">';
+            html += '<b>Contoh ID rapi (dipertahankan):</b><br>';
+            slugSamples.forEach(s => {
+                html += '• <code>' + s.id + '</code> → ' + s.name + '<br>';
+            });
+            html += '</div>';
+        }
+
+        analyzeResult.innerHTML = html;
+    } catch (e) {
+        analyzeResult.innerHTML = '<div class="status error">❌ Error: ' + e.message + '</div>';
+    }
+
+    btnAnalyze.disabled = false;
+    btnAnalyze.textContent = "📊 Analisa Data";
+});
+
+// ============================================================
+// HAPUS DATA LAMA (ID ACAK)
+// ============================================================
+btnCleanOld?.addEventListener("click", async () => {
+    if (!auth.currentUser) { alert("Login dulu."); return; }
+
+    // Konfirmasi 1
+    const c1 = confirm(
+        "⚠️ PERINGATAN PENTING!\n\n" +
+        "Tombol ini akan MENGHAPUS permanen semua dokumen team-logos yang ID-nya ACAP (dari versi lama panel admin).\n\n" +
+        "✅ Dokumen dengan ID rapi (contoh: 'lecce', 'monza', 'napoli') AKAN DIPERTAHANKAN.\n\n" +
+        "Pastikan kamu SUDAH save ulang semua logo dengan tombol '💾 Save ke Firestore' di atas.\n\n" +
+        "Lanjutkan?"
+    );
+    if (!c1) return;
+
+    // Konfirmasi 2 (double confirm biar aman)
+    const c2 = confirm(
+        "⚠️ KONFIRMASI TERAKHIR\n\n" +
+        "Data yang dihapus TIDAK BISA dikembalikan.\n\n" +
+        "Klik OK untuk mulai hapus."
+    );
+    if (!c2) return;
+
+    try {
+        btnCleanOld.disabled = true;
+        btnCleanOld.textContent = "⏳ Menghapus...";
+        analyzeResult.innerHTML = '<div class="status warning">⏳ Mengambil daftar dokumen...</div>';
+
+        const snap = await getDocs(collection(db, "team-logos"));
+        const toDelete = [];
+
+        snap.forEach(docSnap => {
+            if (isRandomId(docSnap.id)) {
+                toDelete.push(docSnap.ref);
+            }
+        });
+
+        if (toDelete.length === 0) {
+            analyzeResult.innerHTML = '<div class="status success">✅ Tidak ada data lama yang perlu dihapus. Semua data sudah rapi!</div>';
+            btnCleanOld.disabled = false;
+            btnCleanOld.textContent = "🗑️ Hapus Data Lama (ID Acak)";
+            return;
+        }
+
+        analyzeResult.innerHTML = '<div class="status warning">⏳ Menghapus ' + toDelete.length + ' dokumen...</div>';
+
+        let batch = writeBatch(db);
+        let count = 0;
+        let deleted = 0;
+
+        for (const ref of toDelete) {
+            batch.delete(ref);
+            count++;
+            deleted++;
+            if (count >= 400) {
+                await batch.commit();
+                batch = writeBatch(db);
+                count = 0;
+                analyzeResult.innerHTML = '<div class="status warning">⏳ Menghapus... ' + deleted + '/' + toDelete.length + '</div>';
+            }
+        }
+        if (count > 0) await batch.commit();
+
+        analyzeResult.innerHTML = '<div class="status success">✅ Berhasil hapus <b>' + deleted + '</b> dokumen ID acak!</div>';
+        alert("✅ Berhasil hapus " + deleted + " dokumen ID acak!");
+        loadStats();
+    } catch (e) {
+        analyzeResult.innerHTML = '<div class="status error">❌ Gagal: ' + e.message + '</div>';
+        alert("❌ Gagal: " + e.message);
+    }
+
+    btnCleanOld.disabled = false;
+    btnCleanOld.textContent = "🗑️ Hapus Data Lama (ID Acak)";
+});
+</script>
+
+</body>
+</html>

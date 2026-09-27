@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ✅ FAVICON pakai file lokal -->
+<link rel="icon" type="image/png" href="favicon.png">
+
+<title>Login Admin - KIPER4D</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+
+    background:
+        radial-gradient(circle at top, #3b0764, #090014 55%, #000000);
+
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: white;
+}
+
+.box {
+    width: 90%;
+    max-width: 420px;
+
+    background: rgba(20, 10, 35, 0.95);
+
+    border: 1px solid rgba(255, 215, 0, 0.35);
+
+    border-radius: 20px;
+
+    padding: 35px 30px;
+
+    box-shadow:
+        0 0 30px rgba(255, 215, 0, 0.15),
+        0 0 80px rgba(128, 0, 255, 0.15);
+}
+
+/* =========================
+   LOGO (GAMBAR LOKAL)
+========================= */
+
+.logo {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logo img {
+    width: 180px;
+    max-width: 80%;
+
+    display: block;
+    margin: auto;
+
+    filter:
+        drop-shadow(0 0 10px rgba(255, 215, 0, 0.4));
+
+    transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.logo img:hover {
+    filter:
+        drop-shadow(0 0 18px rgba(255, 215, 0, 0.75));
+    transform: scale(1.03);
+}
+
+/* =========================
+   HEADING
+========================= */
+
+h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    font-size: 24px;
+
+    margin: 10px 0 25px;
+
+    color: #ffd700;
+}
+
+h1 .icon-shield {
+    width: 26px;
+    height: 26px;
+
+    flex-shrink: 0;
+
+    filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.55));
+}
+
+label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-weight: bold;
+
+    font-size: 14px;
+
+    color: #ddd;
+}
+
+input {
+    width: 100%;
+
+    padding: 14px;
+
+    margin-bottom: 18px;
+
+    border-radius: 10px;
+
+    border: 1px solid #4b3b63;
+
+    background: #12091d;
+
+    color: white;
+
+    outline: none;
+
+    font-size: 15px;
+}
+
+input:focus {
+    border-color: #ffd700;
+
+    box-shadow:
+        0 0 8px rgba(255, 215, 0, 0.2);
+}
+
+button {
+    width: 100%;
+
+    padding: 15px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(135deg, #ffd700, #ff9800);
+
+    color: #1a0b00;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+button .icon-btn {
+    width: 18px;
+    height: 18px;
+}
+
+button:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 0 20px rgba(255, 215, 0, 0.35);
+}
+
+button:disabled {
+    background: #777;
+
+    color: #ddd;
+
+    cursor: not-allowed;
+}
+
+#hasil {
+    margin-top: 20px;
+
+    text-align: center;
+
+    line-height: 1.6;
+
+    font-size: 14px;
+
+    word-break: break-word;
+}
+
+#hasil .icon-inline {
+    width: 16px;
+    height: 16px;
+
+    vertical-align: -3px;
+
+    margin-right: 6px;
+}
+
+.success {
+    color: #4ade80;
+}
+
+.error {
+    color: #ff6b6b;
+}
+
+.footer {
+    margin-top: 25px;
+
+    text-align: center;
+
+    font-size: 12px;
+
+    color: #888;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="box">
+
+    <div class="logo">
+        <!-- ✅ LOGO pakai file lokal -->
+        <img
+            src="logo-kiper4d.png"
+            alt="KIPER4D">
+    </div>
+
+
+    <h1>
+        <svg class="icon-shield" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L4 5V11C4 16.05 7.41 20.74 12 22C16.59 20.74 20 16.05 20 11V5L12 2Z"
+                  fill="url(#goldGrad)" stroke="#ffd700" stroke-width="1.2" stroke-linejoin="round"/>
+            <path d="M9 12L11 14L15 10"
+                  stroke="#1a0b00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs>
+                <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#ffd700"/>
+                    <stop offset="100%" stop-color="#ff9800"/>
+                </linearGradient>
+            </defs>
+        </svg>
+        LOGIN ADMIN
+    </h1>
+
+
+    <label>Email Admin</label>
+
+    <input
+        type="email"
+        id="email"
+        placeholder="Masukkan email admin"
+        autocomplete="email">
+
+
+    <label>Password</label>
+
+    <input
+        type="password"
+        id="password"
+        placeholder="Masukkan password"
+        autocomplete="current-password">
+
+
+    <button id="loginButton">
+
+        <svg class="icon-btn" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 3H19C20.1 3 21 3.9 21 5V19C21 20.1 20.1 21 19 21H15"
+                  stroke="#1a0b00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M10 17L15 12L10 7"
+                  stroke="#1a0b00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M15 12H3"
+                  stroke="#1a0b00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+
+        LOGIN ADMIN
+
+    </button>
+
+
+    <div id="hasil">
+        Silakan masukkan email dan password.
+    </div>
+
+
+    <div class="footer">
+        KIPER4D • Admin Panel
+    </div>
+
+</div>
+
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+
+import {
+    getAuth,
+    setPersistence,
+    browserLocalPersistence,
+    signInWithEmailAndPassword
+}
+from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+
+/* =========================
+   FIREBASE CONFIG
+========================= */
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyB1i3mpTNKNlk54qQqk8xONAsaw66SOVs4",
+
+    authDomain:
+        "prediksipanel.firebaseapp.com",
+
+    projectId:
+        "prediksipanel",
+
+    storageBucket:
+        "prediksipanel.firebasestorage.app",
+
+    messagingSenderId:
+        "487032542947",
+
+    appId:
+        "1:487032542947:web:46a3d64e3abdece53e17d6",
+
+    measurementId:
+        "G-TQTEN9LEDW"
+
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+const auth =
+    getAuth(app);
+
+
+const tombol =
+    document.getElementById("loginButton");
+
+const hasil =
+    document.getElementById("hasil");
+
+
+/* =========================
+   SVG ICON HELPER
+========================= */
+
+const ICONS = {
+
+    loading: '<svg class="icon-inline" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="#ffd700" stroke-width="2.5" stroke-dasharray="40 20" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/></circle></svg>',
+
+    error: '<svg class="icon-inline" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" stroke="#ff6b6b" stroke-width="2"/><path d="M8 8L16 16M16 8L8 16" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round"/></svg>',
+
+    success: '<svg class="icon-inline" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" stroke="#4ade80" stroke-width="2"/><path d="M7 12.5L10.5 16L17 9" stroke="#4ade80" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+
+};
+
+
+/* =========================
+   LOGIN
+========================= */
+
+tombol.addEventListener("click", async function () {
+
+    const email =
+        document.getElementById("email").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
+
+    if (!email || !password) {
+
+        hasil.innerHTML =
+            '<span class="error">' + ICONS.error + 'Email dan password wajib diisi.</span>';
+
+        return;
+    }
+
+
+    tombol.disabled = true;
+
+    tombol.innerText =
+        "MEMPROSES...";
+
+
+    hasil.innerHTML =
+        ICONS.loading + "Sedang login...";
+
+
+    try {
+
+        await setPersistence(
+            auth,
+            browserLocalPersistence
+        );
+
+
+        const hasilLogin =
+            await signInWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+
+
+        hasil.innerHTML =
+            '<span class="success">' + ICONS.success + 'LOGIN BERHASIL!<br><br>Memasuki Admin Panel...</span>';
+
+
+        tombol.innerText =
+            "LOGIN BERHASIL";
+
+
+        console.log(
+            "USER FIREBASE:",
+            hasilLogin.user
+        );
+
+
+        setTimeout(function () {
+
+            window.location.href =
+                "/admin.html";
+
+        }, 700);
+
+
+    } catch (error) {
+
+        console.error(
+            "LOGIN ERROR:",
+            error
+        );
+
+
+        tombol.disabled = false;
+
+        tombol.innerText =
+            "LOGIN ADMIN";
+
+
+        hasil.innerHTML =
+            '<span class="error">' +
+            ICONS.error +
+            "LOGIN GAGAL<br><br>" +
+            "<b>Kode:</b><br>" +
+            error.code +
+            "<br><br>" +
+            "<b>Pesan:</b><br>" +
+            error.message +
+            "</span>";
+
+    }
+
+});
+
+
+/* =========================
+   ENTER = LOGIN
+========================= */
+
+document
+    .getElementById("password")
+    .addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter") {
+
+            tombol.click();
+
+        }
+
+    });
+
+</script>
+
+</body>
+
+</html>

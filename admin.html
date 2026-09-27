@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="icon" type="image/png" href="favicon.png">
+
+<title>Admin Prediksi Bola - KIPER4D</title>
+
+<style>
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background:
+        radial-gradient(circle at top left, #24104f 0%, transparent 35%),
+        radial-gradient(circle at top right, #3a0b42 0%, transparent 30%),
+        #090611;
+    color: #f8fafc;
+    min-height: 100vh;
+}
+
+header {
+    background: linear-gradient(135deg, rgba(19, 8, 38, 0.98), rgba(35, 10, 55, 0.98));
+    border-bottom: 1px solid rgba(255, 215, 0, 0.25);
+    padding: 24px 15px;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+    position: relative;
+    overflow: hidden;
+}
+
+header::before {
+    content: "";
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 193, 7, 0.08);
+    border-radius: 50%;
+    top: -180px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.logo {
+    width: 105px;
+    height: 105px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 10px;
+    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.35));
+    position: relative;
+    z-index: 1;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 27px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    background: linear-gradient(90deg, #ffd700, #ffffff, #c084fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    z-index: 1;
+}
+
+.header-subtitle {
+    margin-top: 7px;
+    color: #cbd5e1;
+    font-size: 13px;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+}
+
+.container {
+    max-width: 1150px;
+    margin: 30px auto;
+    padding: 0 15px;
+}
+
+.status {
+    padding: 14px 17px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #e2e8f0;
+}
+
+.success { background: rgba(34,197,94,0.12); border-color: rgba(34,197,94,0.35); color: #86efac; }
+.error { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.35); color: #fca5a5; }
+.warning { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.35); color: #fcd34d; }
+
+.card {
+    background: linear-gradient(145deg, rgba(28, 17, 48, 0.96), rgba(15, 10, 27, 0.96));
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 22px;
+    margin-bottom: 22px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04);
+    backdrop-filter: blur(10px);
+}
+
+.card h2 { margin-top: 0; margin-bottom: 8px; font-size: 20px; color: #ffffff; }
+.card h2::first-letter { color: #ffd700; }
+
+.small { font-size: 13px; color: #94a3b8; line-height: 1.6; }
+
+.jadwal-card { border-top: 3px solid #3b82f6; }
+.prediksi-card { border-top: 3px solid #a855f7; }
+.database-card { border-top: 3px solid #f59e0b; }
+
+.section-label {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 30px;
+    background: rgba(255,215,0,0.08);
+    border: 1px solid rgba(255,215,0,0.18);
+    color: #ffd700;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+.contoh {
+    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+    font-size: 13px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    color: #cbd5e1;
+}
+
+textarea {
+    width: 100%;
+    min-height: 300px;
+    padding: 16px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    resize: vertical;
+    font-size: 14px;
+    line-height: 1.6;
+    outline: none;
+    background: #08050f;
+    color: #f8fafc;
+    transition: 0.25s;
+    font-family: 'Courier New', monospace;
+}
+
+textarea::placeholder { color: #64748b; }
+
+textarea:focus {
+    border-color: #a855f7;
+    box-shadow: 0 0 0 3px rgba(168,85,247,0.12), 0 0 20px rgba(168,85,247,0.08);
+}
+
+.buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+
+button {
+    border: 0;
+    padding: 13px 19px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    color: white;
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+
+button:hover { transform: translateY(-2px); }
+button:active { transform: translateY(0); }
+button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.btn-blue { background: linear-gradient(135deg, #2563eb, #3b82f6); box-shadow: 0 7px 20px rgba(37,99,235,0.25); }
+.btn-green { background: linear-gradient(135deg, #16a34a, #22c55e); box-shadow: 0 7px 20px rgba(34,197,94,0.2); }
+.btn-orange { background: linear-gradient(135deg, #d97706, #f59e0b); box-shadow: 0 7px 20px rgba(245,158,11,0.2); }
+.btn-red { background: linear-gradient(135deg, #dc2626, #ef4444); box-shadow: 0 7px 20px rgba(239,68,68,0.2); }
+.btn-dark { background: linear-gradient(135deg, #334155, #475569); }
+
+.match {
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 13px;
+    padding: 16px;
+    margin-bottom: 10px;
+    background: rgba(0,0,0,0.22);
+    color: #cbd5e1;
+    line-height: 1.6;
+}
+
+.match strong { color: #60a5fa; }
+.pred-preview { border-left: 4px solid #a855f7; }
+.hidden { display: none; }
+
+.login-box { text-align: center; padding: 45px 20px; }
+.login-box h2 { color: #ffd700; }
+.login-box p { color: #94a3b8; }
+.login-box button {
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    box-shadow: 0 8px 25px rgba(168,85,247,0.3);
+    padding: 13px 35px;
+}
+
+.admin-welcome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 22px;
+    padding: 18px 20px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(124,58,237,0.16), rgba(255,215,0,0.06));
+    border: 1px solid rgba(168,85,247,0.2);
+}
+
+.admin-welcome-title { font-size: 17px; font-weight: bold; }
+.admin-welcome-text { margin-top: 4px; color: #94a3b8; font-size: 12px; }
+
+.footer { text-align: center; color: #64748b; font-size: 12px; padding: 15px 0 30px; }
+
+@media (max-width: 600px) {
+    header { padding: 20px 12px; }
+    .logo { width: 85px; height: 85px; }
+    header h1 { font-size: 22px; }
+    .container { margin-top: 20px; padding: 0 10px; }
+    .card { padding: 17px; border-radius: 15px; }
+    .buttons { flex-direction: column; }
+    button { width: 100%; }
+    textarea { min-height: 250px; }
+    .admin-welcome { flex-direction: column; align-items: flex-start; }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+    <img class="logo" src="logo-kiper4d.png" alt="KIPER4D">
+    <h1>⚽ ADMIN PANEL KIPER4D</h1>
+    <div class="header-subtitle">JADWAL • PREDIKSI • DATABASE</div>
+</header>
+
+<div class="container">
+
+    <div id="loginStatus" class="status">Memeriksa login Firebase...</div>
+
+    <div id="notLogged" class="card login-box hidden">
+        <h2>🔐 Belum Login</h2>
+        <p>Silakan login terlebih dahulu untuk membuka panel admin.</p>
+        <button id="btnLogin">🔑 LOGIN ADMIN</button>
+    </div>
+
+    <div id="adminContent" class="hidden">
+
+        <div class="admin-welcome">
+            <div>
+                <div class="admin-welcome-title">👋 Selamat Datang di Panel Admin</div>
+                <div class="admin-welcome-text">Kelola jadwal dan prediksi pertandingan KIPER4D.</div>
+            </div>
+            <div>⚡ PANEL AKTIF</div>
+        </div>
+
+
+        <div class="card jadwal-card">
+            <div class="section-label">📅 JADWAL PERTANDINGAN</div>
+            <h2>Update Jadwal</h2>
+            <p class="small">
+                Format: <b>TANGGAL JAM [WIB] [|] HOME VS AWAY [|] HANDICAP</b>
+                <br>
+                ✅ Handicap support: <code>0 : 1/4</code>, <code>1/2 : 0</code>, <code>1 1/2 : 0</code>
+                <br>
+                🎨 <b>Logo otomatis dari Firestore (fuzzy match pintar)</b>
+            </p>
+            <div class="contoh">ITALY SERIE A
+
+11/09/2026 01:45 WIB | Venezia VS Fiorentina | 1/4 : 0
+11/09/2026 02:00 WIB Venezia VS Fiorentina 0 : 1/2</div>
+            <textarea id="inputJadwal" placeholder="Paste data JADWAL di sini..."></textarea>
+            <div class="buttons">
+                <button id="btnProsesJadwal" class="btn-blue">⚙️ Proses Jadwal</button>
+                <button id="btnPublishJadwal" class="btn-green">🚀 Publish Jadwal</button>
+            </div>
+        </div>
+
+
+        <div class="card">
+            <div class="section-label">👁️ HASIL JADWAL</div>
+            <h2>Preview Jadwal</h2>
+            <div id="hasilJadwal">Belum ada data jadwal diproses.</div>
+        </div>
+
+
+        <div class="card prediksi-card">
+            <div class="section-label">🎯 PREDIKSI SKOR</div>
+            <h2>Update Prediksi</h2>
+            <p class="small">
+                Format: <b>TANGGAL JAM [WIB] [|] HOME VS AWAY [|] SKOR</b>
+                <br>
+                <b>Nama tim harus PERSIS SAMA dengan jadwal.</b>
+            </p>
+            <div class="contoh">ITALY SERIE A
+
+11/09/2026 01:45 WIB | Venezia VS Fiorentina | 1 : 2
+11/09/2026 02:00 WIB Venezia VS Fiorentina 2 : 2</div>
+            <textarea id="inputPrediksi" placeholder="Paste data PREDIKSI di sini..."></textarea>
+            <div class="buttons">
+                <button id="btnProsesPrediksi" class="btn-blue">⚙️ Proses Prediksi</button>
+                <button id="btnPublishPrediksi" class="btn-green">🚀 Publish Prediksi</button>
+            </div>
+        </div>
+
+
+        <div class="card">
+            <div class="section-label">👁️ HASIL PREDIKSI</div>
+            <h2>Preview Prediksi</h2>
+            <div id="hasilPrediksi">Belum ada data prediksi diproses.</div>
+        </div>
+
+
+        <div class="card database-card">
+            <div class="section-label">🗄️ DATABASE</div>
+            <h2>Database</h2>
+            <p class="small">
+                Gunakan bagian ini untuk mengecek dan membersihkan data pertandingan yang duplikat.
+            </p>
+            <div class="buttons">
+                <button id="btnCekDuplikat" class="btn-orange">🔍 Cek Duplikat</button>
+                <button id="btnBersihkan" class="btn-red">🧹 Bersihkan Duplikat</button>
+                <button id="btnHapusSemua" class="btn-red">🗑️ HAPUS SEMUA DATA</button>
+                <button id="btnLogout" class="btn-dark">🚪 Logout</button>
+            </div>
+        </div>
+
+
+        <div class="card">
+            <div class="section-label">🔍 DATABASE CHECK</div>
+            <h2>Hasil Cek Duplikat</h2>
+            <div id="hasilDuplikat">Belum melakukan pengecekan.</div>
+        </div>
+
+    </div>
+
+    <div class="footer">⚽ KIPER4D • Admin Prediction Panel</div>
+
+</div>
+
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+
+import {
+    getAuth,
+    setPersistence,
+    browserLocalPersistence,
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+import {
+    getFirestore,
+    collection,
+    getDocs,
+    doc,
+    writeBatch
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+
+const firebaseConfig = {
+    apiKey: "AIzaSyB1i3mpTNKNlk54qQqk8xONAsaw66SOVs4",
+    authDomain: "prediksipanel.firebaseapp.com",
+    projectId: "prediksipanel",
+    storageBucket: "prediksipanel.firebasestorage.app",
+    messagingSenderId: "487032542947",
+    appId: "1:487032542947:web:46a3d64e3abdece53e17d6",
+    measurementId: "G-TQTEN9LEDW"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const loginStatus = document.getElementById("loginStatus");
+const adminContent = document.getElementById("adminContent");
+const notLogged = document.getElementById("notLogged");
+const inputJadwal = document.getElementById("inputJadwal");
+const inputPrediksi = document.getElementById("inputPrediksi");
+const hasilJadwal = document.getElementById("hasilJadwal");
+const hasilPrediksi = document.getElementById("hasilPrediksi");
+const hasilDuplikat = document.getElementById("hasilDuplikat");
+const btnProsesJadwal = document.getElementById("btnProsesJadwal");
+const btnPublishJadwal = document.getElementById("btnPublishJadwal");
+const btnProsesPrediksi = document.getElementById("btnProsesPrediksi");
+const btnPublishPrediksi = document.getElementById("btnPublishPrediksi");
+const btnCekDuplikat = document.getElementById("btnCekDuplikat");
+const btnBersihkan = document.getElementById("btnBersihkan");
+const btnHapusSemua = document.getElementById("btnHapusSemua");
+const btnLogout = document.getElementById("btnLogout");
+const btnLogin = document.getElementById("btnLogin");
+
+let dataJadwal = [];
+let dataPrediksi = [];
+let logoCache = new Map();
+
+// ⚡ EXPOSE untuk debug di Console
+window.getCache = () => logoCache;
+window.getTeamLogo = getTeamLogo;
+window.normalizeTeam = normalizeTeam;
+window.getJadwal = () => dataJadwal;
+
+await setPersistence(auth, browserLocalPersistence);
+
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        loginStatus.className = "status success";
+        loginStatus.textContent = "✅ Login berhasil: " + user.email;
+        adminContent.classList.remove("hidden");
+        notLogged.classList.add("hidden");
+        loadLogoCache();
+    } else {
+        loginStatus.className = "status warning";
+        loginStatus.textContent = "⚠️ Belum login";
+        adminContent.classList.add("hidden");
+        notLogged.classList.remove("hidden");
+    }
+});
+
+btnLogin.addEventListener("click", () => {
+    window.location.href = "/login.html";
+});
+
+
+/* ============================
+   HELPER FUNCTIONS
+   ============================ */
+
+function clean(value) {
+    return String(value || "").trim();
+}
+
+function normalizeTeam(name) {
+    return clean(name)
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9\s]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
+const KATA_UMUM = /\b(fc|sc|cf|afc|ac|as|sk|if|bk|sv|kv|nk|club|football|sport|sports|soccer|team|the|of|and|de|do|da|la|le|el|city|united|utd)\b/gi;
+
+function normalizeClean(name) {
+    return normalizeTeam(name)
+        .replace(KATA_UMUM, "")
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
+function normalizeTime(t) {
+    const s = clean(t);
+    const m = s.match(/^(\d{1,2}):(\d{2})$/);
+    if (!m) return s;
+    return m[1].padStart(2, "0") + ":" + m[2];
+}
+
+function fuzzyMatchKey(data) {
+    return [
+        clean(data.date),
+        normalizeTime(data.time),
+        normalizeTeam(data.home),
+        normalizeTeam(data.away)
+    ].join("|");
+}
+
+function matchKey(data) {
+    return [
+        clean(data.date),
+        normalizeTime(data.time),
+        clean(data.home).toLowerCase(),
+        clean(data.away).toLowerCase()
+    ].join("|");
+}
+
+function convertDate(tanggal) {
+    const t = clean(tanggal);
+    if (/^\d{4}-\d{2}-\d{2}$/.test(t)) return t;
+    const bagian = t.split("/");
+    if (bagian.length !== 3) return t;
+    return bagian[2] + "-" + bagian[1].padStart(2, "0") + "-" + bagian[0].padStart(2, "0");
+}
+
+
+/* ============================
+   🎨 LOAD LOGO CACHE DARI FIRESTORE
+   ============================ */
+
+async function loadLogoCache() {
+    try {
+        const snapshot = await getDocs(collection(db, "team-logos"));
+        logoCache.clear();
+        snapshot.forEach((item) => {
+            const data = item.data();
+            const url = clean(data.url || "");
+            const keyFromId = clean(item.id).toLowerCase();
+            const keyFromName = normalizeTeam(data.teamName || "");
+
+            const isHash = /^[a-f0-9]{25,}/i.test(keyFromId);
+            if (isHash) return;
+            if (/-\d+x\d+/i.test(keyFromId)) return;
+            if (!url) return;
+
+            let keyFromUrl = "";
+            try {
+                const match = url.match(/\/([^\/]+?)\.(png|jpg|jpeg|webp|svg)$/i);
+                if (match) {
+                    keyFromUrl = normalizeTeam(match[1].replace(/[-_]/g, " "));
+                }
+            } catch (e) {}
+
+            if (keyFromId) logoCache.set(keyFromId, url);
+            if (keyFromName && keyFromName !== keyFromId) logoCache.set(keyFromName, url);
+            if (keyFromUrl && keyFromUrl !== keyFromId && keyFromUrl !== keyFromName) {
+                logoCache.set(keyFromUrl, url);
+            }
+        });
+        console.log("[LOGO] Cache loaded: " + logoCache.size + " entry");
+    } catch (error) {
+        console.error("[LOGO] Gagal load cache:", error);
+    }
+}
+
+
+/* ============================
+   ⚡ GET TEAM LOGO — FUZZY MATCH SUPER AGRESIF
+   ============================ */
+
+function getTeamLogo(teamName) {
+    const key = normalizeTeam(teamName);
+    if (!key) return "";
+
+    if (logoCache.has(key)) return logoCache.get(key);
+
+    const noNum = key.replace(/\s+\d+$/g, "").trim();
+    if (noNum && logoCache.has(noNum)) return logoCache.get(noNum);
+
+    const keyClean = normalizeClean(teamName);
+
+    for (const [cacheKey, url] of logoCache.entries()) {
+        if (/^[a-f0-9]{25,}/i.test(cacheKey)) continue;
+        const cacheClean = cacheKey.replace(KATA_UMUM, "").replace(/\s+/g, " ").trim();
+
+        if (keyClean && cacheClean && keyClean === cacheClean) {
+            return url;
+        }
+    }
+
+    const keyWords = key.split(" ").filter(w => w.length >= 3);
+    if (keyWords.length === 0) return "";
+
+    let bestUrl = "";
+    let bestScore = 0;
+    const MIN_SCORE = 5;
+
+    for (const [cacheKey, url] of logoCache.entries()) {
+        if (/^[a-f0-9]{25,}/i.test(cacheKey)) continue;
+
+        const cacheWords = cacheKey.split(" ").filter(w => w.length >= 3);
+        const matched = keyWords.filter(w => cacheWords.includes(w));
+
+        let score = 0;
+        matched.forEach(w => { score += w.length; });
+
+        if (cacheKey.includes(key) || key.includes(cacheKey)) score += 20;
+        if (matched.length >= 2) score += 10;
+        if (matched.length >= 3) score += 20;
+
+        if (score > bestScore) {
+            bestScore = score;
+            bestUrl = url;
+        }
+    }
+
+    if (bestScore >= MIN_SCORE) return bestUrl;
+
+    const lastWord = key.split(" ").pop();
+    if (lastWord && lastWord.length > 4) {
+        for (const [cacheKey, url] of logoCache.entries()) {
+            if (/^[a-f0-9]{25,}/i.test(cacheKey)) continue;
+            if (cacheKey.endsWith(" " + lastWord) || cacheKey === lastWord) {
+                return url;
+            }
+        }
+    }
+
+    return "";
+}
+
+
+/* ============================
+   BERSIHKAN BARIS
+   ============================ */
+
+function bersihkanBaris(line) {
+    let s = line;
+    s = s.replace(/\s+/g, " ");
+    s = s.replace(/[\s|]+$/g, "");
+    s = s.replace(/^[\s|]+/g, "");
+    s = s.replace(/\|\s*\|/g, "|");
+    s = s.replace(/\s*\|\s*/g, " | ");
+    return s.trim();
+}
+
+
+/* ============================
+   PARSER JADWAL
+   ============================ */
+
+function parseJadwal(text) {
+
+    const lines = text.split(/\r?\n/);
+    const hasil = [];
+    let liga = "";
+
+    for (let i = 0; i < lines.length; i++) {
+
+        const line = bersihkanBaris(lines[i]);
+
+        if (!line) continue;
+        if (/^id\s*=/i.test(line)) continue;
+
+        const dateTimeMatch = line.match(
+            /^(\d{1,2}\/\d{1,2}\/\d{4})\s+(\d{1,2}:\d{2})\s*(?:WIB)?\s*\|?\s*(.+)$/i
+        );
+
+        if (!dateTimeMatch) {
+            liga = line;
+            continue;
+        }
+
+        const tanggal = dateTimeMatch[1];
+        const jam = dateTimeMatch[2];
+        let sisa = dateTimeMatch[3].trim();
+
+        sisa = sisa.replace(/[\s|]+$/g, "").trim();
+
+        const vsMatch = sisa.match(/\s+VS\s+/i);
+
+        if (!vsMatch) {
+            liga = line;
+            continue;
+        }
+
+        const vsIndex = sisa.search(/\s+VS\s+/i);
+        const vsLength = vsMatch[0].length;
+
+        const homePart = sisa.substring(0, vsIndex).trim();
+        let afterVS = sisa.substring(vsIndex + vsLength).trim();
+
+        afterVS = afterVS.replace(/[\s|]+$/g, "").trim();
+
+        let awayPart = afterVS;
+        let handicapPart = "";
+
+        const handicapColon = afterVS.match(
+            /\s+((?:\d+\s+\d+\/\d+|\d+\/\d+|\d+(?:[.,]\d+)?)\s*:\s*(?:\d+\s+\d+\/\d+|\d+\/\d+|\d+(?:[.,]\d+)?))\s*$/i
+        );
+
+        if (handicapColon) {
+            const start = afterVS.length - handicapColon[0].length;
+            awayPart = afterVS.substring(0, start).trim();
+            handicapPart = handicapColon[1].trim();
+        } else {
+            const handicapNoColon = afterVS.match(
+                /\s+(\d+\s+\d+\/\d+|\d+\/\d+|\d+[.,]\d+|\d+-\d+|\d+)\s*$/i
+            );
+            if (handicapNoColon) {
+                const start = afterVS.length - handicapNoColon[0].length;
+                awayPart = afterVS.substring(0, start).trim();
+                handicapPart = handicapNoColon[1].trim();
+            }
+        }
+
+        awayPart = awayPart.replace(/[\s|]+$/g, "").trim();
+        const homeClean = homePart.replace(/[\s|]+$/g, "").trim();
+
+        if (!homeClean || !awayPart) {
+            liga = line;
+            continue;
+        }
+
+        if (homeClean.includes("Handicap") || awayPart.includes("Handicap")) {
+            liga = line;
+            continue;
+        }
+
+        let handicap = handicapPart.replace(/\s+/g, " ");
+        handicap = handicap.replace(
+            /(\d+\s+\d+\/\d+|\d+\/\d+|\d+(?:[.,]\d+)?)\s*:\s*(\d+\s+\d+\/\d+|\d+\/\d+|\d+(?:[.,]\d+)?)/g,
+            "$1 : $2"
+        );
+
+        hasil.push({
+            league: liga || "Lainnya",
+            date: convertDate(tanggal),
+            time: jam,
+            home: homeClean,
+            away: awayPart,
+            handicap: handicap
+        });
+    }
+
+    return hasil;
+}
+
+
+/* ============================
+   PARSER PREDIKSI
+   ============================ */
+
+function parsePrediksi(text) {
+
+    const lines = text.split(/\r?\n/);
+    const hasil = [];
+    let liga = "";
+
+    for (let i = 0; i < lines.length; i++) {
+
+        const line = bersihkanBaris(lines[i]);
+
+        if (!line) continue;
+        if (/^id\s*=/i.test(line)) continue;
+
+        const dateTimeMatch = line.match(
+            /^(\d{1,2}\/\d{1,2}\/\d{4})\s+(\d{1,2}:\d{2})\s*(?:WIB)?\s*\|?\s*(.+)$/i
+        );
+
+        if (!dateTimeMatch) {
+            liga = line;
+            continue;
+        }
+
+        const tanggal = dateTimeMatch[1];
+        const jam = dateTimeMatch[2];
+        let sisa = dateTimeMatch[3].trim();
+
+        sisa = sisa.replace(/[\s|]+$/g, "").trim();
+
+        const scoreMatch = sisa.match(/(\d+)\s*[-:]\s*(\d+)\s*$/);
+
+        if (!scoreMatch) {
+            liga = line;
+            continue;
+        }
+
+        const scoreStart = sisa.length - scoreMatch[0].length;
+        let sebelumSkor = sisa.substring(0, scoreStart).trim();
+
+        sebelumSkor = sebelumSkor.replace(/[\s|]+$/g, "").trim();
+
+        const vsMatch = sebelumSkor.match(/\s+VS\s+/i);
+
+        if (!vsMatch) {
+            liga = line;
+            continue;
+        }
+
+        const vsIndex = sebelumSkor.search(/\s+VS\s+/i);
+        const vsLength = vsMatch[0].length;
+
+        const homePart = sebelumSkor.substring(0, vsIndex).trim();
+        const awayPart = sebelumSkor.substring(vsIndex + vsLength).trim();
+
+        const homeClean = homePart.replace(/[\s|]+$/g, "").trim();
+        const awayClean = awayPart.replace(/[\s|]+$/g, "").trim();
+
+        if (!homeClean || !awayClean) {
+            liga = line;
+            continue;
+        }
+
+        hasil.push({
+            league: liga || "Lainnya",
+            date: convertDate(tanggal),
+            time: jam,
+            home: homeClean,
+            away: awayClean,
+            predictionScoreHome: scoreMatch[1],
+            predictionScoreAway: scoreMatch[2]
+        });
+    }
+
+    return hasil;
+}
+
+
+/* ============================
+   PROSES JADWAL
+   ============================ */
+
+function prosesJadwal() {
+
+    const text = inputJadwal.value.trim();
+
+    if (!text) {
+        alert("Silakan masukkan data jadwal.");
+        return;
+    }
+
+    dataJadwal = parseJadwal(text);
+
+    if (dataJadwal.length === 0) {
+        hasilJadwal.innerHTML =
+            '<div class="status error">' +
+            '❌ Tidak ada jadwal yang berhasil dibaca.' +
+            '<br><br>' +
+            'Format: <code>11/09/2026 01:45 WIB | Venezia VS Fiorentina | 1/4 : 0</code>' +
+            '</div>';
+        return;
+    }
+
+    tampilkanPreviewJadwal();
+}
+
+
+function tampilkanPreviewJadwal() {
+
+    let html = "";
+    let tanpaHandicap = 0;
+    let tanpaLogo = 0;
+
+    dataJadwal.forEach((data, index) => {
+        const adaHandicap = data.handicap && data.handicap.trim() !== "";
+        if (!adaHandicap) tanpaHandicap++;
+
+        const homeLogo = getTeamLogo(data.home);
+        const awayLogo = getTeamLogo(data.away);
+        if (!homeLogo) tanpaLogo++;
+        if (!awayLogo) tanpaLogo++;
+
+        const homeIcon = homeLogo
+            ? '<img src="' + homeLogo + '" style="width:20px;height:20px;object-fit:contain;background:#fff;border-radius:50%;vertical-align:middle;margin-right:4px;">'
+            : '';
+        const awayIcon = awayLogo
+            ? '<img src="' + awayLogo + '" style="width:20px;height:20px;object-fit:contain;background:#fff;border-radius:50%;vertical-align:middle;margin-right:4px;">'
+            : '';
+
+        html += `
+            <div class="match">
+                <strong>${index + 1}. ${data.league}</strong>
+                <br><br>
+                📅 ${data.date} &nbsp; 🕐 ${data.time} WIB
+                <br>
+                ⚽ ${homeIcon}${data.home} VS ${data.away}${awayIcon}
+                <br>
+                🎯 Handicap: <strong>${adaHandicap ? data.handicap : "⚠️ KOSONG"}</strong>
+            </div>
+        `;
+    });
+
+    let infoHtml = "";
+    if (tanpaHandicap > 0) {
+        infoHtml += '<div class="status warning">⚠️ ' + tanpaHandicap + ' baris tanpa handicap.</div>';
+    }
+    if (tanpaLogo > 0) {
+        infoHtml += '<div class="status warning">🎨 ' + tanpaLogo + ' logo tim nggak ketemu di Firestore (akan tampil inisial).</div>';
+    }
+
+    // ⚡ DEBUG INFO — TAMPIL DI HALAMAN
+    let debugHtml = '<div style="background:#000; padding:15px; border-radius:10px; font-family:monospace; font-size:11px; color:#0f0; margin-top:15px; max-height:500px; overflow:auto; border:2px solid #0f0; white-space:pre-wrap; word-break:break-word; line-height:1.5;">';
+    debugHtml += '<b style="color:#ff0; font-size:14px;">═══ DEBUG INFO ═══</b>\n\n';
+    debugHtml += '<b>Total cache:</b> ' + logoCache.size + ' entry\n';
+    debugHtml += '<b>Total jadwal:</b> ' + dataJadwal.length + '\n\n';
+
+    debugHtml += '<b style="color:#0ff; font-size:13px;">▶ 30 KEYS PERTAMA DI CACHE:</b>\n';
+    [...logoCache.keys()].slice(0, 30).forEach((k, i) => {
+        debugHtml += (i+1) + '. ' + k + '\n';
+    });
+    debugHtml += '\n';
+
+    debugHtml += '<b style="color:#0ff; font-size:13px;">▶ TEST MATCH 15 TIM:</b>\n';
+    dataJadwal.slice(0, 15).forEach((d, i) => {
+        const hKey = normalizeTeam(d.home);
+        const aKey = normalizeTeam(d.away);
+        const hLogo = getTeamLogo(d.home);
+        const aLogo = getTeamLogo(d.away);
+        debugHtml += (i+1) + '. ' + d.home + ' [key: "' + hKey + '"] → ' + (hLogo ? '✅ ADA' : '❌ KOSONG') + '\n';
+        debugHtml += '   ' + d.away + ' [key: "' + aKey + '"] → ' + (aLogo ? '✅ ADA' : '❌ KOSONG') + '\n';
+    });
+    debugHtml += '\n';
+
+    debugHtml += '<b style="color:#0ff; font-size:13px;">▶ CEK MANUAL:</b>\n';
+    debugHtml += 'cache.has("rayo vallecano") = ' + logoCache.has("rayo vallecano") + '\n';
+    debugHtml += 'cache.has("espanyol") = ' + logoCache.has("espanyol") + '\n';
+    debugHtml += 'cache.has("vasco da gama") = ' + logoCache.has("vasco da gama") + '\n';
+    debugHtml += 'getTeamLogo("Rayo Vallecano") = "' + getTeamLogo("Rayo Vallecano") + '"\n';
+    debugHtml += 'getTeamLogo("Espanyol") = "' + getTeamLogo("Espanyol") + '"\n';
+    debugHtml += '</div>';
+
+    hasilJadwal.innerHTML =
+        '<div class="status success">' +
+        '✅ Berhasil membaca ' + dataJadwal.length + ' jadwal pertandingan.' +
+        '</div>' + infoHtml + html + debugHtml;
+}
+
+
+/* ============================
+   PROSES PREDIKSI
+   ============================ */
+
+function prosesPrediksi() {
+
+    const text = inputPrediksi.value.trim();
+
+    if (!text) {
+        alert("Silakan masukkan data prediksi.");
+        return;
+    }
+
+    dataPrediksi = parsePrediksi(text);
+
+    if (dataPrediksi.length === 0) {
+        hasilPrediksi.innerHTML =
+            '<div class="status error">' +
+            '❌ Tidak ada prediksi yang berhasil dibaca.' +
+            '<br><br>' +
+            'Format: <code>11/09/2026 01:45 WIB | Venezia VS Fiorentina | 1 : 2</code>' +
+            '</div>';
+        return;
+    }
+
+    tampilkanPreviewPrediksi();
+}
+
+
+function tampilkanPreviewPrediksi() {
+
+    let html = "";
+
+    dataPrediksi.forEach((data, index) => {
+        html += `
+            <div class="match pred-preview">
+                <strong>${index + 1}. ${data.league}</strong>
+                <br><br>
+                📅 ${data.date} &nbsp; 🕐 ${data.time} WIB
+                <br>
+                ⚽ ${data.home} VS ${data.away}
+                <br>
+                🎯 Prediksi Skor: <strong>${data.predictionScoreHome} - ${data.predictionScoreAway}</strong>
+            </div>
+        `;
+    });
+
+    hasilPrediksi.innerHTML =
+        '<div class="status success">' +
+        '✅ Berhasil membaca ' + dataPrediksi.length + ' prediksi.' +
+        '</div>' + html;
+}
+
+
+/* ============================
+   PUBLISH JADWAL
+   ============================ */
+
+async function publishJadwal() {
+
+    if (!auth.currentUser) {
+        alert("Silakan login terlebih dahulu.");
+        return;
+    }
+
+    if (dataJadwal.length === 0) {
+        alert("Belum ada data jadwal yang diproses.");
+        return;
+    }
+
+    const uniqueMap = new Map();
+    dataJadwal.forEach((data) => {
+        const key = matchKey(data);
+        if (!uniqueMap.has(key)) uniqueMap.set(key, data);
+    });
+    dataJadwal = Array.from(uniqueMap.values());
+
+    if (!confirm("Publish " + dataJadwal.length + " jadwal?")) return;
+
+    try {
+
+        btnPublishJadwal.disabled = true;
+        btnPublishJadwal.textContent = "⏳ Publishing...";
+
+        await loadLogoCache();
+
+        const snapshot = await getDocs(collection(db, "predictions"));
+
+        const dbExact = new Map();
+        const dbFuzzy = new Map();
+        const duplikatRefs = [];
+
+        snapshot.forEach((item) => {
+            const data = item.data();
+            const keyExact = matchKey(data);
+            const keyFuzzy = fuzzyMatchKey(data);
+
+            if (dbExact.has(keyExact)) {
+                duplikatRefs.push(item.ref);
+            } else {
+                dbExact.set(keyExact, { ref: item.ref, data: data });
+            }
+
+            if (!dbFuzzy.has(keyFuzzy)) {
+                dbFuzzy.set(keyFuzzy, { ref: item.ref, data: data });
+            }
+        });
+
+        if (duplikatRefs.length > 0) {
+            let cleanBatch = writeBatch(db);
+            let cleanCount = 0;
+            for (const ref of duplikatRefs) {
+                cleanBatch.delete(ref);
+                cleanCount++;
+                if (cleanCount >= 400) {
+                    await cleanBatch.commit();
+                    cleanBatch = writeBatch(db);
+                    cleanCount = 0;
+                }
+            }
+            if (cleanCount > 0) await cleanBatch.commit();
+        }
+
+        let batch = writeBatch(db);
+        let jumlah = 0;
+        let updated = 0;
+        let created = 0;
+        let logoTerpasang = 0;
+
+        for (const data of dataJadwal) {
+
+            const homeLogo = getTeamLogo(data.home);
+            const awayLogo = getTeamLogo(data.away);
+            if (homeLogo) logoTerpasang++;
+            if (awayLogo) logoTerpasang++;
+
+            const keyExact = matchKey(data);
+            const keyFuzzy = fuzzyMatchKey(data);
+
+            let existing = dbExact.get(keyExact);
+            if (!existing) existing = dbFuzzy.get(keyFuzzy);
+
+            if (existing) {
+                batch.update(existing.ref, {
+                    league: data.league,
+                    date: data.date,
+                    time: data.time,
+                    home: data.home,
+                    homeLogo: homeLogo,
+                    away: data.away,
+                    awayLogo: awayLogo,
+                    handicap: data.handicap,
+                    jadwalActive: true,
+                    active: true,
+                    updatedAt: new Date()
+                });
+                updated++;
+            } else {
+                const ref = doc(collection(db, "predictions"));
+                batch.set(ref, {
+                    league: data.league,
+                    date: data.date,
+                    time: data.time,
+                    home: data.home,
+                    homeLogo: homeLogo,
+                    away: data.away,
+                    awayLogo: awayLogo,
+                    handicap: data.handicap,
+                    prediction: "",
+                    predictionScoreHome: "",
+                    predictionScoreAway: "",
+                    scoreHome: "",
+                    scoreAway: "",
+                    jadwalActive: true,
+                    prediksiActive: false,
+                    active: true,
+                    status: "PREDIKSI AKTIF",
+                    updatedAt: new Date()
+                });
+                created++;
+            }
+
+            jumlah++;
+            if (jumlah >= 400) {
+                await batch.commit();
+                batch = writeBatch(db);
+                jumlah = 0;
+            }
+        }
+
+        if (jumlah > 0) await batch.commit();
+
+        alert(
+            "✅ Berhasil publish " + dataJadwal.length + " jadwal!\n\n" +
+            "📝 Update: " + updated + "\n" +
+            "🆕 Baru: " + created + "\n" +
+            "🎨 Logo terpasang: " + logoTerpasang + "\n" +
+            "📦 Cache logo: " + logoCache.size +
+            (duplikatRefs.length > 0 ? "\n\n🧹 Hapus " + duplikatRefs.length + " duplikat." : "")
+        );
+
+    } catch (error) {
+        console.error(error);
+        alert("❌ Publish Jadwal gagal:\n\n" + error.message);
+    }
+
+    btnPublishJadwal.disabled = false;
+    btnPublishJadwal.textContent = "🚀 Publish Jadwal";
+}
+
+
+/* ============================
+   PUBLISH PREDIKSI
+   ============================ */
+
+async function publishPrediksi() {
+
+    if (!auth.currentUser) {
+        alert("Silakan login terlebih dahulu.");
+        return;
+    }
+
+    if (dataPrediksi.length === 0) {
+        alert("Belum ada data prediksi yang diproses.");
+        return;
+    }
+
+    const uniqueMap = new Map();
+    dataPrediksi.forEach((data) => {
+        const key = matchKey(data);
+        if (!uniqueMap.has(key)) uniqueMap.set(key, data);
+    });
+    dataPrediksi = Array.from(uniqueMap.values());
+
+    if (!confirm("Publish " + dataPrediksi.length + " prediksi?")) return;
+
+    try {
+
+        btnPublishPrediksi.disabled = true;
+        btnPublishPrediksi.textContent = "⏳ Publishing...";
+
+        const snapshot = await getDocs(collection(db, "predictions"));
+
+        const dbExact = new Map();
+        const dbFuzzy = new Map();
+
+        snapshot.forEach((item) => {
+            const data = item.data();
+            const keyExact = matchKey(data);
+            const keyFuzzy = fuzzyMatchKey(data);
+
+            if (!dbExact.has(keyExact)) {
+                dbExact.set(keyExact, { ref: item.ref, data: data });
+            }
+            if (!dbFuzzy.has(keyFuzzy)) {
+                dbFuzzy.set(keyFuzzy, { ref: item.ref, data: data });
+            }
+        });
+
+        let batch = writeBatch(db);
+        let jumlah = 0;
+        let matched = 0;
+        let createdBaru = 0;
+        const tidakMatch = [];
+
+        for (const data of dataPrediksi) {
+
+            const keyExact = matchKey(data);
+            const keyFuzzy = fuzzyMatchKey(data);
+
+            let existing = dbExact.get(keyExact);
+            if (!existing) existing = dbFuzzy.get(keyFuzzy);
+
+            if (existing) {
+                batch.update(existing.ref, {
+                    league: data.league,
+                    predictionScoreHome: data.predictionScoreHome,
+                    predictionScoreAway: data.predictionScoreAway,
+                    prediksiActive: true,
+                    active: true,
+                    status: "PREDIKSI AKTIF",
+                    updatedAt: new Date()
+                });
+                matched++;
+            } else {
+                tidakMatch.push(`${data.home} VS ${data.away} (${data.date} ${data.time})`);
+
+                const ref = doc(collection(db, "predictions"));
+                batch.set(ref, {
+                    league: data.league,
+                    date: data.date,
+                    time: data.time,
+                    home: data.home,
+                    homeLogo: "",
+                    away: data.away,
+                    awayLogo: "",
+                    handicap: "",
+                    prediction: "",
+                    predictionScoreHome: data.predictionScoreHome,
+                    predictionScoreAway: data.predictionScoreAway,
+                    scoreHome: "",
+                    scoreAway: "",
+                    jadwalActive: false,
+                    prediksiActive: true,
+                    active: true,
+                    status: "PREDIKSI AKTIF",
+                    updatedAt: new Date()
+                });
+                createdBaru++;
+            }
+
+            jumlah++;
+            if (jumlah >= 400) {
+                await batch.commit();
+                batch = writeBatch(db);
+                jumlah = 0;
+            }
+        }
+
+        if (jumlah > 0) await batch.commit();
+
+        let pesan =
+            "✅ Berhasil publish " + dataPrediksi.length + " prediksi!\n\n" +
+            "📝 Update: " + matched + "\n" +
+            "🆕 Baru: " + createdBaru;
+
+        if (tidakMatch.length > 0) {
+            pesan += "\n\n⚠️ Tidak ketemu jadwalnya (" + tidakMatch.length + "):\n" +
+                tidakMatch.slice(0, 10).join("\n") +
+                (tidakMatch.length > 10 ? "\n...dan " + (tidakMatch.length - 10) + " lainnya" : "");
+        }
+
+        alert(pesan);
+
+    } catch (error) {
+        console.error(error);
+        alert("❌ Publish Prediksi gagal:\n\n" + error.message);
+    }
+
+    btnPublishPrediksi.disabled = false;
+    btnPublishPrediksi.textContent = "🚀 Publish Prediksi";
+}
+
+
+/* ============================
+   FUNGSI DATABASE
+   ============================ */
+
+async function cekDuplikat() {
+
+    if (!auth.currentUser) {
+        alert("Silakan login terlebih dahulu.");
+        return;
+    }
+
+    hasilDuplikat.innerHTML = '<div class="status">⏳ Memeriksa duplikat...</div>';
+
+    try {
+
+        const snapshot = await getDocs(collection(db, "predictions"));
+
+        const mapExact = new Map();
+        const mapFuzzy = new Map();
+        const duplikatExact = [];
+        const duplikatFuzzy = [];
+
+        snapshot.forEach((item) => {
+            const data = item.data();
+
+            const keyExact = matchKey(data);
+            const keyFuzzy = fuzzyMatchKey(data);
+
+            if (mapExact.has(keyExact)) {
+                duplikatExact.push({ id: item.id, data });
+            } else {
+                mapExact.set(keyExact, item.id);
+            }
+
+            if (mapFuzzy.has(keyFuzzy)) {
+                duplikatFuzzy.push({ id: item.id, data });
+            } else {
+                mapFuzzy.set(keyFuzzy, item.id);
+            }
+        });
+
+        let html =
+            '<div class="status success">' +
+            '✅ Total dokumen: ' + snapshot.size + '<br>' +
+            '🔁 Duplikat exact: ' + duplikatExact.length + '<br>' +
+            '🔍 Duplikat fuzzy: ' + duplikatFuzzy.length +
+            '</div>';
+
+        if (duplikatExact.length > 0) {
+            html += '<h3 style="color:#fca5a5">❌ Duplikat Exact</h3>';
+            duplikatExact.forEach((d) => {
+                html += `
+                    <div class="match" style="border-left:4px solid #ef4444">
+                        <strong>ID: ${d.id}</strong><br>
+                        📅 ${d.data.date} 🕐 ${d.data.time} WIB<br>
+                        ⚽ ${d.data.home} VS ${d.data.away}
+                    </div>
+                `;
+            });
+        }
+
+        if (duplikatFuzzy.length > 0) {
+            html += '<h3 style="color:#fcd34d">⚠️ Duplikat Fuzzy</h3>';
+            duplikatFuzzy.forEach((d) => {
+                html += `
+                    <div class="match" style="border-left:4px solid #f59e0b">
+                        <strong>ID: ${d.id}</strong><br>
+                        📅 ${d.data.date} 🕐 ${d.data.time} WIB<br>
+                        ⚽ ${d.data.home} VS ${d.data.away}
+                    </div>
+                `;
+            });
+        }
+
+        hasilDuplikat.innerHTML = html;
+
+    } catch (error) {
+        console.error(error);
+        hasilDuplikat.innerHTML =
+            '<div class="status error">❌ Gagal cek duplikat: ' + error.message + '</div>';
+    }
+}
+
+
+async function bersihkanDuplikat() {
+
+    if (!auth.currentUser) {
+        alert("Silakan login terlebih dahulu.");
+        return;
+    }
+
+    if (!confirm("Bersihkan semua duplikat?")) return;
+
+    try {
+
+        btnBersihkan.disabled = true;
+        btnBersihkan.textContent = "⏳ Membersihkan...";
+
+        const snapshot = await getDocs(collection(db, "predictions"));
+
+        const mapFuzzy = new Map();
+        const refsHapus = [];
+
+        snapshot.forEach((item) => {
+            const data = item.data();
+            const keyFuzzy = fuzzyMatchKey(data);
+
+            if (mapFuzzy.has(keyFuzzy)) {
+                refsHapus.push(item.ref);
+            } else {
+                mapFuzzy.set(keyFuzzy, item.id);
+            }
+        });
+
+        if (refsHapus.length === 0) {
+            alert("✅ Tidak ada duplikat ditemukan.");
+        } else {
+
+            let batch = writeBatch(db);
+            let count = 0;
+
+            for (const ref of refsHapus) {
+                batch.delete(ref);
+                count++;
+                if (count >= 400) {
+                    await batch.commit();
+                    batch = writeBatch(db);
+                    count = 0;
+                }
+            }
+            if (count > 0) await batch.commit();
+
+            alert("🧹 Berhasil menghapus " + refsHapus.length + " duplikat.");
+        }
+
+    } catch (error) {
+        console.error(error);
+        alert("❌ Gagal bersihkan duplikat:\n\n" + error.message);
+    }
+
+    btnBersihkan.disabled = false;
+    btnBersihkan.textContent = "🧹 Bersihkan Duplikat";
+}
+
+
+async function hapusSemuaData() {
+
+    if (!auth.currentUser) {
+        alert("Silakan login terlebih dahulu.");
+        return;
+    }
+
+    if (!confirm("⚠️ HAPUS SEMUA DATA dari collection 'predictions'?\n\nTidak bisa dibatalkan!")) return;
+
+    if (!confirm("Yakin banget bro? Semua jadwal & prediksi akan hilang.")) return;
+
+    try {
+
+        btnHapusSemua.disabled = true;
+        btnHapusSemua.textContent = "⏳ Menghapus...";
+
+        const snapshot = await getDocs(collection(db, "predictions"));
+
+        let batch = writeBatch(db);
+        let count = 0;
+        let total = 0;
+
+        for (const item of snapshot.docs) {
+            batch.delete(item.ref);
+            count++;
+            total++;
+
+            if (count >= 400) {
+                await batch.commit();
+                batch = writeBatch(db);
+                count = 0;
+            }
+        }
+
+        if (count > 0) await batch.commit();
+
+        alert("🗑️ Berhasil menghapus " + total + " dokumen.");
+
+    } catch (error) {
+        console.error(error);
+        alert("❌ Gagal hapus semua data:\n\n" + error.message);
+    }
+
+    btnHapusSemua.disabled = false;
+    btnHapusSemua.textContent = "🗑️ HAPUS SEMUA DATA";
+}
+
+
+/* ============================
+   EVENT LISTENER
+   ============================ */
+
+btnProsesJadwal.addEventListener("click", prosesJadwal);
+btnPublishJadwal.addEventListener("click", publishJadwal);
+
+btnProsesPrediksi.addEventListener("click", prosesPrediksi);
+btnPublishPrediksi.addEventListener("click", publishPrediksi);
+
+btnCekDuplikat.addEventListener("click", cekDuplikat);
+btnBersihkan.addEventListener("click", bersihkanDuplikat);
+btnHapusSemua.addEventListener("click", hapusSemuaData);
+
+btnLogout.addEventListener("click", async () => {
+    if (!confirm("Yakin mau logout?")) return;
+    try {
+        await signOut(auth);
+        alert("✅ Berhasil logout.");
+        window.location.href = "/login.html";
+    } catch (error) {
+        alert("❌ Gagal logout:\n\n" + error.message);
+    }
+});
+
+</script>
+
+</body>
+
+</html>
