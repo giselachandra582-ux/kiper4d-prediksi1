@@ -599,6 +599,19 @@ function normalizeTime(input) {
     return s;
 }
 
+// Normalisasi nama tim — buang embel-embel [N], (N), FC, SC, dll
+function normalizeTeamName(name) {
+    let s = clean(name).toLowerCase();
+    s = s.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // hapus aksen
+    s = s.replace(/\[[^\]]*\]/g, ""); // hapus [N]
+    s = s.replace(/\([^)]*\)/g, ""); // hapus (N)
+    s = s.replace(/[.'’`]/g, "");
+    s = s.replace(/\b(fc|sc|cf|afc|ac|as|sk|if|bk|sv|kv|nk|club|football|sport|sports|soccer|team|the|of|and|de|do|da|la|le|el|city|united|utd|reserves?)\b/g, " ");
+    s = s.replace(/[-_]/g, " ");
+    s = s.replace(/\s+/g, " ").trim();
+    return s;
+}
+
 function getNowWIBMs() { return Date.now() + (7 * 60 * 60 * 1000); }
 
 function getTodayString() {
@@ -654,9 +667,15 @@ function formatTanggalShort(date) {
     return p[2] + "/" + p[1];
 }
 
-function makeKey(date, time, home, away) {
-    const norm = (s) => clean(s).toLowerCase().replace(/\s+/g, " ").trim();
-    return [norm(normalizeDate(date)), norm(normalizeTime(time)), norm(home), norm(away)].join("|");
+// ============================================================
+// KEY UNTUK DETEKSI DUPLIKAT — TANPA JAM
+// ============================================================
+function makeLooseKey(date, home, away) {
+    return [
+        normalizeDate(date),
+        normalizeTeamName(home),
+        normalizeTeamName(away)
+    ].join("|");
 }
 
 async function fetchESPNDate(dateStr) {
@@ -750,22 +769,33 @@ async function fetchFirestore() {
     }
 }
 
+// ============================================================
+// GABUNG DATA — ANTI DOBEL
+// ============================================================
 function gabungData(espnData, firestoreData) {
+    // 1. Map Firestore by LOOSE key (tanggal + nama tim, tanpa jam)
     const mapFS = new Map();
     firestoreData.forEach(item => {
-        const key = makeKey(item.date, item.time, item.home, item.away);
-        mapFS.set(key, item);
+        const key = makeLooseKey(item.date, item.home, item.away);
+        // Kalau sudah ada, timpa dengan yang punya HDP/Pred (prioritas lengkap)
+        const existing = mapFS.get(key);
+        if (!existing || (!existing.handicap && item.handicap)) {
+            mapFS.set(key, item);
+        }
     });
 
     const hasil = [];
-    const espnKeys = new Set();
+    const seenKeys = new Set();
 
+    // 2. ESPN dulu
     espnData.forEach(match => {
-        const key = makeKey(match.date, match.time, match.home, match.away);
-        espnKeys.add(key);
-        const fs = mapFS.get(key);
+        const looseKey = makeLooseKey(match.date, match.home, match.away);
+        if (seenKeys.has(looseKey)) return; // skip dobel ESPN
+        seenKeys.add(looseKey);
 
+        const fs = mapFS.get(looseKey);
         if (fs) {
+            // Ambil HDP & Pred dari Firestore
             hasil.push({
                 ...match,
                 league: fs.league || match.league,
@@ -780,9 +810,12 @@ function gabungData(espnData, firestoreData) {
         }
     });
 
+    // 3. Tambah Firestore yang gak ada di ESPN (pakai loose key)
     firestoreData.forEach(item => {
-        const key = makeKey(item.date, item.time, item.home, item.away);
-        if (!espnKeys.has(key)) hasil.push(item);
+        const looseKey = makeLooseKey(item.date, item.home, item.away);
+        if (seenKeys.has(looseKey)) return;
+        seenKeys.add(looseKey);
+        hasil.push(item);
     });
 
     return hasil;
@@ -1042,7 +1075,7 @@ async function init() {
         semuaData = gabungData(espnData, fsData);
         semuaData.sort((a, b) => (getKickoffWIBMs(a) || 0) - (getKickoffWIBMs(b) || 0));
 
-        console.log(`[Total] ${semuaData.length} pertandingan`);
+        console.log(`[Total] ${semuaData.length} pertandingan (setelah anti-dobel)`);
 
         updateLigaFilter(semuaData);
         updateStats(semuaData);
