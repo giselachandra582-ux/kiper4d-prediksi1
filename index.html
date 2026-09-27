@@ -40,7 +40,6 @@ body {
     33% { transform: translate(5%, -5%) rotate(120deg) scale(1.1); }
     66% { transform: translate(-5%, 5%) rotate(240deg) scale(0.95); }
 }
-#particleCanvas { position: fixed; inset: 0; z-index: -2; pointer-events: none; opacity: 0.5; }
 #loadingScreen {
     position: fixed; inset: 0; z-index: 99999;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -69,6 +68,7 @@ body {
 .loading-text { color: #00d4ff; font-family: 'Rajdhani'; font-size: 14px; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 20px; }
 .loading-bar { width: 280px; height: 4px; border-radius: 20px; background: rgba(93,45,232,0.20); overflow: hidden; }
 .loading-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #5d2de8, #00d4ff, #ffcc33); transition: width 0.3s; box-shadow: 0 0 15px rgba(0,212,255,0.8); }
+
 header {
     position: sticky; top: 0; z-index: 999;
     background: rgba(10, 14, 39, 0.85);
@@ -103,6 +103,38 @@ nav a.nav-link {
     transition: all 0.3s;
 }
 nav a.nav-link:hover { color: #00d4ff; background: rgba(0,212,255,0.1); }
+nav a.nav-live {
+    display: flex; align-items: center; gap: 6px;
+    color: #fff; padding: 8px 18px; border-radius: 20px;
+    font-family: 'Rajdhani'; font-size: 12px; font-weight: 800;
+    letter-spacing: 1px; text-transform: uppercase;
+    background: linear-gradient(135deg, #7f1d1d, #dc2626, #ef4444);
+    box-shadow: 0 0 20px rgba(220,38,38,0.7);
+    animation: livePulse 1.5s infinite;
+    cursor: pointer;
+    border: 1.5px solid rgba(255,180,180,0.8);
+}
+@keyframes livePulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(220,38,38,0.7); transform: scale(1); }
+    50% { box-shadow: 0 0 35px rgba(220,38,38,1); transform: scale(1.03); }
+}
+nav a.nav-live .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #fff;
+    animation: dotPulse 1s infinite;
+}
+@keyframes dotPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(1.5); }
+}
+nav a.nav-live .live-count {
+    background: rgba(0,0,0,0.4);
+    padding: 1px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    min-width: 22px;
+    text-align: center;
+}
 nav a.nav-login {
     color: #00d4ff; padding: 8px 20px; border-radius: 22px;
     font-family: 'Rajdhani'; font-size: 12px; font-weight: 800;
@@ -120,6 +152,201 @@ nav a.nav-daftar {
 }
 nav a.nav-daftar:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,204,51,0.6); }
 .container { max-width: 1250px; margin: auto; padding: 24px 16px 70px; }
+
+/* LIVE BANNER */
+.live-banner {
+    display: none;
+    margin-bottom: 20px;
+    padding: 16px 20px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(127,29,29,0.95), rgba(220,38,38,0.9));
+    border: 2px solid rgba(255,180,180,0.8);
+    box-shadow: 0 0 40px rgba(220,38,38,0.6);
+    animation: livePulse 2s infinite;
+    cursor: pointer;
+}
+.live-banner.show { display: block; }
+.live-banner-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap;
+}
+.live-banner-left {
+    display: flex; align-items: center; gap: 12px;
+    flex: 1; min-width: 0;
+}
+.live-banner-icon {
+    font-size: 28px;
+    animation: dotPulse 1s infinite;
+}
+.live-banner-text {
+    font-family: 'Rajdhani'; font-size: 16px; font-weight: 800;
+    letter-spacing: 2px; text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(255,255,255,0.8);
+}
+.live-banner-sub {
+    font-size: 12px; opacity: 0.9;
+    font-family: 'Rajdhani'; font-weight: 600;
+    margin-top: 3px;
+}
+.live-banner-btn {
+    background: #fff;
+    color: #7f1d1d;
+    padding: 10px 22px;
+    border-radius: 20px;
+    font-family: 'Rajdhani'; font-size: 13px; font-weight: 900;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    border: 0; cursor: pointer;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    transition: transform 0.3s;
+}
+.live-banner-btn:hover { transform: scale(1.05); }
+
+/* BIG MATCH TAKER SECTION */
+.big-match-section {
+    margin-bottom: 24px;
+    border-radius: 20px;
+    overflow: hidden;
+    background: rgba(15,10,40,0.75);
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(220,38,38,0.5);
+    box-shadow: 0 0 40px rgba(220,38,38,0.3);
+}
+.big-match-header {
+    padding: 14px 20px;
+    font-family: 'Rajdhani'; font-weight: 800;
+    font-size: 16px; letter-spacing: 3px;
+    text-transform: uppercase;
+    text-align: center;
+    background: linear-gradient(90deg, rgba(127,29,29,0.8), rgba(220,38,38,0.6), rgba(127,29,29,0.8));
+    border-bottom: 1.5px solid rgba(220,38,38,0.5);
+    text-shadow: 0 0 20px rgba(255,100,100,0.9);
+    color: #fff;
+}
+.big-match-header .icon {
+    display: inline-block;
+    animation: dotPulse 1.5s infinite;
+}
+.big-match-scroll-wrap {
+    position: relative;
+    overflow: hidden;
+    padding: 16px 0;
+}
+.big-match-scroll-wrap::before, .big-match-scroll-wrap::after {
+    content: ""; position: absolute;
+    top: 0; width: 40px; height: 100%;
+    z-index: 3; pointer-events: none;
+}
+.big-match-scroll-wrap::before { left: 0; background: linear-gradient(90deg, rgba(15,10,40,1), transparent); }
+.big-match-scroll-wrap::after { right: 0; background: linear-gradient(-90deg, rgba(15,10,40,1), transparent); }
+.big-match-track {
+    display: flex;
+    gap: 12px;
+    padding: 0 16px;
+    width: max-content;
+    animation: bigMatchScroll 60s linear infinite;
+}
+.big-match-track:hover { animation-play-state: paused; }
+@keyframes bigMatchScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.big-match-card {
+    flex-shrink: 0;
+    width: 240px;
+    padding: 12px;
+    border-radius: 14px;
+    background: linear-gradient(145deg, rgba(30,20,60,0.95), rgba(45,20,80,0.9));
+    border: 1.5px solid rgba(220,38,38,0.5);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    transition: all 0.3s;
+    cursor: pointer;
+    position: relative;
+}
+.big-match-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(220,38,38,1);
+    box-shadow: 0 8px 30px rgba(220,38,38,0.6);
+}
+.big-match-card.is-live {
+    border-color: rgba(220,38,38,1);
+    animation: livePulse 1.5s infinite;
+}
+.big-match-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-family: 'Rajdhani'; font-size: 10px; font-weight: 800;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    background: linear-gradient(90deg, #dc2626, #ff2a3d, #dc2626);
+    color: #fff;
+    border: 1px solid rgba(255,180,180,0.8);
+    margin-bottom: 8px;
+    box-shadow: 0 0 15px rgba(220,38,38,0.6);
+}
+.big-match-badge .badge-icon { font-size: 11px; }
+.big-match-league {
+    font-family: 'Rajdhani'; font-size: 10px; font-weight: 700;
+    color: #00d4ff; letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.big-match-teams {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center; gap: 8px;
+    margin-bottom: 10px;
+}
+.big-match-team {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 5px;
+    min-width: 0;
+}
+.big-match-team img {
+    width: 32px; height: 32px; object-fit: contain;
+}
+.big-match-team .team-initial {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(circle, #1e1444, #050813);
+    border: 1.5px solid rgba(93,45,232,0.9);
+    font-size: 11px; font-weight: 900; color: #ffcc33;
+}
+.big-match-team .team-name {
+    font-family: 'Rajdhani'; font-size: 10px; font-weight: 700;
+    color: #fff; text-align: center;
+    max-width: 70px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    text-transform: uppercase;
+}
+.big-match-vs {
+    font-family: 'Orbitron'; font-size: 10px; font-weight: 800;
+    color: #ffcc33; letter-spacing: 1.5px;
+}
+.big-match-time {
+    display: flex; align-items: center; justify-content: center;
+    gap: 5px;
+    padding: 6px 0;
+    font-family: 'Teko'; font-size: 13px; font-weight: 600;
+    letter-spacing: 1.5px; color: #fff5d0;
+    background: linear-gradient(90deg, rgba(93,45,232,0.3), rgba(0,212,255,0.2), rgba(93,45,232,0.3));
+    border-top: 1px solid rgba(93,45,232,0.5);
+    border-bottom: 1px solid rgba(93,45,232,0.5);
+    border-radius: 8px;
+}
+.big-match-time .clock-icon { font-size: 12px; }
+
+.big-match-empty {
+    padding: 30px;
+    text-align: center;
+    color: #777788;
+    font-family: 'Rajdhani'; font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+/* SECTION LAINNYA */
 .lux-text-wrap {
     position: relative; width: 100%; margin-bottom: 20px;
     padding: 16px 50px;
@@ -158,7 +385,7 @@ nav a.nav-daftar:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgb
 }
 .banner img { display: block; width: 100%; height: auto; }
 .stats {
-    display: grid; grid-template-columns: repeat(3, 1fr);
+    display: grid; grid-template-columns: repeat(4, 1fr);
     gap: 12px; margin-bottom: 24px;
 }
 .stat-box {
@@ -168,6 +395,11 @@ nav a.nav-daftar:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgb
     backdrop-filter: blur(15px);
     border: 1.5px solid rgba(93,45,232,0.45);
 }
+.stat-box.live-box {
+    border-color: rgba(220,38,38,0.7);
+    background: rgba(220,38,38,0.15);
+    animation: livePulse 2s infinite;
+}
 .stat-number {
     display: block;
     font-family: 'Teko'; font-size: 34px; font-weight: 700;
@@ -176,12 +408,19 @@ nav a.nav-daftar:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgb
     -webkit-text-fill-color: transparent;
     line-height: 1;
 }
+.live-box .stat-number {
+    background: linear-gradient(180deg, #ff6b6b, #dc2626, #7f1d1d);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 .stat-label {
     color: #a0b8d0;
     font-family: 'Rajdhani'; font-size: 10px; font-weight: 700;
     letter-spacing: 1.5px; text-transform: uppercase;
     margin-top: 4px;
 }
+.live-box .stat-label { color: #fca5a5; font-weight: 800; }
+
 #pertandingan { scroll-margin-top: 20px; }
 .section-head { margin: 20px 0 16px; }
 .section-title {
@@ -221,6 +460,21 @@ nav a.nav-daftar:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgb
     background: linear-gradient(135deg, #ffcc33, #fff5d0, #ffcc33);
     border-color: #ffcc33;
     box-shadow: 0 3px 20px rgba(255,204,51,0.5);
+}
+.tab-filter.live-tab {
+    background: linear-gradient(135deg, #7f1d1d, #dc2626);
+    color: #fff;
+    border-color: #ef4444;
+    box-shadow: 0 0 20px rgba(220,38,38,0.6);
+}
+.tab-filter.live-tab.active {
+    background: linear-gradient(135deg, #dc2626, #ff2a3d);
+    box-shadow: 0 0 25px rgba(220,38,38,0.9);
+}
+.tab-filter.live-tab .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #fff;
+    animation: dotPulse 1s infinite;
 }
 .tab-icon { font-size: 13px; }
 .search-box {
@@ -298,10 +552,68 @@ nav a.nav-daftar:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgb
     background: rgba(0, 212, 255, 0.06);
     backdrop-filter: blur(10px);
     transition: all 0.3s;
+    position: relative;
 }
 .match-row-single:hover {
     border-color: rgba(255, 204, 51, 0.9);
     box-shadow: 0 0 30px rgba(255,204,51,0.4);
+}
+.match-row-single.is-live {
+    border-color: rgba(220,38,38,0.9);
+    background: rgba(220,38,38,0.08);
+    box-shadow: 0 0 25px rgba(220,38,38,0.5);
+}
+.match-row-single.is-live::before {
+    content: ""; position: absolute;
+    inset: -2px;
+    border-radius: 14px;
+    background: linear-gradient(90deg, #dc2626, #ff2a3d, #dc2626);
+    background-size: 200% auto;
+    animation: borderFlow 3s linear infinite;
+    z-index: -1;
+    opacity: 0.4;
+}
+@keyframes borderFlow {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+}
+.match-row-single.is-finished {
+    opacity: 0.75;
+    border-color: rgba(16,185,129,0.6);
+    background: rgba(16,185,129,0.05);
+}
+.match-live-badge {
+    position: absolute;
+    top: -10px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(135deg, #7f1d1d, #dc2626);
+    color: #fff;
+    padding: 3px 14px;
+    border-radius: 20px;
+    font-family: 'Rajdhani'; font-size: 10px; font-weight: 800;
+    letter-spacing: 2px;
+    border: 2px solid rgba(255,220,220,0.9);
+    display: flex; align-items: center; gap: 5px;
+    z-index: 2;
+    box-shadow: 0 0 20px rgba(220,38,38,1);
+    animation: livePulse 1.5s infinite;
+}
+.match-live-badge .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #fff;
+    animation: dotPulse 1s infinite;
+}
+.match-finished-badge {
+    position: absolute;
+    top: -10px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(135deg, #064e3b, #10b981);
+    color: #fff;
+    padding: 3px 14px;
+    border-radius: 20px;
+    font-family: 'Rajdhani'; font-size: 10px; font-weight: 800;
+    letter-spacing: 2px;
+    border: 2px solid rgba(190,250,220,0.9);
+    z-index: 2;
+    box-shadow: 0 0 15px rgba(16,185,129,0.7);
 }
 .match-time-badge {
     grid-area: time;
@@ -380,15 +692,20 @@ nav a.nav-daftar:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgb
     .logo img { width: 100px; height: 38px; }
     nav { gap: 4px; }
     nav a.nav-link { padding: 6px 10px; font-size: 10px; }
+    nav a.nav-live { padding: 6px 10px; font-size: 10px; }
     nav a.nav-login { padding: 6px 12px; font-size: 10px; }
     nav a.nav-daftar { padding: 7px 14px; font-size: 10px; }
     .container { padding: 14px 10px 50px; }
     .lux-text-wrap { padding: 12px 30px; min-height: 48px; margin-bottom: 14px; }
     .lux-text-item { font-size: 11px; letter-spacing: 1px; line-height: 1.4; }
-    .stats { gap: 6px; margin-bottom: 18px; }
+    .stats { grid-template-columns: repeat(2, 1fr); gap: 6px; margin-bottom: 18px; }
     .stat-box { padding: 12px 6px; }
     .stat-number { font-size: 24px; }
     .stat-label { font-size: 8px; letter-spacing: 1px; }
+    .big-match-card { width: 200px; padding: 10px; }
+    .big-match-team .team-name { font-size: 9px; max-width: 55px; }
+    .big-match-team img { width: 26px; height: 26px; }
+    .big-match-team .team-initial { width: 26px; height: 26px; font-size: 9px; }
     .filter-row { padding: 10px; gap: 8px; }
     .tab-filter-wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; width: 100%; }
     .tab-filter { padding: 8px 6px; font-size: 10px; justify-content: center; }
@@ -408,13 +725,13 @@ nav a.nav-daftar:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgb
     .match-team-mini img { width: 26px; height: 26px; }
     .match-value-box { min-width: unset; padding: 6px 8px; }
     .match-value-box .val-number { font-size: 16px; }
+    .live-banner-text { font-size: 14px; }
 }
 </style>
 </head>
 <body id="top">
 
 <div class="aurora-bg"></div>
-<canvas id="particleCanvas"></canvas>
 
 <div id="loadingScreen">
     <div class="loading-logo-wrap">
@@ -437,6 +754,11 @@ nav a.nav-daftar:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgb
     <nav>
         <a href="#top" class="nav-link">Beranda</a>
         <a href="#pertandingan" class="nav-link">Jadwal</a>
+        <a id="navLiveBtn" class="nav-live" title="Langsung ke pertandingan LIVE">
+            <span class="dot"></span>
+            <span>LIVE</span>
+            <span class="live-count" id="liveCountBadge">0</span>
+        </a>
         <a href="https://rotasy.link/Kiper4D" class="nav-login" target="_blank" rel="noopener noreferrer">Login</a>
         <a href="https://rotasy.link/Kiper4D" class="nav-daftar" target="_blank" rel="noopener noreferrer">Daftar</a>
     </nav>
@@ -445,11 +767,38 @@ nav a.nav-daftar:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgb
 
 <div class="container">
 
+<!-- LIVE BANNER -->
+<div class="live-banner" id="liveBanner">
+    <div class="live-banner-inner">
+        <div class="live-banner-left">
+            <div class="live-banner-icon">🔴</div>
+            <div>
+                <div class="live-banner-text" id="liveBannerText">0 Pertandingan LIVE</div>
+                <div class="live-banner-sub" id="liveBannerSub">Klik untuk lihat</div>
+            </div>
+        </div>
+        <button class="live-banner-btn" id="liveBannerBtn">🔴 LIHAT SEKARANG</button>
+    </div>
+</div>
+
+<!-- BIG MATCH TAKER -->
+<div class="big-match-section" id="bigMatchSection">
+    <div class="big-match-header">
+        <span class="icon">🔥</span> BIG MATCH HARI INI <span class="icon">🔥</span>
+    </div>
+    <div class="big-match-scroll-wrap">
+        <div class="big-match-track" id="bigMatchTrack">
+            <div class="big-match-empty">Memuat pertandingan panas...</div>
+        </div>
+    </div>
+</div>
+
+<!-- LUX TEXT -->
 <div class="lux-text-wrap">
     <div class="lux-text-slide" id="luxTextTop">
         <div class="lux-text-item active">⚽ SELAMAT DATANG DI KIPER4D — JADWAL BOLA TERKINI! 🔥</div>
         <div class="lux-text-item">🏆 JADWAL PERTANDINGAN UPDATE OTOMATIS SETIAP HARI</div>
-        <div class="lux-text-item">⚡ DATA LIVE DARI SUMBER TERPERCAYA</div>
+        <div class="lux-text-item">🔴 KLIK MENU LIVE UNTUK LIHAT PERTANDINGAN BERLANGSUNG</div>
         <div class="lux-text-item">🌟 KIPER4D — JAGONYA PREDIKSI, JAGONYA BIKIN CUAN!</div>
     </div>
 </div>
@@ -462,6 +811,10 @@ nav a.nav-daftar:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgb
     <div class="stat-box">
         <span class="stat-number" id="totalPertandingan">0</span>
         <span class="stat-label">Pertandingan</span>
+    </div>
+    <div class="stat-box live-box" id="statLiveBox" style="cursor:pointer">
+        <span class="stat-number" id="totalLive">0</span>
+        <span class="stat-label">🔴 Live</span>
     </div>
     <div class="stat-box">
         <span class="stat-number" id="totalLiga">0</span>
@@ -480,16 +833,19 @@ nav a.nav-daftar:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgb
 
     <div class="filter-row">
         <div class="tab-filter-wrap">
-            <button type="button" class="tab-filter active" data-date="today">
+            <button type="button" class="tab-filter active" data-filter="today">
                 <span class="tab-icon">⚽</span><span class="tab-text">Hari Ini</span>
             </button>
-            <button type="button" class="tab-filter" data-date="tomorrow">
+            <button type="button" class="tab-filter live-tab" data-filter="live" id="tabLive">
+                <span class="dot"></span><span class="tab-text">LIVE</span>
+            </button>
+            <button type="button" class="tab-filter" data-filter="tomorrow">
                 <span class="tab-icon">📅</span><span class="tab-text">Besok</span>
             </button>
-            <button type="button" class="tab-filter" data-date="7days">
+            <button type="button" class="tab-filter" data-filter="7days">
                 <span class="tab-icon">⏰</span><span class="tab-text">7 Hari</span>
             </button>
-            <button type="button" class="tab-filter" data-date="all">
+            <button type="button" class="tab-filter" data-filter="all">
                 <span class="tab-icon">📋</span><span class="tab-text">Semua</span>
             </button>
         </div>
@@ -542,84 +898,58 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// ============================================================
-// 40 LIGA ESPN — TERMASUK UEFA NATIONS LEAGUE
-// ============================================================
 const ESPN_LIGAS = [
-    // Inggris
     { id: "eng.1", name: "Premier League" },
     { id: "eng.2", name: "Championship" },
     { id: "eng.fa", name: "FA Cup" },
-    { id: "eng.league_cup", name: "Carabao Cup" },
-    // Spanyol
     { id: "esp.1", name: "La Liga" },
     { id: "esp.2", name: "La Liga 2" },
-    { id: "esp.copa_del_rey", name: "Copa del Rey" },
-    // Italia
     { id: "ita.1", name: "Serie A" },
     { id: "ita.2", name: "Serie B" },
-    { id: "ita.coppa_italia", name: "Coppa Italia" },
-    // Jerman
     { id: "ger.1", name: "Bundesliga" },
     { id: "ger.2", name: "2. Bundesliga" },
-    { id: "ger.dfb_pokal", name: "DFB Pokal" },
-    // Prancis
     { id: "fra.1", name: "Ligue 1" },
     { id: "fra.2", name: "Ligue 2" },
-    { id: "fra.coupe_de_france", name: "Coupe de France" },
-    // Belanda & Portugal
     { id: "ned.1", name: "Eredivisie" },
-    { id: "ned.2", name: "Eerste Divisie" },
     { id: "por.1", name: "Primeira Liga" },
-    { id: "por.2", name: "Liga Portugal 2" },
-    // Eropa
     { id: "uefa.champions", name: "Champions League" },
     { id: "uefa.europa", name: "Europa League" },
     { id: "uefa.europa.conf", name: "Conference League" },
     { id: "uefa.nations", name: "UEFA Nations League" },
-    { id: "uefa.euro", name: "UEFA Euro" },
-    { id: "uefa.euroq", name: "UEFA Euro Qualification" },
-    // Amerika
     { id: "usa.1", name: "MLS" },
-    { id: "usa.nwsl", name: "NWSL" },
-    { id: "usa.usl.1", name: "USL Championship" },
     { id: "mex.1", name: "Liga MX" },
-    // Amerika Selatan
     { id: "bra.1", name: "Brasileirão" },
-    { id: "bra.2", name: "Brasileirão Série B" },
     { id: "arg.1", name: "Liga Profesional" },
-    { id: "arg.2", name: "Primera Nacional" },
     { id: "conmebol.libertadores", name: "Copa Libertadores" },
     { id: "conmebol.sudamericana", name: "Copa Sudamericana" },
-    // Asia & Timur Tengah
     { id: "afc.champions", name: "AFC Champions" },
     { id: "jpn.1", name: "J-League" },
     { id: "kor.1", name: "K-League 1" },
-    { id: "chn.1", name: "Chinese Super League" },
     { id: "sau.1", name: "Saudi Pro League" },
-    // Dunia
-    { id: "fifa.world", name: "FIFA World Cup" },
-    { id: "fifa.wwc", name: "FIFA Women's World Cup" }
+    { id: "fifa.world", name: "FIFA World Cup" }
 ];
+
+const HOT_LEAGUES = ["UEFA Nations League", "Champions League", "Europa League", "Conference League", "Premier League", "La Liga", "Serie A", "Bundesliga", "Ligue 1", "Copa Libertadores", "Copa Sudamericana", "FIFA World Cup"];
+const HOT_TEAMS = ["real madrid", "barcelona", "atletico", "sevilla", "manchester", "liverpool", "arsenal", "chelsea", "tottenham", "juventus", "inter", "milan", "napoli", "roma", "lazio", "bayern", "dortmund", "psg", "paris", "marseille", "lyon", "ajax", "psv", "porto", "benfica", "sporting", "germany", "france", "italy", "spain", "england", "portugal", "netherlands", "argentina", "brazil", "uruguay", "colombia", "mexico"];
 
 let semuaData = [];
 let currentFilter = "today";
 
-/* ============================================================
-   UTILITY
-   ============================================================ */
-function clean(v) {
-    if (v === undefined || v === null) return "";
-    return String(v).trim();
-}
+function clean(v) { return String(v || "").trim(); }
 
 function escapeHtml(s) {
     return clean(s)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+
+function normalizeTeamName(name) {
+    return clean(name).toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/\[[^\]]*\]/g, "")
+        .replace(/\([^)]*\)/g, "")
+        .replace(/[^a-z0-9\s]/g, " ")
+        .replace(/\s+/g, " ").trim();
 }
 
 function normalizeDate(input) {
@@ -629,34 +959,14 @@ function normalizeDate(input) {
         const [y, m, d] = s.split("-");
         return y + "-" + m.padStart(2, "0") + "-" + d.padStart(2, "0");
     }
-    const dmy = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
-    if (dmy) {
-        const d = dmy[1].padStart(2, "0");
-        const m = dmy[2].padStart(2, "0");
-        const y = dmy[3];
-        return y + "-" + m + "-" + d;
-    }
     return s;
 }
 
 function normalizeTime(input) {
     if (!input) return "";
-    let s = String(input).trim();
-    s = s.replace(/wib|utc|gmt/gi, "").trim();
+    let s = String(input).trim().replace(/wib|utc|gmt/gi, "").trim();
     const hm = s.match(/^(\d{1,2}):(\d{1,2})/);
     if (hm) return hm[1].padStart(2, "0") + ":" + hm[2].padStart(2, "0");
-    return s;
-}
-
-function normalizeTeamName(name) {
-    let s = clean(name).toLowerCase();
-    s = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    s = s.replace(/\[[^\]]*\]/g, "");
-    s = s.replace(/\([^)]*\)/g, "");
-    s = s.replace(/[.'’`]/g, "");
-    s = s.replace(/\b(fc|sc|cf|afc|ac|as|sk|if|bk|sv|kv|nk|club|football|sport|sports|soccer|team|the|of|and|de|do|da|la|le|el|city|united|utd|reserves?)\b/g, " ");
-    s = s.replace(/[-_]/g, " ");
-    s = s.replace(/\s+/g, " ").trim();
     return s;
 }
 
@@ -677,8 +987,8 @@ function get7DaysString() {
     return wib.getUTCFullYear() + "-" + String(wib.getUTCMonth() + 1).padStart(2, "0") + "-" + String(wib.getUTCDate()).padStart(2, "0");
 }
 
-function getYMD(offsetDays = 0) {
-    const wib = new Date(getNowWIBMs() + (offsetDays * 86400000));
+function getYMD(offset = 0) {
+    const wib = new Date(getNowWIBMs() + (offset * 86400000));
     return wib.getUTCFullYear() + String(wib.getUTCMonth() + 1).padStart(2, "0") + String(wib.getUTCDate()).padStart(2, "0");
 }
 
@@ -688,7 +998,7 @@ function getKickoffWIBMs(data) {
     if (!date || !time) return null;
     const [y, m, d] = date.split("-").map(Number);
     const [h, mn] = time.split(":").map(Number);
-    if (isNaN(y) || isNaN(m) || isNaN(d) || isNaN(h) || isNaN(mn)) return null;
+    if (isNaN(y) || isNaN(m) || isNaN(d)) return null;
     return Date.UTC(y, m - 1, d, h, mn, 0);
 }
 
@@ -699,8 +1009,8 @@ function getMatchStatus(data) {
     const kickoff = getKickoffWIBMs(data);
     if (!kickoff) return "akan";
     const diff = kickoff - getNowWIBMs();
-    if (diff <= 0 && diff > -105 * 60 * 1000) return "live";
-    if (diff <= -105 * 60 * 1000) return "selesai";
+    if (diff <= 0 && diff > -115 * 60 * 1000) return "live";
+    if (diff <= -115 * 60 * 1000) return "selesai";
     return "akan";
 }
 
@@ -716,11 +1026,16 @@ function formatTanggalShort(date) {
 }
 
 function makeLooseKey(date, home, away) {
-    return [
-        normalizeDate(date),
-        normalizeTeamName(home),
-        normalizeTeamName(away)
-    ].join("|");
+    return [normalizeDate(date), normalizeTeamName(home), normalizeTeamName(away)].join("|");
+}
+
+function isHotMatch(m) {
+    const liga = clean(m.league).toLowerCase();
+    const home = clean(m.home).toLowerCase();
+    const away = clean(m.away).toLowerCase();
+    if (HOT_LEAGUES.some(l => liga.includes(l.toLowerCase()))) return true;
+    if (HOT_TEAMS.some(t => home.includes(t) || away.includes(t))) return true;
+    return false;
 }
 
 /* ============================================================
@@ -739,73 +1054,60 @@ async function fetchESPNDate(dateStr) {
                 try {
                     const comp = ev.competitions?.[0];
                     if (!comp) return null;
-                    const homeComp = comp.competitors?.find(c => c.homeAway === "home");
-                    const awayComp = comp.competitors?.find(c => c.homeAway === "away");
-                    if (!homeComp || !awayComp) return null;
+                    const home = comp.competitors?.find(c => c.homeAway === "home");
+                    const away = comp.competitors?.find(c => c.homeAway === "away");
+                    if (!home || !away) return null;
 
-                    const kickoffUTC = new Date(ev.date);
-                    if (isNaN(kickoffUTC.getTime())) return null;
-
-                    const wib = new Date(kickoffUTC.getTime() + (7 * 60 * 60 * 1000));
+                    const kickoff = new Date(ev.date);
+                    const wib = new Date(kickoff.getTime() + (7 * 60 * 60 * 1000));
                     const dateWib = wib.toISOString().slice(0, 10);
                     const timeWib = String(wib.getUTCHours()).padStart(2, "0") + ":" + String(wib.getUTCMinutes()).padStart(2, "0");
 
                     return {
                         league: liga.name,
-                        leagueId: liga.id,
                         date: dateWib,
                         time: timeWib,
-                        home: homeComp.team?.displayName || homeComp.team?.name || "?",
-                        away: awayComp.team?.displayName || awayComp.team?.name || "?",
-                        homeLogo: homeComp.team?.logo || "",
-                        awayLogo: awayComp.team?.logo || "",
-                        handicap: "",
-                        predictionScoreHome: "",
-                        predictionScoreAway: "",
-                        actualScoreHome: comp.status?.type?.completed ? String(homeComp.score || "") : "",
-                        actualScoreAway: comp.status?.type?.completed ? String(awayComp.score || "") : "",
+                        home: home.team?.displayName || "?",
+                        away: away.team?.displayName || "?",
+                        homeLogo: home.team?.logo || "",
+                        awayLogo: away.team?.logo || "",
+                        actualScoreHome: comp.status?.type?.completed ? String(home.score || "") : "",
+                        actualScoreAway: comp.status?.type?.completed ? String(away.score || "") : "",
                         source: "espn"
                     };
                 } catch (e) { return null; }
             }).filter(Boolean);
-        } catch (err) { return []; }
+        } catch (e) { return []; }
     });
     const hasil = await Promise.all(promises);
     return hasil.flat();
 }
 
 async function fetchESPN7Days() {
-    const all = [];
-    // Load paralel biar cepat
-    const dayPromises = [];
+    const promises = [];
     for (let i = 0; i < 7; i++) {
-        dayPromises.push(fetchESPNDate(getYMD(i)));
+        promises.push(fetchESPNDate(getYMD(i)));
     }
-    const results = await Promise.all(dayPromises);
+    const results = await Promise.all(promises);
+    const all = [];
     results.forEach(arr => all.push(...arr));
     return all;
 }
 
-/* ============================================================
-   FETCH FIRESTORE
-   ============================================================ */
 async function fetchFirestore() {
     try {
         const snap = await getDocs(collection(db, "predictions"));
         const data = [];
         snap.forEach(d => {
             const item = d.data();
-            const home = clean(item.home);
-            const away = clean(item.away);
-            if (!home || !away) return;
+            if (!item.home || !item.away) return;
             if (item.active === false) return;
-
             data.push({
                 league: clean(item.league) || "LAINNYA",
                 date: normalizeDate(item.date),
                 time: normalizeTime(item.time),
-                home: home,
-                away: away,
+                home: clean(item.home),
+                away: clean(item.away),
                 homeLogo: clean(item.homeLogo),
                 awayLogo: clean(item.awayLogo),
                 handicap: clean(item.handicap),
@@ -816,17 +1118,10 @@ async function fetchFirestore() {
                 source: "firestore"
             });
         });
-        console.log(`[Firestore] ${data.length} data loaded`);
         return data;
-    } catch (err) {
-        console.warn("[Firestore] Error:", err);
-        return [];
-    }
+    } catch (err) { return []; }
 }
 
-/* ============================================================
-   GABUNG ESPN + FIRESTORE (ANTI DOBEL)
-   ============================================================ */
 function gabungData(espnData, firestoreData) {
     const mapFS = new Map();
     firestoreData.forEach(item => {
@@ -844,7 +1139,6 @@ function gabungData(espnData, firestoreData) {
         const looseKey = makeLooseKey(match.date, match.home, match.away);
         if (seenKeys.has(looseKey)) return;
         seenKeys.add(looseKey);
-
         const fs = mapFS.get(looseKey);
         if (fs) {
             hasil.push({
@@ -872,7 +1166,111 @@ function gabungData(espnData, firestoreData) {
 }
 
 /* ============================================================
-   RENDER
+   RENDER BIG MATCH TAKER (8 Pertandingan Panas)
+   ============================================================ */
+function renderBigMatch() {
+    const track = document.getElementById("bigMatchTrack");
+    if (!track) return;
+
+    // Filter pertandingan panas yang akan datang / live
+    const today = getTodayString();
+    const limitDate = get7DaysString();
+
+    const candidates = semuaData.filter(m => {
+        const d = normalizeDate(clean(m.date));
+        if (d < today || d > limitDate) return false;
+        const status = getMatchStatus(m);
+        return status === "akan" || status === "live";
+    });
+
+    // Prioritas: live dulu, terus panas, terus urut jam
+    const hot = candidates.filter(m => isHotMatch(m));
+    const sorted = hot.sort((a, b) => {
+        const sa = getMatchStatus(a) === "live" ? 0 : 1;
+        const sb = getMatchStatus(b) === "live" ? 0 : 1;
+        if (sa !== sb) return sa - sb;
+        return (getKickoffWIBMs(a) || 0) - (getKickoffWIBMs(b) || 0);
+    });
+
+    const top8 = sorted.slice(0, 8);
+
+    if (!top8.length) {
+        track.innerHTML = '<div class="big-match-empty">Belum ada pertandingan panas</div>';
+        return;
+    }
+
+    const cardsHTML = top8.map(m => {
+        const status = getMatchStatus(m);
+        const isLive = status === "live";
+        const homeInitial = m.home ? m.home.substring(0, 2).toUpperCase() : "?";
+        const awayInitial = m.away ? m.away.substring(0, 2).toUpperCase() : "?";
+
+        const homeLogoHTML = m.homeLogo 
+            ? `<img src="${escapeHtml(m.homeLogo)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">` 
+            : "";
+        const awayLogoHTML = m.awayLogo 
+            ? `<img src="${escapeHtml(m.awayLogo)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">` 
+            : "";
+
+        const homeInitialHTML = `<div class="team-initial" style="${m.homeLogo ? 'display:none;' : ''}">${homeInitial}</div>`;
+        const awayInitialHTML = `<div class="team-initial" style="${m.awayLogo ? 'display:none;' : ''}">${awayInitial}</div>`;
+
+        return `
+            <div class="big-match-card ${isLive ? 'is-live' : ''}" data-key="${escapeHtml(makeLooseKey(m.date, m.home, m.away))}">
+                <div class="big-match-badge">
+                    <span class="badge-icon">${isLive ? '🔴' : '🔥'}</span>
+                    <span>${isLive ? 'LIVE' : 'BIG MATCH'}</span>
+                </div>
+                <div class="big-match-league">${escapeHtml(m.league)}</div>
+                <div class="big-match-teams">
+                    <div class="big-match-team">
+                        ${homeLogoHTML}
+                        ${homeInitialHTML}
+                        <div class="team-name">${escapeHtml(m.home)}</div>
+                    </div>
+                    <div class="big-match-vs">VS</div>
+                    <div class="big-match-team">
+                        ${awayLogoHTML}
+                        ${awayInitialHTML}
+                        <div class="team-name">${escapeHtml(m.away)}</div>
+                    </div>
+                </div>
+                <div class="big-match-time">
+                    <span class="clock-icon">🕐</span>
+                    <span>${escapeHtml(m.time)} WIB</span>
+                </div>
+            </div>
+        `;
+    }).join("");
+
+    // Duplikat untuk infinite scroll
+    track.innerHTML = cardsHTML + cardsHTML;
+
+    // Duration biar seimbang
+    const duration = Math.max(30, 7 * top8.length);
+    track.style.animationDuration = duration + "s";
+
+    // Klik card → scroll ke pertandingan
+    track.querySelectorAll(".big-match-card").forEach(card => {
+        card.addEventListener("click", () => {
+            const key = card.dataset.key;
+            const target = document.querySelector(`.match-row-single[data-key="${key}"]`);
+            if (target) {
+                target.scrollIntoView({ behavior: "smooth", block: "center" });
+                target.style.transition = "all 0.5s";
+                target.style.transform = "scale(1.03)";
+                target.style.boxShadow = "0 0 40px rgba(255,204,51,1)";
+                setTimeout(() => {
+                    target.style.transform = "";
+                    target.style.boxShadow = "";
+                }, 2000);
+            }
+        });
+    });
+}
+
+/* ============================================================
+   RENDER MATCH ROW
    ============================================================ */
 function renderMatch(data) {
     const home = clean(data.home);
@@ -883,22 +1281,27 @@ function renderMatch(data) {
     const scoreHome = clean(data.predictionScoreHome);
     const scoreAway = clean(data.predictionScoreAway);
     const status = getMatchStatus(data);
+    const key = makeLooseKey(date, home, away);
 
     const hasHdp = handicap !== "";
     const hasPred = scoreHome !== "" && scoreAway !== "";
 
-    const homeLogo = clean(data.homeLogo);
-    const awayLogo = clean(data.awayLogo);
-
-    const homeLogoHTML = homeLogo ? `<img src="${escapeHtml(homeLogo)}" alt="" onerror="this.style.display='none'">` : "";
-    const awayLogoHTML = awayLogo ? `<img src="${escapeHtml(awayLogo)}" alt="" onerror="this.style.display='none'">` : "";
+    const homeLogoHTML = data.homeLogo ? `<img src="${escapeHtml(data.homeLogo)}" alt="" onerror="this.style.display='none'">` : "";
+    const awayLogoHTML = data.awayLogo ? `<img src="${escapeHtml(data.awayLogo)}" alt="" onerror="this.style.display='none'">` : "";
 
     let badge = "";
-    if (status === "live") badge = `<div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:#dc2626;color:#fff;padding:2px 12px;border-radius:20px;font-size:9px;font-weight:800;letter-spacing:2px;z-index:2;">LIVE</div>`;
-    else if (status === "selesai") badge = `<div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:#10b981;color:#fff;padding:2px 12px;border-radius:20px;font-size:9px;font-weight:800;letter-spacing:2px;z-index:2;">SELESAI</div>`;
+    if (status === "live") {
+        badge = `<div class="match-live-badge"><span class="dot"></span>LIVE</div>`;
+    } else if (status === "selesai") {
+        badge = `<div class="match-finished-badge">SELESAI</div>`;
+    }
+
+    let cls = "match-row-single";
+    if (status === "live") cls += " is-live";
+    else if (status === "selesai") cls += " is-finished";
 
     return `
-        <div class="match-row-single" style="position:relative;">
+        <div class="${cls}" data-key="${escapeHtml(key)}">
             ${badge}
             <div class="match-time-badge">
                 <span class="time-value">${escapeHtml(time)}</span>
@@ -930,14 +1333,21 @@ function renderMatch(data) {
 function renderPrediksi(data) {
     const container = document.getElementById("prediksiContainer");
     if (!container) return;
-
     if (!data.length) {
         container.innerHTML = `<div class="single-column-wrap"><div class="single-col-empty">Tidak ada pertandingan</div></div>`;
         return;
     }
 
+    // Sort: live dulu, terus by waktu
+    const sorted = [...data].sort((a, b) => {
+        const sa = getMatchStatus(a) === "live" ? 0 : 1;
+        const sb = getMatchStatus(b) === "live" ? 0 : 1;
+        if (sa !== sb) return sa - sb;
+        return (getKickoffWIBMs(a) || 0) - (getKickoffWIBMs(b) || 0);
+    });
+
     const groupTanggal = {};
-    data.forEach(item => {
+    sorted.forEach(item => {
         const d = normalizeDate(clean(item.date)) || "0000-00-00";
         if (!groupTanggal[d]) groupTanggal[d] = [];
         groupTanggal[d].push(item);
@@ -1024,6 +1434,8 @@ function applyFilter() {
         });
     } else if (currentFilter === "all") {
         filtered = filtered.filter(item => normalizeDate(clean(item.date)) >= today);
+    } else if (currentFilter === "live") {
+        filtered = filtered.filter(item => getMatchStatus(item) === "live");
     }
 
     if (selectedLiga !== "all") {
@@ -1061,11 +1473,64 @@ function animateNumber(el, target, duration) {
 
 function updateStats(data) {
     const total = data.length;
+    const live = data.filter(m => getMatchStatus(m) === "live").length;
     const liga = new Set(data.map(i => clean(i.league) || "LAINNYA")).size;
     const hari = new Set(data.map(i => normalizeDate(clean(i.date)))).size;
+
     animateNumber(document.getElementById("totalPertandingan"), total, 1200);
+    animateNumber(document.getElementById("totalLive"), live, 800);
     animateNumber(document.getElementById("totalLiga"), liga, 1000);
     animateNumber(document.getElementById("totalHari"), hari, 1400);
+
+    // Update badge live di nav
+    document.getElementById("liveCountBadge").textContent = live;
+
+    // Update live banner
+    const banner = document.getElementById("liveBanner");
+    if (live > 0) {
+        banner.classList.add("show");
+        document.getElementById("liveBannerText").textContent = `${live} Pertandingan LIVE`;
+        const liveMatches = data.filter(m => getMatchStatus(m) === "live").slice(0, 3);
+        const names = liveMatches.map(m => `${m.home} vs ${m.away}`).join(" • ");
+        document.getElementById("liveBannerSub").textContent = names;
+    } else {
+        banner.classList.remove("show");
+    }
+}
+
+/* ============================================================
+   SCROLL TO LIVE
+   ============================================================ */
+function scrollToLive() {
+    const liveMatches = semuaData.filter(m => getMatchStatus(m) === "live");
+    if (!liveMatches.length) {
+        alert("Tidak ada pertandingan LIVE saat ini bro!");
+        return;
+    }
+
+    // Switch filter ke LIVE
+    currentFilter = "live";
+    document.querySelectorAll(".tab-filter").forEach(t => t.classList.remove("active"));
+    document.getElementById("tabLive").classList.add("active");
+    applyFilter();
+
+    // Scroll
+    setTimeout(() => {
+        const firstLive = document.querySelector(".match-row-single.is-live");
+        if (firstLive) {
+            firstLive.scrollIntoView({ behavior: "smooth", block: "center" });
+            firstLive.style.transition = "all 0.5s";
+            firstLive.style.transform = "scale(1.05)";
+            firstLive.style.boxShadow = "0 0 60px rgba(220,38,38,1)";
+            setTimeout(() => {
+                firstLive.style.transform = "";
+                firstLive.style.boxShadow = "";
+            }, 2500);
+        } else {
+            const section = document.getElementById("pertandingan");
+            if (section) section.scrollIntoView({ behavior: "smooth" });
+        }
+    }, 300);
 }
 
 /* ============================================================
@@ -1127,7 +1592,6 @@ setTimeout(finishLoading, 2500);
    ============================================================ */
 async function init() {
     try {
-        console.log("[LOAD] Mulai...");
         updateLoading(40, 400);
 
         const [espnData, fsData] = await Promise.all([
@@ -1135,18 +1599,14 @@ async function init() {
             fetchFirestore()
         ]);
 
-        console.log(`[ESPN] ${espnData.length} pertandingan`);
-        console.log(`[Firestore] ${fsData.length} pertandingan`);
-
         updateLoading(75, 400);
 
         semuaData = gabungData(espnData, fsData);
         semuaData.sort((a, b) => (getKickoffWIBMs(a) || 0) - (getKickoffWIBMs(b) || 0));
 
-        console.log(`[Total] ${semuaData.length} pertandingan`);
-
         updateLigaFilter(semuaData);
         updateStats(semuaData);
+        renderBigMatch();
         applyFilter();
 
         updateLoading(100, 400);
@@ -1166,7 +1626,7 @@ document.querySelectorAll(".tab-filter").forEach(tab => {
     tab.addEventListener("click", () => {
         document.querySelectorAll(".tab-filter").forEach(t => t.classList.remove("active"));
         tab.classList.add("active");
-        currentFilter = tab.dataset.date;
+        currentFilter = tab.dataset.filter;
         applyFilter();
     });
 });
@@ -1178,7 +1638,27 @@ document.getElementById("btnClearSearch").addEventListener("click", () => {
     applyFilter();
 });
 
-// Auto-refresh tiap 5 menit
+// Nav LIVE button
+document.getElementById("navLiveBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    scrollToLive();
+});
+
+// Live banner button
+document.getElementById("liveBannerBtn").addEventListener("click", scrollToLive);
+document.getElementById("liveBanner").addEventListener("click", scrollToLive);
+document.getElementById("statLiveBox").addEventListener("click", scrollToLive);
+
+// Auto-refresh status live tiap 60 detik
+setInterval(() => {
+    if (semuaData.length) {
+        updateStats(semuaData);
+        renderBigMatch();
+        if (currentFilter === "live") applyFilter();
+    }
+}, 60000);
+
+// Full reload data tiap 5 menit
 setInterval(init, 5 * 60 * 1000);
 
 init();
