@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KIPER4D — Prediksi Bola Hari Ini, Jadwal & Handicap Terbaru</title>
 <meta name="description" content="Prediksi bola hari ini terlengkap! Jadwal pertandingan, prediksi skor, handicap, informasi sepak bola terbaru hanya di KIPER4D.">
-<meta name="theme-color" content="#02060f">
+<meta name="theme-color" content="#000000">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://www.gstatic.com">
 <link rel="preconnect" href="https://firestore.googleapis.com">
@@ -18,59 +18,18 @@
 html { scroll-behavior: smooth; }
 body {
     font-family: 'Inter', Arial, sans-serif;
-    background: #02060f;
+    background: #000000;
     color: #fff;
     min-height: 100vh;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
 }
 
-/* AURORA BIRU NAVY */
-.aurora-bg { position: fixed; inset: 0; z-index: -4; pointer-events: none; overflow: hidden; }
-.aurora-bg::before {
-    content: ""; position: absolute; inset: -50%;
-    background:
-        radial-gradient(ellipse 50% 40% at 20% 30%, rgba(34,211,238,0.35) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 40% at 80% 70%, rgba(59,130,246,0.45) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 30% at 50% 50%, rgba(6,182,212,0.25) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 30% 80%, rgba(14,165,233,0.3) 0%, transparent 60%),
-        linear-gradient(180deg, #02060f 0%, #04101f 100%);
-    animation: auroraMove 25s ease-in-out infinite;
-    filter: blur(60px);
-}
-@keyframes auroraMove {
-    0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
-    33% { transform: translate(5%, -5%) rotate(120deg) scale(1.1); }
-    66% { transform: translate(-5%, 5%) rotate(240deg) scale(0.95); }
-}
-
-.liquid-blob {
-    position: fixed; border-radius: 50%; filter: blur(80px);
-    pointer-events: none; z-index: -3; opacity: 0.45;
-    animation: liquidMove 20s ease-in-out infinite;
-}
-.liquid-blob:nth-child(1) {
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(6,182,212,0.8), transparent 70%);
-    top: -100px; left: -100px;
-}
-.liquid-blob:nth-child(2) {
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(59,130,246,0.6), transparent 70%);
-    bottom: -200px; right: -200px;
-    animation-delay: -7s;
-}
-.liquid-blob:nth-child(3) {
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(34,211,238,0.5), transparent 70%);
-    top: 40%; left: 50%;
-    animation-delay: -14s;
-}
-@keyframes liquidMove {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    25% { transform: translate(80px, -60px) scale(1.2); }
-    50% { transform: translate(-60px, 80px) scale(0.9); }
-    75% { transform: translate(60px, 60px) scale(1.1); }
+/* BACKGROUND HITAM POLOS */
+.aurora-bg { 
+    position: fixed; inset: 0; z-index: -4; 
+    pointer-events: none; 
+    background: #000000;
 }
 
 #loadingScreen {
@@ -105,7 +64,7 @@ body {
 /* HEADER */
 header {
     position: sticky; top: 0; z-index: 999;
-    background: rgba(2, 6, 15, 0.92);
+    background: rgba(0, 0, 0, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1.5px solid rgba(34,211,238,0.45);
@@ -124,7 +83,6 @@ header {
     width: 140px; height: 48px; object-fit: contain;
     filter: drop-shadow(0 0 15px rgba(6,182,212,0.9));
     animation: logoMove 3s ease-in-out infinite;
-    transition: filter 0.3s;
 }
 @keyframes logoMove {
     0%, 100% { 
@@ -173,12 +131,12 @@ nav a.nav-login {
 }
 nav a.nav-login:hover { 
     background: linear-gradient(135deg, #22d3ee, #0891b2); 
-    color: #02060f; 
+    color: #000; 
     box-shadow: 0 0 25px rgba(34,211,238,0.8);
     transform: translateY(-2px);
 }
 nav a.nav-daftar {
-    color: #02060f; padding: 9px 24px; border-radius: 22px;
+    color: #000; padding: 9px 24px; border-radius: 22px;
     font-family: 'Rajdhani'; font-size: 12px; font-weight: 900;
     letter-spacing: 1px; text-transform: uppercase;
     background: linear-gradient(135deg, #67e8f9, #22d3ee, #67e8f9);
@@ -249,7 +207,7 @@ nav a.nav-daftar:hover {
     border-radius: 20px; overflow: hidden;
     margin-bottom: 20px;
     border: 2px solid rgba(34,211,238,0.8);
-    background: #02060f; line-height: 0;
+    background: #000; line-height: 0;
     box-shadow: 0 0 60px rgba(34,211,238,0.4), 0 0 120px rgba(59,130,246,0.3);
 }
 .banner img { display: block; width: 100%; height: auto; }
@@ -267,15 +225,35 @@ nav a.nav-daftar:hover {
     100% { left: 140%; }
 }
 
-/* BIG MATCH */
+/* BIG MATCH - KOTAK WARNA-WARNI BERJALAN */
 .big-match-section {
     margin-bottom: 20px;
     border-radius: 20px;
     overflow: hidden;
-    background: rgba(4,16,32,0.85);
-    backdrop-filter: blur(15px);
-    border: 2px solid rgba(239,68,68,0.6);
-    box-shadow: 0 0 40px rgba(239,68,68,0.35);
+    background: #0a0a0a;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    position: relative;
+    box-shadow: 0 0 30px rgba(147,51,234,0.3);
+}
+.big-match-section::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 20px;
+    padding: 2px;
+    background: linear-gradient(90deg, 
+        #22d3ee, #8b5cf6, #ec4899, #fbbf24, #22d3ee);
+    background-size: 300% 100%;
+    animation: borderFlow 6s linear infinite;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+@keyframes borderFlow {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
 }
 .big-match-header {
     padding: 12px 20px;
@@ -283,22 +261,29 @@ nav a.nav-daftar:hover {
     font-size: 14px; letter-spacing: 3px;
     text-transform: uppercase;
     text-align: center;
-    background: linear-gradient(90deg, rgba(127,29,29,0.9), rgba(220,38,38,0.7), rgba(127,29,29,0.9));
-    border-bottom: 1.5px solid rgba(220,38,38,0.6);
+    background: linear-gradient(90deg, #0891b2, #7c3aed, #db2777, #d97706, #0891b2);
+    background-size: 300% 100%;
+    animation: headerFlow 8s linear infinite;
+    border-bottom: 1.5px solid rgba(255,255,255,0.2);
     color: #fff;
-    text-shadow: 0 0 20px rgba(255,100,100,0.9);
+    text-shadow: 0 0 20px rgba(255,255,255,0.8);
+}
+@keyframes headerFlow {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
 }
 .big-match-header .icon { display: inline-block; animation: dotPulse 1.5s infinite; }
 .big-match-scroll-wrap {
     position: relative; overflow: hidden; padding: 14px 0;
+    background: #050505;
 }
 .big-match-scroll-wrap::before, .big-match-scroll-wrap::after {
     content: ""; position: absolute;
     top: 0; width: 40px; height: 100%;
     z-index: 3; pointer-events: none;
 }
-.big-match-scroll-wrap::before { left: 0; background: linear-gradient(90deg, rgba(4,16,32,1), transparent); }
-.big-match-scroll-wrap::after { right: 0; background: linear-gradient(-90deg, rgba(4,16,32,1), transparent); }
+.big-match-scroll-wrap::before { left: 0; background: linear-gradient(90deg, rgba(5,5,5,1), transparent); }
+.big-match-scroll-wrap::after { right: 0; background: linear-gradient(-90deg, rgba(5,5,5,1), transparent); }
 .big-match-track {
     display: flex; gap: 12px;
     padding: 0 16px;
@@ -311,28 +296,48 @@ nav a.nav-daftar:hover {
     100% { transform: translateX(-50%); }
 }
 
-/* KARTU BIG MATCH BIRU */
+/* KARTU BIG MATCH WARNA-WARNI BERJALAN */
 .big-match-card {
     flex-shrink: 0;
     width: 240px; padding: 14px;
     border-radius: 16px;
-    background: linear-gradient(145deg, rgba(8,30,60,0.95), rgba(12,45,90,0.9), rgba(6,25,50,0.95));
-    border: 1.5px solid rgba(34,211,238,0.7);
-    box-shadow: 0 4px 25px rgba(6,182,212,0.4), inset 0 0 30px rgba(34,211,238,0.15);
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    cursor: pointer;
+    background: linear-gradient(145deg, rgba(10,10,15,0.95), rgba(20,10,30,0.9));
     position: relative;
     overflow: hidden;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.big-match-card::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 16px;
+    padding: 2px;
+    background: linear-gradient(135deg, 
+        #22d3ee, #8b5cf6, #ec4899, #fbbf24, #22d3ee);
+    background-size: 300% 300%;
+    animation: cardBorderFlow 8s linear infinite;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 1;
+}
+@keyframes cardBorderFlow {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 300% 300%; }
 }
 .big-match-card:hover {
     transform: translateY(-6px) scale(1.03);
-    border-color: rgba(103,232,249,1);
-    box-shadow: 0 12px 40px rgba(34,211,238,0.6), 0 0 60px rgba(59,130,246,0.5), inset 0 0 40px rgba(103,232,249,0.25);
+    box-shadow: 0 12px 40px rgba(34,211,238,0.5), 0 0 60px rgba(147,51,234,0.4);
 }
 .big-match-card.is-live {
-    border-color: rgba(220,38,38,1);
-    background: linear-gradient(145deg, rgba(90,20,40,0.95), rgba(140,30,50,0.9), rgba(70,15,35,0.95));
     animation: livePulse 1.5s infinite;
+}
+.big-match-card.is-live::before {
+    background: linear-gradient(135deg, #dc2626, #ff2a3d, #dc2626);
+    background-size: 300% 300%;
+    animation: cardBorderFlow 3s linear infinite;
 }
 .big-match-badge {
     display: inline-flex; align-items: center; gap: 5px;
@@ -345,6 +350,8 @@ nav a.nav-daftar:hover {
     border: 1px solid rgba(255,180,180,0.9);
     margin-bottom: 10px;
     box-shadow: 0 0 20px rgba(220,38,38,0.7);
+    position: relative;
+    z-index: 2;
 }
 .big-match-league {
     font-family: 'Rajdhani'; font-size: 10px; font-weight: 700;
@@ -353,12 +360,16 @@ nav a.nav-daftar:hover {
     margin-bottom: 12px;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     text-shadow: 0 0 10px rgba(103,232,249,0.6);
+    position: relative;
+    z-index: 2;
 }
 .big-match-teams {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center; gap: 8px;
     margin-bottom: 12px;
+    position: relative;
+    z-index: 2;
 }
 .big-match-team {
     display: flex; flex-direction: column;
@@ -410,11 +421,17 @@ nav a.nav-daftar:hover {
     padding: 7px 0;
     font-family: 'Teko'; font-size: 14px; font-weight: 600;
     letter-spacing: 1.5px; color: #e0f7ff;
-    background: linear-gradient(90deg, rgba(6,182,212,0.4), rgba(59,130,246,0.3), rgba(6,182,212,0.4));
-    border-top: 1.5px solid rgba(34,211,238,0.6);
-    border-bottom: 1.5px solid rgba(34,211,238,0.6);
+    background: linear-gradient(90deg, rgba(6,182,212,0.4), rgba(147,51,234,0.3), rgba(6,182,212,0.4));
+    background-size: 200% 100%;
+    animation: timeFlow 5s linear infinite;
     border-radius: 10px;
     text-shadow: 0 0 10px rgba(224,247,255,0.6);
+    position: relative;
+    z-index: 2;
+}
+@keyframes timeFlow {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
 }
 .big-match-empty {
     padding: 30px;
@@ -430,7 +447,7 @@ nav a.nav-daftar:hover {
     display: flex; align-items: center;
     margin-bottom: 20px;
     border-radius: 12px; overflow: hidden;
-    background: rgba(2,15,30,0.85);
+    background: #0a0a0a;
     border: 1.5px solid rgba(34,211,238,0.5);
     height: 42px;
     box-shadow: 0 0 25px rgba(34,211,238,0.25);
@@ -477,21 +494,36 @@ nav a.nav-daftar:hover {
     padding: 22px 16px;
     text-align: center;
     border-radius: 18px;
-    background: linear-gradient(145deg, rgba(8,30,60,0.65), rgba(4,16,32,0.7));
-    backdrop-filter: blur(20px);
-    border: 2px solid rgba(34,211,238,0.5);
-    box-shadow: 0 0 40px rgba(34,211,238,0.25), inset 0 0 30px rgba(34,211,238,0.1);
+    background: linear-gradient(145deg, rgba(10,10,15,0.95), rgba(15,10,25,0.9));
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    overflow: hidden;
     transition: all 0.4s;
+}
+.stat-box::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 18px;
+    padding: 2px;
+    background: linear-gradient(90deg, #22d3ee, #8b5cf6, #ec4899, #22d3ee);
+    background-size: 300% 100%;
+    animation: borderFlow 6s linear infinite;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
 }
 .stat-box:hover {
     transform: translateY(-4px);
-    border-color: rgba(103,232,249,0.9);
-    box-shadow: 0 8px 50px rgba(34,211,238,0.5), inset 0 0 30px rgba(34,211,238,0.2);
+    box-shadow: 0 8px 50px rgba(34,211,238,0.5);
+}
+.stat-box.live-box::before {
+    background: linear-gradient(90deg, #dc2626, #ff2a3d, #fbbf24, #dc2626);
+    background-size: 300% 100%;
+    animation: borderFlow 3s linear infinite;
 }
 .stat-box.live-box {
-    border-color: rgba(220,38,38,0.8);
-    background: linear-gradient(145deg, rgba(90,20,40,0.7), rgba(60,15,30,0.75));
-    box-shadow: 0 0 40px rgba(220,38,38,0.5);
     animation: livePulse 2s infinite;
     cursor: pointer;
 }
@@ -503,6 +535,8 @@ nav a.nav-daftar:hover {
     -webkit-text-fill-color: transparent;
     line-height: 1;
     filter: drop-shadow(0 0 15px rgba(103,232,249,0.6));
+    position: relative;
+    z-index: 2;
 }
 .live-box .stat-number {
     background: linear-gradient(180deg, #ff6b6b, #dc2626, #7f1d1d);
@@ -514,6 +548,8 @@ nav a.nav-daftar:hover {
     font-family: 'Rajdhani'; font-size: 11px; font-weight: 700;
     letter-spacing: 2px; text-transform: uppercase;
     margin-top: 6px;
+    position: relative;
+    z-index: 2;
 }
 .live-box .stat-label { color: #fca5a5; font-weight: 800; }
 
@@ -534,7 +570,7 @@ nav a.nav-daftar:hover {
 .next-match-bar {
     padding: 12px 20px;
     border-radius: 14px;
-    background: linear-gradient(135deg, rgba(8,30,60,0.7), rgba(4,16,32,0.8));
+    background: #0a0a0a;
     border: 1.5px solid rgba(34,211,238,0.6);
     margin-bottom: 14px;
     display: flex;
@@ -559,7 +595,7 @@ nav a.nav-daftar:hover {
     padding: 3px 16px;
     background: linear-gradient(135deg, #67e8f9, #22d3ee, #67e8f9);
     background-size: 200% auto;
-    color: #02060f;
+    color: #000;
     border-radius: 20px;
     letter-spacing: 2px;
     box-shadow: 0 0 20px rgba(34,211,238,0.6);
@@ -569,8 +605,7 @@ nav a.nav-daftar:hover {
     display: flex; align-items: center; gap: 10px;
     flex-wrap: wrap; padding: 12px;
     border-radius: 16px;
-    background: rgba(4,16,32,0.85);
-    backdrop-filter: blur(15px);
+    background: #0a0a0a;
     border: 1.5px solid rgba(34,211,238,0.6);
     margin-bottom: 16px;
     box-shadow: 0 0 30px rgba(34,211,238,0.2);
@@ -582,13 +617,13 @@ nav a.nav-daftar:hover {
     font-family: 'Rajdhani'; font-size: 12px; font-weight: 700;
     letter-spacing: 0.5px; text-transform: uppercase;
     color: #c8d4e0;
-    background: rgba(8,30,60,0.8);
+    background: #111;
     border: 1.5px solid rgba(34,211,238,0.5);
     cursor: pointer; transition: all 0.3s;
 }
 .tab-filter:hover { color: #67e8f9; border-color: rgba(103,232,249,0.8); background: rgba(34,211,238,0.1); }
 .tab-filter.active {
-    color: #02060f;
+    color: #000;
     background: linear-gradient(135deg, #67e8f9, #22d3ee, #67e8f9);
     border-color: #67e8f9;
     box-shadow: 0 3px 20px rgba(34,211,238,0.6);
@@ -611,7 +646,7 @@ nav a.nav-daftar:hover {
 .search-box {
     position: relative; display: flex; align-items: center;
     min-width: 200px; flex: 1;
-    background: rgba(8,30,60,0.8);
+    background: #111;
     border: 1.5px solid rgba(34,211,238,0.6);
     border-radius: 12px;
 }
@@ -634,7 +669,7 @@ nav a.nav-daftar:hover {
 #ligaFilter {
     appearance: none;
     border: 1.5px solid rgba(34,211,238,0.6);
-    background-color: #02060f; color: #fff;
+    background-color: #000; color: #fff;
     padding: 10px 32px 10px 14px;
     border-radius: 12px;
     font-family: 'Rajdhani'; font-weight: 700; font-size: 12px;
@@ -643,7 +678,7 @@ nav a.nav-daftar:hover {
     background-repeat: no-repeat;
     background-position: right 12px center;
 }
-#ligaFilter option { background: #02060f; }
+#ligaFilter option { background: #000; }
 
 /* DATE GROUP */
 .date-group { margin-bottom: 24px; }
@@ -653,38 +688,65 @@ nav a.nav-daftar:hover {
     text-transform: uppercase;
     padding: 12px 18px; margin-bottom: 14px;
     border-radius: 12px;
-    background: linear-gradient(90deg, rgba(6,182,212,0.3), rgba(59,130,246,0.2), rgba(6,182,212,0.3));
-    border: 1.5px solid rgba(34,211,238,0.6);
+    background: #0a0a0a;
+    border: 1.5px solid transparent;
+    position: relative;
     text-align: center;
     text-shadow: 0 0 15px rgba(103,232,249,0.8);
-    box-shadow: 0 0 25px rgba(34,211,238,0.25);
+    overflow: hidden;
+}
+.date-group-header::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 12px;
+    padding: 2px;
+    background: linear-gradient(90deg, #22d3ee, #8b5cf6, #ec4899, #fbbf24, #22d3ee);
+    background-size: 300% 100%;
+    animation: borderFlow 6s linear infinite;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
 }
 
-/* LEAGUE BIRU */
+/* LEAGUE - KOTAK WARNA WARNI BERJALAN */
 .league {
     margin-bottom: 20px; border-radius: 18px; overflow: hidden;
-    background: linear-gradient(145deg, rgba(8,30,60,0.85), rgba(4,16,32,0.9));
-    backdrop-filter: blur(15px);
-    border: 1.5px solid rgba(34,211,238,0.6);
-    box-shadow: 0 0 40px rgba(34,211,238,0.25);
+    background: #0a0a0a;
+    border: 2px solid transparent;
+    position: relative;
+}
+.league::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 18px;
+    padding: 2px;
+    background: linear-gradient(90deg, #22d3ee, #8b5cf6, #ec4899, #fbbf24, #22d3ee);
+    background-size: 300% 100%;
+    animation: borderFlow 8s linear infinite;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 2;
 }
 .league-header {
     padding: 14px 20px; text-align: center;
     font-family: 'Rajdhani'; font-weight: 700; font-size: 15px;
-    letter-spacing: 3px; color: #e0f7ff; text-transform: uppercase;
-    background: linear-gradient(90deg, rgba(6,182,212,0.4), rgba(59,130,246,0.3), rgba(6,182,212,0.4));
-    background-size: 200% 100%;
-    animation: leagueFlow 6s linear infinite;
-    border-bottom: 1.5px solid rgba(34,211,238,0.6);
-    text-shadow: 0 0 20px rgba(34,211,238,1);
+    letter-spacing: 3px; color: #fff; text-transform: uppercase;
+    background: linear-gradient(90deg, #0891b2, #7c3aed, #db2777, #d97706, #0891b2);
+    background-size: 300% 100%;
+    animation: headerFlow 8s linear infinite;
+    border-bottom: 1.5px solid rgba(255,255,255,0.2);
+    text-shadow: 0 0 20px rgba(255,255,255,0.8);
+    position: relative;
+    z-index: 3;
 }
-@keyframes leagueFlow {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 200% 50%; }
-}
-.single-column-wrap { display: flex; flex-direction: column; gap: 12px; padding: 16px 12px; }
+.single-column-wrap { display: flex; flex-direction: column; gap: 12px; padding: 16px 12px; position: relative; z-index: 3; }
 
-/* MATCH ROW BIRU */
+/* MATCH ROW - KOTAK WARNA WARNI BERJALAN */
 .match-row-single {
     display: grid;
     grid-template-columns: auto 1fr auto auto;
@@ -693,20 +755,35 @@ nav a.nav-daftar:hover {
     gap: 12px;
     padding: 18px 14px;
     border-radius: 14px;
-    border: 2px solid rgba(34,211,238,0.5);
-    background: linear-gradient(145deg, rgba(8,30,60,0.5), rgba(4,16,32,0.6));
-    backdrop-filter: blur(10px);
-    transition: all 0.4s;
+    background: linear-gradient(145deg, rgba(15,15,20,0.95), rgba(10,10,15,0.9));
     position: relative;
     overflow: hidden;
+    transition: all 0.4s;
 }
 .match-row-single::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 14px;
+    padding: 2px;
+    background: linear-gradient(135deg, 
+        #22d3ee, #8b5cf6, #ec4899, #fbbf24, #22d3ee);
+    background-size: 300% 300%;
+    animation: cardBorderFlow 10s linear infinite;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 1;
+}
+.match-row-single::after {
     content: ""; position: absolute;
     top: 0; left: -100%; width: 60%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(103,232,249,0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
     transform: skewX(-20deg);
     animation: rowShine 5s infinite;
     pointer-events: none;
+    z-index: 2;
 }
 @keyframes rowShine {
     0% { left: -100%; }
@@ -714,19 +791,24 @@ nav a.nav-daftar:hover {
     100% { left: 140%; }
 }
 .match-row-single:hover {
-    border-color: rgba(103,232,249,1);
-    box-shadow: 0 0 40px rgba(34,211,238,0.6), 0 0 60px rgba(59,130,246,0.4);
     transform: translateX(4px) translateY(-3px);
-    background: linear-gradient(145deg, rgba(12,45,90,0.6), rgba(8,30,60,0.7));
+    box-shadow: 0 0 40px rgba(34,211,238,0.5), 0 0 60px rgba(147,51,234,0.4);
+}
+.match-row-single.is-live::before {
+    background: linear-gradient(135deg, #dc2626, #ff2a3d, #fbbf24, #dc2626);
+    background-size: 300% 300%;
+    animation: cardBorderFlow 3s linear infinite;
 }
 .match-row-single.is-live {
-    border-color: rgba(220,38,38,1);
-    background: linear-gradient(145deg, rgba(120,30,60,0.4), rgba(80,20,40,0.5));
     box-shadow: 0 0 30px rgba(220,38,38,0.6);
 }
 .match-row-single.is-finished {
-    opacity: 0.75;
-    border-color: rgba(16,185,129,0.6);
+    opacity: 0.8;
+}
+.match-row-single.is-finished::before {
+    background: linear-gradient(135deg, #064e3b, #10b981, #34d399, #064e3b);
+    background-size: 300% 300%;
+    animation: cardBorderFlow 10s linear infinite;
 }
 .match-live-badge {
     position: absolute;
@@ -739,7 +821,7 @@ nav a.nav-daftar:hover {
     letter-spacing: 2px;
     border: 2px solid rgba(255,220,220,0.9);
     display: flex; align-items: center; gap: 5px;
-    z-index: 2;
+    z-index: 5;
     box-shadow: 0 0 20px rgba(220,38,38,1);
     animation: livePulse 1.5s infinite;
 }
@@ -758,7 +840,7 @@ nav a.nav-daftar:hover {
     font-family: 'Rajdhani'; font-size: 10px; font-weight: 800;
     letter-spacing: 2px;
     border: 2px solid rgba(190,250,220,0.9);
-    z-index: 2;
+    z-index: 5;
 }
 .match-time-badge {
     grid-area: time;
@@ -766,8 +848,10 @@ nav a.nav-daftar:hover {
     align-items: center; justify-content: center;
     gap: 2px; padding: 8px 12px;
     min-width: 70px; border-radius: 12px;
-    background: linear-gradient(135deg, rgba(6,182,212,0.3), rgba(34,211,238,0.3));
+    background: rgba(0,0,0,0.5);
     border: 1.5px solid rgba(34,211,238,0.7);
+    position: relative;
+    z-index: 3;
 }
 .match-time-badge .time-value { 
     font-family: 'Teko'; font-size: 18px; font-weight: 600; 
@@ -784,6 +868,8 @@ nav a.nav-daftar:hover {
     grid-template-columns: 1fr auto 1fr;
     align-items: center; gap: 14px;
     min-width: 0;
+    position: relative;
+    z-index: 3;
 }
 .match-team-mini {
     display: flex; flex-direction: column;
@@ -828,18 +914,28 @@ nav a.nav-daftar:hover {
     align-items: center; justify-content: center;
     gap: 3px; padding: 8px 14px;
     min-width: 85px; border-radius: 12px;
+    position: relative;
+    z-index: 3;
 }
 .match-value-box.hdp {
     grid-area: hdp;
-    background: linear-gradient(135deg, rgba(6,182,212,0.4), rgba(8,145,178,0.5));
+    background: linear-gradient(135deg, rgba(34,211,238,0.3), rgba(6,182,212,0.4));
+    background-size: 200% 200%;
+    animation: valueFlow 5s linear infinite;
     border: 1.5px solid rgba(103,232,249,0.9);
     box-shadow: 0 0 20px rgba(34,211,238,0.4), inset 0 0 15px rgba(103,232,249,0.2);
 }
 .match-value-box.pred {
     grid-area: pred;
-    background: linear-gradient(135deg, rgba(34,211,238,0.3), rgba(59,130,246,0.4));
-    border: 1.5px solid rgba(103,232,249,1);
-    box-shadow: 0 0 20px rgba(59,130,246,0.5), inset 0 0 15px rgba(103,232,249,0.2);
+    background: linear-gradient(135deg, rgba(139,92,246,0.4), rgba(236,72,153,0.4));
+    background-size: 200% 200%;
+    animation: valueFlow 5s linear infinite;
+    border: 1.5px solid rgba(180,130,255,1);
+    box-shadow: 0 0 20px rgba(139,92,246,0.5), inset 0 0 15px rgba(236,72,153,0.2);
+}
+@keyframes valueFlow {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
 }
 .match-value-box .val-label { 
     font-family: 'Rajdhani'; font-size: 9px; font-weight: 800; 
@@ -864,7 +960,7 @@ nav a.nav-daftar:hover {
 .site-footer {
     margin-top: 50px; padding: 40px 16px 30px;
     text-align: center;
-    background: linear-gradient(180deg, transparent, rgba(34,211,238,0.1));
+    background: #0a0a0a;
     border-top: 1.5px solid rgba(34,211,238,0.5);
 }
 .footer-logo-wrap img { 
@@ -934,9 +1030,6 @@ nav a.nav-daftar:hover {
 <body id="top">
 
 <div class="aurora-bg"></div>
-<div class="liquid-blob"></div>
-<div class="liquid-blob"></div>
-<div class="liquid-blob"></div>
 
 <div id="loadingScreen">
     <div class="loading-logo-wrap">
