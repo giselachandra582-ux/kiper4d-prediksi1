@@ -24,13 +24,7 @@ body {
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
 }
-
-/* BACKGROUND HITAM POLOS */
-.aurora-bg { 
-    position: fixed; inset: 0; z-index: -4; 
-    pointer-events: none; 
-    background: #000000;
-}
+.aurora-bg { position: fixed; inset: 0; z-index: -4; pointer-events: none; background: #000000; }
 
 #loadingScreen {
     position: fixed; inset: 0; z-index: 99999;
@@ -61,7 +55,6 @@ body {
 .loading-bar { width: 280px; height: 4px; border-radius: 20px; background: rgba(6,182,212,0.20); overflow: hidden; }
 .loading-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #0891b2, #22d3ee, #67e8f9); transition: width 0.3s; box-shadow: 0 0 15px rgba(34,211,238,0.8); }
 
-/* HEADER */
 header {
     position: sticky; top: 0; z-index: 999;
     background: rgba(0, 0, 0, 0.95);
@@ -75,8 +68,6 @@ header {
     display: flex; align-items: center; justify-content: space-between;
     gap: 20px;
 }
-
-/* LOGO BERGERAK */
 .logo { display: flex; flex-direction: column; text-decoration: none; }
 .logo-wrap { position: relative; }
 .logo img { 
@@ -85,22 +76,8 @@ header {
     animation: logoMove 3s ease-in-out infinite;
 }
 @keyframes logoMove {
-    0%, 100% { 
-        transform: translateY(0) scale(1);
-        filter: drop-shadow(0 0 15px rgba(6,182,212,0.9));
-    }
-    50% { 
-        transform: translateY(-4px) scale(1.05);
-        filter: drop-shadow(0 0 30px rgba(34,211,238,1)) drop-shadow(0 0 50px rgba(59,130,246,0.6));
-    }
-}
-.logo:hover img {
-    animation: logoHover 0.8s ease-in-out infinite;
-}
-@keyframes logoHover {
-    0%, 100% { transform: rotate(0deg) scale(1.1); }
-    25% { transform: rotate(-3deg) scale(1.15); }
-    75% { transform: rotate(3deg) scale(1.15); }
+    0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 15px rgba(6,182,212,0.9)); }
+    50% { transform: translateY(-4px) scale(1.05); filter: drop-shadow(0 0 30px rgba(34,211,238,1)) drop-shadow(0 0 50px rgba(59,130,246,0.6)); }
 }
 .logo-subtitle {
     margin-top: 2px; font-family: 'Rajdhani'; font-size: 9px;
@@ -112,881 +89,160 @@ header {
     animation: shine 5s linear infinite;
 }
 @keyframes shine { to { background-position: 200% center; } }
-
 nav { display: flex; align-items: center; gap: 8px; }
 nav a { text-decoration: none; }
-nav a.nav-link {
-    color: #c8d4e0; padding: 8px 16px; border-radius: 20px;
-    font-family: 'Rajdhani'; font-size: 12px; font-weight: 700;
-    letter-spacing: 1px; text-transform: uppercase;
-    transition: all 0.3s;
-}
+nav a.nav-link { color: #c8d4e0; padding: 8px 16px; border-radius: 20px; font-family: 'Rajdhani'; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; transition: all 0.3s; }
 nav a.nav-link:hover { color: #22d3ee; background: rgba(34,211,238,0.1); }
-nav a.nav-login {
-    color: #22d3ee; padding: 8px 20px; border-radius: 22px;
-    font-family: 'Rajdhani'; font-size: 12px; font-weight: 800;
-    letter-spacing: 1px; text-transform: uppercase;
-    border: 1.5px solid rgba(34,211,238,0.8);
-    transition: all 0.3s;
-}
-nav a.nav-login:hover { 
-    background: linear-gradient(135deg, #22d3ee, #0891b2); 
-    color: #000; 
-    box-shadow: 0 0 25px rgba(34,211,238,0.8);
-    transform: translateY(-2px);
-}
-nav a.nav-daftar {
-    color: #000; padding: 9px 24px; border-radius: 22px;
-    font-family: 'Rajdhani'; font-size: 12px; font-weight: 900;
-    letter-spacing: 1px; text-transform: uppercase;
-    background: linear-gradient(135deg, #67e8f9, #22d3ee, #67e8f9);
-    background-size: 200% auto;
-    animation: shine 3s ease-in-out infinite;
-    box-shadow: 0 0 20px rgba(34,211,238,0.5);
-}
-nav a.nav-daftar:hover { 
-    transform: translateY(-2px); 
-    box-shadow: 0 5px 30px rgba(34,211,238,0.9); 
-}
-
+nav a.nav-login { color: #22d3ee; padding: 8px 20px; border-radius: 22px; font-family: 'Rajdhani'; font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; border: 1.5px solid rgba(34,211,238,0.8); transition: all 0.3s; }
+nav a.nav-login:hover { background: linear-gradient(135deg, #22d3ee, #0891b2); color: #000; box-shadow: 0 0 25px rgba(34,211,238,0.8); transform: translateY(-2px); }
+nav a.nav-daftar { color: #000; padding: 9px 24px; border-radius: 22px; font-family: 'Rajdhani'; font-size: 12px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; background: linear-gradient(135deg, #67e8f9, #22d3ee, #67e8f9); background-size: 200% auto; animation: shine 3s ease-in-out infinite; box-shadow: 0 0 20px rgba(34,211,238,0.5); }
+nav a.nav-daftar:hover { transform: translateY(-2px); box-shadow: 0 5px 30px rgba(34,211,238,0.9); }
 .container { max-width: 1400px; margin: auto; padding: 20px 16px 70px; }
 
-/* LIVE BANNER */
-.live-banner {
-    display: none;
-    margin-bottom: 20px;
-    padding: 14px 20px;
-    border-radius: 16px;
-    background: linear-gradient(135deg, rgba(127,29,29,0.95), rgba(220,38,38,0.9));
-    border: 2px solid rgba(255,180,180,0.8);
-    box-shadow: 0 0 40px rgba(220,38,38,0.6);
-    animation: livePulse 2s infinite;
-    cursor: pointer;
-}
+.live-banner { display: none; margin-bottom: 20px; padding: 14px 20px; border-radius: 16px; background: linear-gradient(135deg, rgba(127,29,29,0.95), rgba(220,38,38,0.9)); border: 2px solid rgba(255,180,180,0.8); box-shadow: 0 0 40px rgba(220,38,38,0.6); animation: livePulse 2s infinite; cursor: pointer; }
 .live-banner.show { display: block; }
-.live-banner-inner {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 16px; flex-wrap: wrap;
-}
-.live-banner-left {
-    display: flex; align-items: center; gap: 12px;
-    flex: 1; min-width: 0;
-}
+.live-banner-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.live-banner-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
 .live-banner-icon { font-size: 26px; animation: dotPulse 1s infinite; }
-.live-banner-text {
-    font-family: 'Rajdhani'; font-size: 16px; font-weight: 800;
-    letter-spacing: 2px; text-transform: uppercase;
-}
-.live-banner-sub {
-    font-size: 12px; opacity: 0.9;
-    font-family: 'Rajdhani'; font-weight: 600;
-    margin-top: 3px;
-}
-.live-banner-btn {
-    background: #fff; color: #7f1d1d;
-    padding: 10px 22px; border-radius: 20px;
-    font-family: 'Rajdhani'; font-size: 13px; font-weight: 900;
-    letter-spacing: 1.5px; text-transform: uppercase;
-    border: 0; cursor: pointer;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
-    transition: transform 0.3s;
-}
+.live-banner-text { font-family: 'Rajdhani'; font-size: 16px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
+.live-banner-sub { font-size: 12px; opacity: 0.9; font-family: 'Rajdhani'; font-weight: 600; margin-top: 3px; }
+.live-banner-btn { background: #fff; color: #7f1d1d; padding: 10px 22px; border-radius: 20px; font-family: 'Rajdhani'; font-size: 13px; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; border: 0; cursor: pointer; box-shadow: 0 5px 20px rgba(0,0,0,0.4); transition: transform 0.3s; }
 .live-banner-btn:hover { transform: scale(1.05); }
-@keyframes livePulse {
-    0%, 100% { box-shadow: 0 0 20px rgba(220,38,38,0.7); }
-    50% { box-shadow: 0 0 35px rgba(220,38,38,1); }
-}
-@keyframes dotPulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.3; transform: scale(1.5); }
-}
+@keyframes livePulse { 0%, 100% { box-shadow: 0 0 20px rgba(220,38,38,0.7); } 50% { box-shadow: 0 0 35px rgba(220,38,38,1); } }
+@keyframes dotPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.3; transform: scale(1.5); } }
 
-/* BANNER */
-.banner {
-    position: relative; width: 100%;
-    border-radius: 20px; overflow: hidden;
-    margin-bottom: 20px;
-    border: 2px solid rgba(34,211,238,0.8);
-    background: #000; line-height: 0;
-    box-shadow: 0 0 60px rgba(34,211,238,0.4), 0 0 120px rgba(59,130,246,0.3);
-}
+.banner { position: relative; width: 100%; border-radius: 20px; overflow: hidden; margin-bottom: 20px; border: 2px solid rgba(34,211,238,0.8); background: #000; line-height: 0; box-shadow: 0 0 60px rgba(34,211,238,0.4), 0 0 120px rgba(59,130,246,0.3); }
 .banner img { display: block; width: 100%; height: auto; }
-.banner::after {
-    content: ""; position: absolute;
-    top: 0; left: -120%; width: 60%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-    transform: skewX(-20deg);
-    animation: bannerShine 6s infinite;
-    pointer-events: none;
-}
-@keyframes bannerShine {
-    0% { left: -120%; }
-    40% { left: 140%; }
-    100% { left: 140%; }
-}
+.banner::after { content: ""; position: absolute; top: 0; left: -120%; width: 60%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transform: skewX(-20deg); animation: bannerShine 6s infinite; pointer-events: none; }
+@keyframes bannerShine { 0% { left: -120%; } 40% { left: 140%; } 100% { left: 140%; } }
 
-/* BIG MATCH - KOTAK WARNA-WARNI BERJALAN */
-.big-match-section {
-    margin-bottom: 20px;
-    border-radius: 20px;
-    overflow: hidden;
-    background: #0a0a0a;
-    border: 2px solid transparent;
-    background-clip: padding-box;
-    position: relative;
-    box-shadow: 0 0 30px rgba(147,51,234,0.3);
-}
-.big-match-section::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    border-radius: 20px;
-    padding: 2px;
-    background: linear-gradient(90deg, 
-        #22d3ee, #8b5cf6, #ec4899, #fbbf24, #22d3ee);
-    background-size: 300% 100%;
-    animation: borderFlow 6s linear infinite;
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-}
-@keyframes borderFlow {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 300% 50%; }
-}
-.big-match-header {
-    padding: 12px 20px;
-    font-family: 'Rajdhani'; font-weight: 800;
-    font-size: 14px; letter-spacing: 3px;
-    text-transform: uppercase;
-    text-align: center;
-    background: linear-gradient(90deg, #0891b2, #7c3aed, #db2777, #d97706, #0891b2);
-    background-size: 300% 100%;
-    animation: headerFlow 8s linear infinite;
-    border-bottom: 1.5px solid rgba(255,255,255,0.2);
-    color: #fff;
-    text-shadow: 0 0 20px rgba(255,255,255,0.8);
-}
-@keyframes headerFlow {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 300% 50%; }
-}
+.big-match-section { margin-bottom: 20px; border-radius: 20px; overflow: hidden; background: #0a0a0a; border: 2px solid transparent; background-clip: padding-box; position: relative; box-shadow: 0 0 30px rgba(147,51,234,0.3); }
+.big-match-section::before { content: ""; position: absolute; inset: -2px; border-radius: 20px; padding: 2px; background: linear-gradient(90deg, #22d3ee, #8b5cf6, #ec4899, #fbbf24, #22d3ee); background-size: 300% 100%; animation: borderFlow 6s linear infinite; -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
+@keyframes borderFlow { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
+.big-match-header { padding: 12px 20px; font-family: 'Rajdhani'; font-weight: 800; font-size: 14px; letter-spacing: 3px; text-transform: uppercase; text-align: center; background: linear-gradient(90deg, #0891b2, #7c3aed, #db2777, #d97706, #0891b2); background-size: 300% 100%; animation: headerFlow 8s linear infinite; border-bottom: 1.5px solid rgba(255,255,255,0.2); color: #fff; text-shadow: 0 0 20px rgba(255,255,255,0.8); }
+@keyframes headerFlow { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
 .big-match-header .icon { display: inline-block; animation: dotPulse 1.5s infinite; }
-.big-match-scroll-wrap {
-    position: relative; overflow: hidden; padding: 14px 0;
-    background: #050505;
-}
-.big-match-scroll-wrap::before, .big-match-scroll-wrap::after {
-    content: ""; position: absolute;
-    top: 0; width: 40px; height: 100%;
-    z-index: 3; pointer-events: none;
-}
+.big-match-scroll-wrap { position: relative; overflow: hidden; padding: 14px 0; background: #050505; }
+.big-match-scroll-wrap::before, .big-match-scroll-wrap::after { content: ""; position: absolute; top: 0; width: 40px; height: 100%; z-index: 3; pointer-events: none; }
 .big-match-scroll-wrap::before { left: 0; background: linear-gradient(90deg, rgba(5,5,5,1), transparent); }
 .big-match-scroll-wrap::after { right: 0; background: linear-gradient(-90deg, rgba(5,5,5,1), transparent); }
-.big-match-track {
-    display: flex; gap: 12px;
-    padding: 0 16px;
-    width: max-content;
-    animation: bigMatchScroll 60s linear infinite;
-}
+.big-match-track { display: flex; gap: 12px; padding: 0 16px; width: max-content; animation: bigMatchScroll 60s linear infinite; }
 .big-match-track:hover { animation-play-state: paused; }
-@keyframes bigMatchScroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-}
+@keyframes bigMatchScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+.big-match-card { flex-shrink: 0; width: 240px; padding: 14px; border-radius: 16px; background: linear-gradient(145deg, rgba(10,10,15,0.95), rgba(20,10,30,0.9)); position: relative; overflow: hidden; cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.big-match-card::before { content: ""; position: absolute; inset: -2px; border-radius: 16px; padding: 2px; background: linear-gradient(135deg, #22d3ee, #8b5cf6, #ec4899, #fbbf24, #22d3ee); background-size: 300% 300%; animation: cardBorderFlow 8s linear infinite; -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 1; }
+@keyframes cardBorderFlow { 0% { background-position: 0% 0%; } 100% { background-position: 300% 300%; } }
+.big-match-card:hover { transform: translateY(-6px) scale(1.03); box-shadow: 0 12px 40px rgba(34,211,238,0.5), 0 0 60px rgba(147,51,234,0.4); }
+.big-match-card.is-live { animation: livePulse 1.5s infinite; }
+.big-match-card.is-live::before { background: linear-gradient(135deg, #dc2626, #ff2a3d, #dc2626); background-size: 300% 300%; animation: cardBorderFlow 3s linear infinite; }
+.big-match-badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 14px; border-radius: 20px; font-family: 'Rajdhani'; font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; background: linear-gradient(90deg, #dc2626, #ff2a3d, #dc2626); color: #fff; border: 1px solid rgba(255,180,180,0.9); margin-bottom: 10px; box-shadow: 0 0 20px rgba(220,38,38,0.7); position: relative; z-index: 2; }
+.big-match-league { font-family: 'Rajdhani'; font-size: 10px; font-weight: 700; color: #67e8f9; letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 0 10px rgba(103,232,249,0.6); position: relative; z-index: 2; }
+.big-match-teams { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; margin-bottom: 12px; position: relative; z-index: 2; }
+.big-match-team { display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 0; }
+.big-match-team img { width: 44px; height: 44px; object-fit: contain; animation: logoFloat 3s ease-in-out infinite; filter: drop-shadow(0 0 8px rgba(34,211,238,0.5)); }
+@keyframes logoFloat { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-4px) scale(1.05); } }
+.big-match-card:hover .big-match-team img { animation: logoSpin 0.8s ease-in-out; filter: drop-shadow(0 0 20px rgba(103,232,249,1)); }
+@keyframes logoSpin { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(180deg) scale(1.2); } 100% { transform: rotate(360deg) scale(1); } }
+.big-match-team .team-initial { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, #0e4a6e, #06243c); border: 2px solid rgba(34,211,238,0.9); font-size: 14px; font-weight: 900; color: #67e8f9; text-shadow: 0 0 10px rgba(103,232,249,0.8); animation: logoFloat 3s ease-in-out infinite; }
+.big-match-team .team-name { font-family: 'Rajdhani'; font-size: 10.5px; font-weight: 700; color: #fff; text-align: center; max-width: 72px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; text-shadow: 0 0 8px rgba(255,255,255,0.4); }
+.big-match-vs { font-family: 'Orbitron'; font-size: 11px; font-weight: 800; color: #67e8f9; letter-spacing: 1.5px; text-shadow: 0 0 15px rgba(103,232,249,0.9); }
+.big-match-time { display: flex; align-items: center; justify-content: center; gap: 5px; padding: 7px 0; font-family: 'Teko'; font-size: 14px; font-weight: 600; letter-spacing: 1.5px; color: #e0f7ff; background: linear-gradient(90deg, rgba(6,182,212,0.4), rgba(147,51,234,0.3), rgba(6,182,212,0.4)); background-size: 200% 100%; animation: timeFlow 5s linear infinite; border-radius: 10px; text-shadow: 0 0 10px rgba(224,247,255,0.6); position: relative; z-index: 2; }
+@keyframes timeFlow { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+.big-match-empty { padding: 30px; text-align: center; color: #a0b8d0; font-family: 'Rajdhani'; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; }
 
-/* KARTU BIG MATCH WARNA-WARNI BERJALAN */
-.big-match-card {
-    flex-shrink: 0;
-    width: 240px; padding: 14px;
-    border-radius: 16px;
-    background: linear-gradient(145deg, rgba(10,10,15,0.95), rgba(20,10,30,0.9));
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-.big-match-card::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    border-radius: 16px;
-    padding: 2px;
-    background: linear-gradient(135deg, 
-        #22d3ee, #8b5cf6, #ec4899, #fbbf24, #22d3ee);
-    background-size: 300% 300%;
-    animation: cardBorderFlow 8s linear infinite;
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-    z-index: 1;
-}
-@keyframes cardBorderFlow {
-    0% { background-position: 0% 0%; }
-    100% { background-position: 300% 300%; }
-}
-.big-match-card:hover {
-    transform: translateY(-6px) scale(1.03);
-    box-shadow: 0 12px 40px rgba(34,211,238,0.5), 0 0 60px rgba(147,51,234,0.4);
-}
-.big-match-card.is-live {
-    animation: livePulse 1.5s infinite;
-}
-.big-match-card.is-live::before {
-    background: linear-gradient(135deg, #dc2626, #ff2a3d, #dc2626);
-    background-size: 300% 300%;
-    animation: cardBorderFlow 3s linear infinite;
-}
-.big-match-badge {
-    display: inline-flex; align-items: center; gap: 5px;
-    padding: 4px 14px;
-    border-radius: 20px;
-    font-family: 'Rajdhani'; font-size: 10px; font-weight: 800;
-    letter-spacing: 1.5px; text-transform: uppercase;
-    background: linear-gradient(90deg, #dc2626, #ff2a3d, #dc2626);
-    color: #fff;
-    border: 1px solid rgba(255,180,180,0.9);
-    margin-bottom: 10px;
-    box-shadow: 0 0 20px rgba(220,38,38,0.7);
-    position: relative;
-    z-index: 2;
-}
-.big-match-league {
-    font-family: 'Rajdhani'; font-size: 10px; font-weight: 700;
-    color: #67e8f9; letter-spacing: 1.2px;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    text-shadow: 0 0 10px rgba(103,232,249,0.6);
-    position: relative;
-    z-index: 2;
-}
-.big-match-teams {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center; gap: 8px;
-    margin-bottom: 12px;
-    position: relative;
-    z-index: 2;
-}
-.big-match-team {
-    display: flex; flex-direction: column;
-    align-items: center; gap: 6px; min-width: 0;
-}
-.big-match-team img {
-    width: 44px; height: 44px; object-fit: contain;
-    animation: logoFloat 3s ease-in-out infinite;
-    filter: drop-shadow(0 0 8px rgba(34,211,238,0.5));
-}
-@keyframes logoFloat {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-4px) scale(1.05); }
-}
-.big-match-card:hover .big-match-team img {
-    animation: logoSpin 0.8s ease-in-out;
-    filter: drop-shadow(0 0 20px rgba(103,232,249,1));
-}
-@keyframes logoSpin {
-    0% { transform: rotate(0deg) scale(1); }
-    50% { transform: rotate(180deg) scale(1.2); }
-    100% { transform: rotate(360deg) scale(1); }
-}
-.big-match-team .team-initial {
-    width: 44px; height: 44px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    background: radial-gradient(circle, #0e4a6e, #06243c);
-    border: 2px solid rgba(34,211,238,0.9);
-    font-size: 14px; font-weight: 900; color: #67e8f9;
-    text-shadow: 0 0 10px rgba(103,232,249,0.8);
-    animation: logoFloat 3s ease-in-out infinite;
-}
-.big-match-team .team-name {
-    font-family: 'Rajdhani'; font-size: 10.5px; font-weight: 700;
-    color: #fff; text-align: center;
-    max-width: 72px;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    text-transform: uppercase;
-    text-shadow: 0 0 8px rgba(255,255,255,0.4);
-}
-.big-match-vs {
-    font-family: 'Orbitron'; font-size: 11px; font-weight: 800;
-    color: #67e8f9; letter-spacing: 1.5px;
-    text-shadow: 0 0 15px rgba(103,232,249,0.9);
-}
-.big-match-time {
-    display: flex; align-items: center; justify-content: center;
-    gap: 5px;
-    padding: 7px 0;
-    font-family: 'Teko'; font-size: 14px; font-weight: 600;
-    letter-spacing: 1.5px; color: #e0f7ff;
-    background: linear-gradient(90deg, rgba(6,182,212,0.4), rgba(147,51,234,0.3), rgba(6,182,212,0.4));
-    background-size: 200% 100%;
-    animation: timeFlow 5s linear infinite;
-    border-radius: 10px;
-    text-shadow: 0 0 10px rgba(224,247,255,0.6);
-    position: relative;
-    z-index: 2;
-}
-@keyframes timeFlow {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 200% 50%; }
-}
-.big-match-empty {
-    padding: 30px;
-    text-align: center;
-    color: #a0b8d0;
-    font-family: 'Rajdhani'; font-size: 13px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-}
-
-/* NEWS TICKER */
-.news-ticker {
-    display: flex; align-items: center;
-    margin-bottom: 20px;
-    border-radius: 12px; overflow: hidden;
-    background: #0a0a0a;
-    border: 1.5px solid rgba(34,211,238,0.5);
-    height: 42px;
-    box-shadow: 0 0 25px rgba(34,211,238,0.25);
-}
-.news-ticker-label {
-    flex-shrink: 0;
-    padding: 0 20px;
-    height: 100%;
-    display: flex; align-items: center;
-    background: linear-gradient(90deg, #dc2626, #ef4444);
-    color: #fff;
-    font-family: 'Rajdhani'; font-size: 12px; font-weight: 900;
-    letter-spacing: 3px; text-transform: uppercase;
-    text-shadow: 0 0 10px rgba(255,255,255,0.8);
-    animation: newsPulse 1.5s infinite;
-}
-@keyframes newsPulse {
-    0%, 100% { background: linear-gradient(90deg, #dc2626, #ef4444); }
-    50% { background: linear-gradient(90deg, #ef4444, #dc2626); }
-}
+.news-ticker { display: flex; align-items: center; margin-bottom: 20px; border-radius: 12px; overflow: hidden; background: #0a0a0a; border: 1.5px solid rgba(34,211,238,0.5); height: 42px; box-shadow: 0 0 25px rgba(34,211,238,0.25); }
+.news-ticker-label { flex-shrink: 0; padding: 0 20px; height: 100%; display: flex; align-items: center; background: linear-gradient(90deg, #dc2626, #ef4444); color: #fff; font-family: 'Rajdhani'; font-size: 12px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; text-shadow: 0 0 10px rgba(255,255,255,0.8); animation: newsPulse 1.5s infinite; }
+@keyframes newsPulse { 0%, 100% { background: linear-gradient(90deg, #dc2626, #ef4444); } 50% { background: linear-gradient(90deg, #ef4444, #dc2626); } }
 .news-ticker-content { flex: 1; white-space: nowrap; overflow: hidden; position: relative; height: 100%; }
-.news-ticker-text {
-    position: absolute;
-    top: 50%; transform: translateY(-50%);
-    padding-left: 100%;
-    font-family: 'Rajdhani'; font-size: 13px; font-weight: 600;
-    color: #67e8f9;
-    letter-spacing: 0.5px;
-    animation: newsScroll 40s linear infinite;
-}
-@keyframes newsScroll {
-    0% { transform: translate(0, -50%); }
-    100% { transform: translate(-100%, -50%); }
-}
+.news-ticker-text { position: absolute; top: 50%; transform: translateY(-50%); padding-left: 100%; font-family: 'Rajdhani'; font-size: 13px; font-weight: 600; color: #67e8f9; letter-spacing: 0.5px; animation: newsScroll 40s linear infinite; }
+@keyframes newsScroll { 0% { transform: translate(0, -50%); } 100% { transform: translate(-100%, -50%); } }
 
-/* STATS */
-.stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px; margin-bottom: 24px;
-}
-.stat-box {
-    position: relative;
-    padding: 22px 16px;
-    text-align: center;
-    border-radius: 18px;
-    background: linear-gradient(145deg, rgba(10,10,15,0.95), rgba(15,10,25,0.9));
-    border: 2px solid transparent;
-    background-clip: padding-box;
-    overflow: hidden;
-    transition: all 0.4s;
-}
-.stat-box::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    border-radius: 18px;
-    padding: 2px;
-    background: linear-gradient(90deg, #22d3ee, #8b5cf6, #ec4899, #22d3ee);
-    background-size: 300% 100%;
-    animation: borderFlow 6s linear infinite;
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-}
-.stat-box:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 50px rgba(34,211,238,0.5);
-}
-.stat-box.live-box::before {
-    background: linear-gradient(90deg, #dc2626, #ff2a3d, #fbbf24, #dc2626);
-    background-size: 300% 100%;
-    animation: borderFlow 3s linear infinite;
-}
-.stat-box.live-box {
-    animation: livePulse 2s infinite;
-    cursor: pointer;
-}
-.stat-number {
-    display: block;
-    font-family: 'Teko'; font-size: 46px; font-weight: 700;
-    background: linear-gradient(180deg, #e0f7ff, #67e8f9, #0891b2);
-    -webkit-background-clip: text; background-clip: text;
-    -webkit-text-fill-color: transparent;
-    line-height: 1;
-    filter: drop-shadow(0 0 15px rgba(103,232,249,0.6));
-    position: relative;
-    z-index: 2;
-}
-.live-box .stat-number {
-    background: linear-gradient(180deg, #ff6b6b, #dc2626, #7f1d1d);
-    -webkit-background-clip: text; background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-.stat-label {
-    color: #a0b8d0;
-    font-family: 'Rajdhani'; font-size: 11px; font-weight: 700;
-    letter-spacing: 2px; text-transform: uppercase;
-    margin-top: 6px;
-    position: relative;
-    z-index: 2;
-}
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+.stat-box { position: relative; padding: 22px 16px; text-align: center; border-radius: 18px; background: linear-gradient(145deg, rgba(10,10,15,0.95), rgba(15,10,25,0.9)); border: 2px solid transparent; background-clip: padding-box; overflow: hidden; transition: all 0.4s; }
+.stat-box::before { content: ""; position: absolute; inset: -2px; border-radius: 18px; padding: 2px; background: linear-gradient(90deg, #22d3ee, #8b5cf6, #ec4899, #22d3ee); background-size: 300% 100%; animation: borderFlow 6s linear infinite; -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
+.stat-box:hover { transform: translateY(-4px); box-shadow: 0 8px 50px rgba(34,211,238,0.5); }
+.stat-box.live-box::before { background: linear-gradient(90deg, #dc2626, #ff2a3d, #fbbf24, #dc2626); background-size: 300% 100%; animation: borderFlow 3s linear infinite; }
+.stat-box.live-box { animation: livePulse 2s infinite; cursor: pointer; }
+.stat-number { display: block; font-family: 'Teko'; font-size: 46px; font-weight: 700; background: linear-gradient(180deg, #e0f7ff, #67e8f9, #0891b2); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; filter: drop-shadow(0 0 15px rgba(103,232,249,0.6)); position: relative; z-index: 2; }
+.live-box .stat-number { background: linear-gradient(180deg, #ff6b6b, #dc2626, #7f1d1d); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.stat-label { color: #a0b8d0; font-family: 'Rajdhani'; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-top: 6px; position: relative; z-index: 2; }
 .live-box .stat-label { color: #fca5a5; font-weight: 800; }
 
 #pertandingan { scroll-margin-top: 20px; }
 .section-head { margin: 20px 0 16px; }
-.section-title {
-    font-family: 'Rajdhani'; font-size: 24px; font-weight: 700;
-    letter-spacing: 3px; text-transform: uppercase;
-}
-.section-title span {
-    background: linear-gradient(90deg, #67e8f9, #22d3ee, #67e8f9);
-    background-size: 200% auto;
-    -webkit-background-clip: text; background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: shine 4s linear infinite;
-}
-
-.next-match-bar {
-    padding: 12px 20px;
-    border-radius: 14px;
-    background: #0a0a0a;
-    border: 1.5px solid rgba(34,211,238,0.6);
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    flex-wrap: wrap;
-    box-shadow: 0 0 30px rgba(34,211,238,0.3);
-}
-.next-match-label {
-    font-family: 'Rajdhani'; font-size: 11px; font-weight: 800;
-    letter-spacing: 2.5px; text-transform: uppercase;
-    color: #a0b8d0;
-}
-.next-match-teams {
-    font-family: 'Rajdhani'; font-size: 15px; font-weight: 700;
-    color: #fff; letter-spacing: 1px;
-    text-transform: uppercase;
-}
-.next-match-countdown {
-    font-family: 'Teko'; font-size: 24px; font-weight: 700;
-    padding: 3px 16px;
-    background: linear-gradient(135deg, #67e8f9, #22d3ee, #67e8f9);
-    background-size: 200% auto;
-    color: #000;
-    border-radius: 20px;
-    letter-spacing: 2px;
-    box-shadow: 0 0 20px rgba(34,211,238,0.6);
-    animation: shine 3s linear infinite;
-}
-.filter-row {
-    display: flex; align-items: center; gap: 10px;
-    flex-wrap: wrap; padding: 12px;
-    border-radius: 16px;
-    background: #0a0a0a;
-    border: 1.5px solid rgba(34,211,238,0.6);
-    margin-bottom: 16px;
-    box-shadow: 0 0 30px rgba(34,211,238,0.2);
-}
+.section-title { font-family: 'Rajdhani'; font-size: 24px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; }
+.section-title span { background: linear-gradient(90deg, #67e8f9, #22d3ee, #67e8f9); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: shine 4s linear infinite; }
+.next-match-bar { padding: 12px 20px; border-radius: 14px; background: #0a0a0a; border: 1.5px solid rgba(34,211,238,0.6); margin-bottom: 14px; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; box-shadow: 0 0 30px rgba(34,211,238,0.3); }
+.next-match-label { font-family: 'Rajdhani'; font-size: 11px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: #a0b8d0; }
+.next-match-teams { font-family: 'Rajdhani'; font-size: 15px; font-weight: 700; color: #fff; letter-spacing: 1px; text-transform: uppercase; }
+.next-match-countdown { font-family: 'Teko'; font-size: 24px; font-weight: 700; padding: 3px 16px; background: linear-gradient(135deg, #67e8f9, #22d3ee, #67e8f9); background-size: 200% auto; color: #000; border-radius: 20px; letter-spacing: 2px; box-shadow: 0 0 20px rgba(34,211,238,0.6); animation: shine 3s linear infinite; }
+.filter-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 12px; border-radius: 16px; background: #0a0a0a; border: 1.5px solid rgba(34,211,238,0.6); margin-bottom: 16px; box-shadow: 0 0 30px rgba(34,211,238,0.2); }
 .tab-filter-wrap { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; flex: 1; }
-.tab-filter {
-    display: flex; align-items: center; gap: 5px;
-    padding: 9px 16px; border-radius: 12px;
-    font-family: 'Rajdhani'; font-size: 12px; font-weight: 700;
-    letter-spacing: 0.5px; text-transform: uppercase;
-    color: #c8d4e0;
-    background: #111;
-    border: 1.5px solid rgba(34,211,238,0.5);
-    cursor: pointer; transition: all 0.3s;
-}
+.tab-filter { display: flex; align-items: center; gap: 5px; padding: 9px 16px; border-radius: 12px; font-family: 'Rajdhani'; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #c8d4e0; background: #111; border: 1.5px solid rgba(34,211,238,0.5); cursor: pointer; transition: all 0.3s; }
 .tab-filter:hover { color: #67e8f9; border-color: rgba(103,232,249,0.8); background: rgba(34,211,238,0.1); }
-.tab-filter.active {
-    color: #000;
-    background: linear-gradient(135deg, #67e8f9, #22d3ee, #67e8f9);
-    border-color: #67e8f9;
-    box-shadow: 0 3px 20px rgba(34,211,238,0.6);
-}
-.tab-filter.live-tab {
-    background: linear-gradient(135deg, #7f1d1d, #dc2626);
-    color: #fff;
-    border-color: #ef4444;
-}
-.tab-filter.live-tab.active {
-    background: linear-gradient(135deg, #dc2626, #ff2a3d);
-    box-shadow: 0 0 25px rgba(220,38,38,0.9);
-}
-.tab-filter.live-tab .dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: #fff;
-    animation: dotPulse 1s infinite;
-}
+.tab-filter.active { color: #000; background: linear-gradient(135deg, #67e8f9, #22d3ee, #67e8f9); border-color: #67e8f9; box-shadow: 0 3px 20px rgba(34,211,238,0.6); }
+.tab-filter.live-tab { background: linear-gradient(135deg, #7f1d1d, #dc2626); color: #fff; border-color: #ef4444; }
+.tab-filter.live-tab.active { background: linear-gradient(135deg, #dc2626, #ff2a3d); box-shadow: 0 0 25px rgba(220,38,38,0.9); }
+.tab-filter.live-tab .dot { width: 8px; height: 8px; border-radius: 50%; background: #fff; animation: dotPulse 1s infinite; }
 .tab-icon { font-size: 13px; }
-.search-box {
-    position: relative; display: flex; align-items: center;
-    min-width: 200px; flex: 1;
-    background: #111;
-    border: 1.5px solid rgba(34,211,238,0.6);
-    border-radius: 12px;
-}
+.search-box { position: relative; display: flex; align-items: center; min-width: 200px; flex: 1; background: #111; border: 1.5px solid rgba(34,211,238,0.6); border-radius: 12px; }
 .search-icon { padding: 0 12px; color: #22d3ee; font-size: 14px; }
-#searchInput {
-    flex: 1; border: none; outline: none;
-    background: transparent; color: #fff;
-    padding: 10px 4px;
-    font-family: 'Rajdhani'; font-weight: 600; font-size: 13px;
-}
+#searchInput { flex: 1; border: none; outline: none; background: transparent; color: #fff; padding: 10px 4px; font-family: 'Rajdhani'; font-weight: 600; font-size: 13px; }
 #searchInput::placeholder { color: #6b7b9d; }
 .search-clear { background: transparent; border: none; color: #999; cursor: pointer; padding: 0 14px; font-size: 14px; }
 .search-clear.hidden { display: none; }
 .date-filter { display: flex; align-items: center; gap: 8px; }
-.date-filter label {
-    color: #7dd3fc;
-    font-family: 'Rajdhani'; font-size: 11px; font-weight: 700;
-    letter-spacing: 1px; text-transform: uppercase;
-}
-#ligaFilter {
-    appearance: none;
-    border: 1.5px solid rgba(34,211,238,0.6);
-    background-color: #000; color: #fff;
-    padding: 10px 32px 10px 14px;
-    border-radius: 12px;
-    font-family: 'Rajdhani'; font-weight: 700; font-size: 12px;
-    outline: none; cursor: pointer; max-width: 220px;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2322d3ee' stroke-width='3'><polyline points='6 9 12 15 18 9'></polyline></svg>");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-}
+.date-filter label { color: #7dd3fc; font-family: 'Rajdhani'; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+#ligaFilter { appearance: none; border: 1.5px solid rgba(34,211,238,0.6); background-color: #000; color: #fff; padding: 10px 32px 10px 14px; border-radius: 12px; font-family: 'Rajdhani'; font-weight: 700; font-size: 12px; outline: none; cursor: pointer; max-width: 220px; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2322d3ee' stroke-width='3'><polyline points='6 9 12 15 18 9'></polyline></svg>"); background-repeat: no-repeat; background-position: right 12px center; }
 #ligaFilter option { background: #000; }
 
-/* DATE GROUP */
 .date-group { margin-bottom: 24px; }
-.date-group-header {
-    font-family: 'Rajdhani'; font-size: 16px; font-weight: 800;
-    letter-spacing: 2px; color: #67e8f9;
-    text-transform: uppercase;
-    padding: 12px 18px; margin-bottom: 14px;
-    border-radius: 12px;
-    background: #0a0a0a;
-    border: 1.5px solid transparent;
-    position: relative;
-    text-align: center;
-    text-shadow: 0 0 15px rgba(103,232,249,0.8);
-    overflow: hidden;
-}
-.date-group-header::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    border-radius: 12px;
-    padding: 2px;
-    background: linear-gradient(90deg, #22d3ee, #8b5cf6, #ec4899, #fbbf24, #22d3ee);
-    background-size: 300% 100%;
-    animation: borderFlow 6s linear infinite;
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-}
+.date-group-header { font-family: 'Rajdhani'; font-size: 16px; font-weight: 800; letter-spacing: 2px; color: #67e8f9; text-transform: uppercase; padding: 12px 18px; margin-bottom: 14px; border-radius: 12px; background: #0a0a0a; border: 1.5px solid transparent; position: relative; text-align: center; text-shadow: 0 0 15px rgba(103,232,249,0.8); overflow: hidden; }
+.date-group-header::before { content: ""; position: absolute; inset: -2px; border-radius: 12px; padding: 2px; background: linear-gradient(90deg, #22d3ee, #8b5cf6, #ec4899, #fbbf24, #22d3ee); background-size: 300% 100%; animation: borderFlow 6s linear infinite; -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
 
-/* LEAGUE - KOTAK WARNA WARNI BERJALAN */
-.league {
-    margin-bottom: 20px; border-radius: 18px; overflow: hidden;
-    background: #0a0a0a;
-    border: 2px solid transparent;
-    position: relative;
-}
-.league::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    border-radius: 18px;
-    padding: 2px;
-    background: linear-gradient(90deg, #22d3ee, #8b5cf6, #ec4899, #fbbf24, #22d3ee);
-    background-size: 300% 100%;
-    animation: borderFlow 8s linear infinite;
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-    z-index: 2;
-}
-.league-header {
-    padding: 14px 20px; text-align: center;
-    font-family: 'Rajdhani'; font-weight: 700; font-size: 15px;
-    letter-spacing: 3px; color: #fff; text-transform: uppercase;
-    background: linear-gradient(90deg, #0891b2, #7c3aed, #db2777, #d97706, #0891b2);
-    background-size: 300% 100%;
-    animation: headerFlow 8s linear infinite;
-    border-bottom: 1.5px solid rgba(255,255,255,0.2);
-    text-shadow: 0 0 20px rgba(255,255,255,0.8);
-    position: relative;
-    z-index: 3;
-}
+.league { margin-bottom: 20px; border-radius: 18px; overflow: hidden; background: #0a0a0a; border: 2px solid transparent; position: relative; }
+.league::before { content: ""; position: absolute; inset: -2px; border-radius: 18px; padding: 2px; background: linear-gradient(90deg, #22d3ee, #8b5cf6, #ec4899, #fbbf24, #22d3ee); background-size: 300% 100%; animation: borderFlow 8s linear infinite; -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 2; }
+.league-header { padding: 14px 20px; text-align: center; font-family: 'Rajdhani'; font-weight: 700; font-size: 15px; letter-spacing: 3px; color: #fff; text-transform: uppercase; background: linear-gradient(90deg, #0891b2, #7c3aed, #db2777, #d97706, #0891b2); background-size: 300% 100%; animation: headerFlow 8s linear infinite; border-bottom: 1.5px solid rgba(255,255,255,0.2); text-shadow: 0 0 20px rgba(255,255,255,0.8); position: relative; z-index: 3; }
 .single-column-wrap { display: flex; flex-direction: column; gap: 12px; padding: 16px 12px; position: relative; z-index: 3; }
 
-/* MATCH ROW - KOTAK WARNA WARNI BERJALAN */
-.match-row-single {
-    display: grid;
-    grid-template-columns: auto 1fr auto auto;
-    grid-template-areas: "time teams hdp pred";
-    align-items: center;
-    gap: 12px;
-    padding: 18px 14px;
-    border-radius: 14px;
-    background: linear-gradient(145deg, rgba(15,15,20,0.95), rgba(10,10,15,0.9));
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s;
-}
-.match-row-single::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    border-radius: 14px;
-    padding: 2px;
-    background: linear-gradient(135deg, 
-        #22d3ee, #8b5cf6, #ec4899, #fbbf24, #22d3ee);
-    background-size: 300% 300%;
-    animation: cardBorderFlow 10s linear infinite;
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-    z-index: 1;
-}
-.match-row-single::after {
-    content: ""; position: absolute;
-    top: 0; left: -100%; width: 60%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
-    transform: skewX(-20deg);
-    animation: rowShine 5s infinite;
-    pointer-events: none;
-    z-index: 2;
-}
-@keyframes rowShine {
-    0% { left: -100%; }
-    40% { left: 140%; }
-    100% { left: 140%; }
-}
-.match-row-single:hover {
-    transform: translateX(4px) translateY(-3px);
-    box-shadow: 0 0 40px rgba(34,211,238,0.5), 0 0 60px rgba(147,51,234,0.4);
-}
-.match-row-single.is-live::before {
-    background: linear-gradient(135deg, #dc2626, #ff2a3d, #fbbf24, #dc2626);
-    background-size: 300% 300%;
-    animation: cardBorderFlow 3s linear infinite;
-}
-.match-row-single.is-live {
-    box-shadow: 0 0 30px rgba(220,38,38,0.6);
-}
-.match-row-single.is-finished {
-    opacity: 0.8;
-}
-.match-row-single.is-finished::before {
-    background: linear-gradient(135deg, #064e3b, #10b981, #34d399, #064e3b);
-    background-size: 300% 300%;
-    animation: cardBorderFlow 10s linear infinite;
-}
-.match-live-badge {
-    position: absolute;
-    top: -10px; left: 50%; transform: translateX(-50%);
-    background: linear-gradient(135deg, #7f1d1d, #dc2626);
-    color: #fff;
-    padding: 3px 16px;
-    border-radius: 20px;
-    font-family: 'Rajdhani'; font-size: 10px; font-weight: 800;
-    letter-spacing: 2px;
-    border: 2px solid rgba(255,220,220,0.9);
-    display: flex; align-items: center; gap: 5px;
-    z-index: 5;
-    box-shadow: 0 0 20px rgba(220,38,38,1);
-    animation: livePulse 1.5s infinite;
-}
-.match-live-badge .dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: #fff;
-    animation: dotPulse 1s infinite;
-}
-.match-finished-badge {
-    position: absolute;
-    top: -10px; left: 50%; transform: translateX(-50%);
-    background: linear-gradient(135deg, #064e3b, #10b981);
-    color: #fff;
-    padding: 3px 14px;
-    border-radius: 20px;
-    font-family: 'Rajdhani'; font-size: 10px; font-weight: 800;
-    letter-spacing: 2px;
-    border: 2px solid rgba(190,250,220,0.9);
-    z-index: 5;
-}
-.match-time-badge {
-    grid-area: time;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 2px; padding: 8px 12px;
-    min-width: 70px; border-radius: 12px;
-    background: rgba(0,0,0,0.5);
-    border: 1.5px solid rgba(34,211,238,0.7);
-    position: relative;
-    z-index: 3;
-}
-.match-time-badge .time-value { 
-    font-family: 'Teko'; font-size: 18px; font-weight: 600; 
-    color: #fff; line-height: 1; 
-    text-shadow: 0 0 10px rgba(103,232,249,0.6); 
-}
-.match-time-badge .time-date { 
-    font-family: 'Rajdhani'; font-size: 10px; font-weight: 700; 
-    color: #7dd3fc; letter-spacing: 1px; 
-}
-.match-teams-block {
-    grid-area: teams;
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center; gap: 14px;
-    min-width: 0;
-    position: relative;
-    z-index: 3;
-}
-.match-team-mini {
-    display: flex; flex-direction: column;
-    align-items: center; gap: 6px;
-    min-width: 0;
-}
-.match-team-mini img {
-    width: 40px; height: 40px; object-fit: contain;
-    animation: logoFloat2 2.5s ease-in-out infinite;
-    filter: drop-shadow(0 0 10px rgba(34,211,238,0.5));
-    transition: all 0.4s;
-}
-@keyframes logoFloat2 {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-3px) rotate(2deg); }
-}
-.match-row-single:hover .match-team-mini img {
-    animation: logoBounce 0.6s ease-in-out;
-    filter: drop-shadow(0 0 20px rgba(103,232,249,1));
-    transform: scale(1.15);
-}
-@keyframes logoBounce {
-    0% { transform: scale(1) translateY(0); }
-    30% { transform: scale(1.25) translateY(-8px); }
-    60% { transform: scale(1.15) translateY(-4px); }
-    100% { transform: scale(1.15) translateY(0); }
-}
-.match-team-mini .mini-name {
-    font-family: 'Rajdhani'; font-size: 13px; font-weight: 700;
-    color: #fff; text-align: center;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    max-width: 100%; text-transform: uppercase; letter-spacing: 0.5px;
-    text-shadow: 0 0 8px rgba(255,255,255,0.4);
-}
-.match-vs-mini { 
-    font-family: 'Orbitron'; font-size: 12px; font-weight: 800; 
-    color: #67e8f9; letter-spacing: 1.5px; 
-    text-shadow: 0 0 15px rgba(103,232,249,0.9); 
-}
-.match-value-box {
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 3px; padding: 8px 14px;
-    min-width: 85px; border-radius: 12px;
-    position: relative;
-    z-index: 3;
-}
-.match-value-box.hdp {
-    grid-area: hdp;
-    background: linear-gradient(135deg, rgba(34,211,238,0.3), rgba(6,182,212,0.4));
-    background-size: 200% 200%;
-    animation: valueFlow 5s linear infinite;
-    border: 1.5px solid rgba(103,232,249,0.9);
-    box-shadow: 0 0 20px rgba(34,211,238,0.4), inset 0 0 15px rgba(103,232,249,0.2);
-}
-.match-value-box.pred {
-    grid-area: pred;
-    background: linear-gradient(135deg, rgba(139,92,246,0.4), rgba(236,72,153,0.4));
-    background-size: 200% 200%;
-    animation: valueFlow 5s linear infinite;
-    border: 1.5px solid rgba(180,130,255,1);
-    box-shadow: 0 0 20px rgba(139,92,246,0.5), inset 0 0 15px rgba(236,72,153,0.2);
-}
-@keyframes valueFlow {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 200% 50%; }
-}
-.match-value-box .val-label { 
-    font-family: 'Rajdhani'; font-size: 9px; font-weight: 800; 
-    letter-spacing: 2px; color: #e0f7ff; text-transform: uppercase; 
-    text-shadow: 0 0 8px rgba(255,255,255,0.5); 
-}
-.match-value-box .val-number { 
-    font-family: 'Teko'; font-size: 20px; font-weight: 700; 
-    line-height: 1; color: #fff; 
-    text-shadow: 0 0 15px rgba(255,255,255,0.6); 
-}
+.match-row-single { display: grid; grid-template-columns: auto 1fr auto auto; grid-template-areas: "time teams hdp pred"; align-items: center; gap: 12px; padding: 18px 14px; border-radius: 14px; background: linear-gradient(145deg, rgba(15,15,20,0.95), rgba(10,10,15,0.9)); position: relative; overflow: hidden; transition: all 0.4s; }
+.match-row-single::before { content: ""; position: absolute; inset: -2px; border-radius: 14px; padding: 2px; background: linear-gradient(135deg, #22d3ee, #8b5cf6, #ec4899, #fbbf24, #22d3ee); background-size: 300% 300%; animation: cardBorderFlow 10s linear infinite; -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 1; }
+.match-row-single::after { content: ""; position: absolute; top: 0; left: -100%; width: 60%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent); transform: skewX(-20deg); animation: rowShine 5s infinite; pointer-events: none; z-index: 2; }
+@keyframes rowShine { 0% { left: -100%; } 40% { left: 140%; } 100% { left: 140%; } }
+.match-row-single:hover { transform: translateX(4px) translateY(-3px); box-shadow: 0 0 40px rgba(34,211,238,0.5), 0 0 60px rgba(147,51,234,0.4); }
+.match-row-single.is-live::before { background: linear-gradient(135deg, #dc2626, #ff2a3d, #fbbf24, #dc2626); background-size: 300% 300%; animation: cardBorderFlow 3s linear infinite; }
+.match-row-single.is-live { box-shadow: 0 0 30px rgba(220,38,38,0.6); }
+.match-row-single.is-finished { opacity: 0.8; }
+.match-row-single.is-finished::before { background: linear-gradient(135deg, #064e3b, #10b981, #34d399, #064e3b); background-size: 300% 300%; animation: cardBorderFlow 10s linear infinite; }
+.match-live-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #7f1d1d, #dc2626); color: #fff; padding: 3px 16px; border-radius: 20px; font-family: 'Rajdhani'; font-size: 10px; font-weight: 800; letter-spacing: 2px; border: 2px solid rgba(255,220,220,0.9); display: flex; align-items: center; gap: 5px; z-index: 5; box-shadow: 0 0 20px rgba(220,38,38,1); animation: livePulse 1.5s infinite; }
+.match-live-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: #fff; animation: dotPulse 1s infinite; }
+.match-finished-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #064e3b, #10b981); color: #fff; padding: 3px 14px; border-radius: 20px; font-family: 'Rajdhani'; font-size: 10px; font-weight: 800; letter-spacing: 2px; border: 2px solid rgba(190,250,220,0.9); z-index: 5; }
+.match-time-badge { grid-area: time; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px 12px; min-width: 70px; border-radius: 12px; background: rgba(0,0,0,0.5); border: 1.5px solid rgba(34,211,238,0.7); position: relative; z-index: 3; }
+.match-time-badge .time-value { font-family: 'Teko'; font-size: 18px; font-weight: 600; color: #fff; line-height: 1; text-shadow: 0 0 10px rgba(103,232,249,0.6); }
+.match-time-badge .time-date { font-family: 'Rajdhani'; font-size: 10px; font-weight: 700; color: #7dd3fc; letter-spacing: 1px; }
+.match-teams-block { grid-area: teams; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 14px; min-width: 0; position: relative; z-index: 3; }
+.match-team-mini { display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 0; }
+.match-team-mini img { width: 40px; height: 40px; object-fit: contain; animation: logoFloat2 2.5s ease-in-out infinite; filter: drop-shadow(0 0 10px rgba(34,211,238,0.5)); transition: all 0.4s; }
+@keyframes logoFloat2 { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-3px) rotate(2deg); } }
+.match-row-single:hover .match-team-mini img { animation: logoBounce 0.6s ease-in-out; filter: drop-shadow(0 0 20px rgba(103,232,249,1)); transform: scale(1.15); }
+@keyframes logoBounce { 0% { transform: scale(1) translateY(0); } 30% { transform: scale(1.25) translateY(-8px); } 60% { transform: scale(1.15) translateY(-4px); } 100% { transform: scale(1.15) translateY(0); } }
+.match-team-mini .mini-name { font-family: 'Rajdhani'; font-size: 13px; font-weight: 700; color: #fff; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; text-transform: uppercase; letter-spacing: 0.5px; text-shadow: 0 0 8px rgba(255,255,255,0.4); }
+.match-vs-mini { font-family: 'Orbitron'; font-size: 12px; font-weight: 800; color: #67e8f9; letter-spacing: 1.5px; text-shadow: 0 0 15px rgba(103,232,249,0.9); }
+.match-value-box { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 8px 14px; min-width: 85px; border-radius: 12px; position: relative; z-index: 3; }
+.match-value-box.hdp { grid-area: hdp; background: linear-gradient(135deg, rgba(34,211,238,0.3), rgba(6,182,212,0.4)); background-size: 200% 200%; animation: valueFlow 5s linear infinite; border: 1.5px solid rgba(103,232,249,0.9); box-shadow: 0 0 20px rgba(34,211,238,0.4), inset 0 0 15px rgba(103,232,249,0.2); }
+.match-value-box.pred { grid-area: pred; background: linear-gradient(135deg, rgba(139,92,246,0.4), rgba(236,72,153,0.4)); background-size: 200% 200%; animation: valueFlow 5s linear infinite; border: 1.5px solid rgba(180,130,255,1); box-shadow: 0 0 20px rgba(139,92,246,0.5), inset 0 0 15px rgba(236,72,153,0.2); }
+@keyframes valueFlow { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+.match-value-box .val-label { font-family: 'Rajdhani'; font-size: 9px; font-weight: 800; letter-spacing: 2px; color: #e0f7ff; text-transform: uppercase; text-shadow: 0 0 8px rgba(255,255,255,0.5); }
+.match-value-box .val-number { font-family: 'Teko'; font-size: 20px; font-weight: 700; line-height: 1; color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.6); }
 .match-value-box.empty { opacity: 0.5; }
 .match-value-box.empty .val-number { color: #6b7b9d; }
-.single-col-empty {
-    padding: 40px 16px; text-align: center;
-    font-family: 'Rajdhani'; font-size: 13px; font-weight: 700;
-    letter-spacing: 3px; color: #6b7b9d;
-    text-transform: uppercase;
-}
+.single-col-empty { padding: 40px 16px; text-align: center; font-family: 'Rajdhani'; font-size: 13px; font-weight: 700; letter-spacing: 3px; color: #6b7b9d; text-transform: uppercase; }
 
-/* FOOTER */
-.site-footer {
-    margin-top: 50px; padding: 40px 16px 30px;
-    text-align: center;
-    background: #0a0a0a;
-    border-top: 1.5px solid rgba(34,211,238,0.5);
-}
-.footer-logo-wrap img { 
-    width: 130px; height: 55px; object-fit: contain; 
-    filter: drop-shadow(0 0 25px rgba(34,211,238,1)); 
-    animation: logoMove 3s ease-in-out infinite; 
-}
-.footer-title {
-    font-family: 'Rajdhani'; font-size: 24px; font-weight: 700;
-    letter-spacing: 8px; margin: 12px 0 10px;
-    background: linear-gradient(90deg, #67e8f9, #22d3ee, #0891b2, #22d3ee, #67e8f9);
-    background-size: 250% auto;
-    -webkit-background-clip: text; background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-transform: uppercase;
-    animation: shine 6s linear infinite;
-}
-.footer-tagline { 
-    font-family: 'Rajdhani'; font-size: 13px; font-weight: 700; 
-    letter-spacing: 3px; color: #7dd3fc; text-transform: uppercase; 
-    margin-bottom: 20px; 
-}
-.footer-copy { 
-    font-family: 'Rajdhani'; font-size: 11px; font-weight: 600; 
-    letter-spacing: 2px; color: #6b7b9d; 
-}
+.site-footer { margin-top: 50px; padding: 40px 16px 30px; text-align: center; background: #0a0a0a; border-top: 1.5px solid rgba(34,211,238,0.5); }
+.footer-logo-wrap img { width: 130px; height: 55px; object-fit: contain; filter: drop-shadow(0 0 25px rgba(34,211,238,1)); animation: logoMove 3s ease-in-out infinite; }
+.footer-title { font-family: 'Rajdhani'; font-size: 24px; font-weight: 700; letter-spacing: 8px; margin: 12px 0 10px; background: linear-gradient(90deg, #67e8f9, #22d3ee, #0891b2, #22d3ee, #67e8f9); background-size: 250% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; animation: shine 6s linear infinite; }
+.footer-tagline { font-family: 'Rajdhani'; font-size: 13px; font-weight: 700; letter-spacing: 3px; color: #7dd3fc; text-transform: uppercase; margin-bottom: 20px; }
+.footer-copy { font-family: 'Rajdhani'; font-size: 11px; font-weight: 600; letter-spacing: 2px; color: #6b7b9d; }
 .footer-copy span { color: #67e8f9; font-weight: 800; }
 
 @media (max-width: 800px) {
@@ -1015,19 +271,14 @@ nav a.nav-daftar:hover {
     .date-group-header { font-size: 13px; padding: 10px 14px; }
     .league-header { padding: 11px 16px; font-size: 12px; }
     .single-column-wrap { padding: 12px 8px; gap: 10px; }
-    .match-row-single {
-        grid-template-columns: 1fr 1fr;
-        grid-template-areas: "time teams" "hdp pred";
-        padding: 14px 10px; gap: 10px;
-    }
+    .match-row-single { grid-template-columns: 1fr 1fr; grid-template-areas: "time teams" "hdp pred"; padding: 14px 10px; gap: 10px; }
     .match-team-mini img { width: 32px; height: 32px; }
     .match-team-mini .mini-name { font-size: 11px; }
     .match-value-box { min-width: unset; padding: 6px 10px; }
     .match-value-box .val-number { font-size: 16px; }
 }
 </style>
-</head>
-<body id="top">
+</head><body id="top">
 
 <div class="aurora-bg"></div>
 
@@ -1190,34 +441,124 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// ============================================================
+// 70+ LIGA ESPN — TERMASUK LIGA INDONESIA
+// ============================================================
 const ESPN_LIGAS = [
+    // === EROPA - LIGA TOP ===
     { id: "eng.1", name: "Premier League" },
-    { id: "eng.2", name: "Championship" },
     { id: "esp.1", name: "La Liga" },
-    { id: "esp.2", name: "La Liga 2" },
     { id: "ita.1", name: "Serie A" },
-    { id: "ita.2", name: "Serie B" },
     { id: "ger.1", name: "Bundesliga" },
-    { id: "ger.2", name: "2. Bundesliga" },
     { id: "fra.1", name: "Ligue 1" },
-    { id: "fra.2", name: "Ligue 2" },
     { id: "ned.1", name: "Eredivisie" },
     { id: "por.1", name: "Primeira Liga" },
+    { id: "tur.1", name: "Süper Lig" },
+    { id: "sco.1", name: "Scottish Premiership" },
+    { id: "rus.1", name: "Russian Premier League" },
+    { id: "bel.1", name: "Pro League Belgia" },
+
+    // === EROPA - KOMPETISI CUP ===
     { id: "uefa.champions", name: "Champions League" },
     { id: "uefa.europa", name: "Europa League" },
     { id: "uefa.europa.conf", name: "Conference League" },
     { id: "uefa.nations", name: "UEFA Nations League" },
+    { id: "uefa.euro", name: "UEFA Euro" },
+    { id: "uefa.euroq", name: "UEFA Euro Qualification" },
+
+    // === EROPA - LIGA MENENGAH ===
+    { id: "eng.2", name: "Championship" },
+    { id: "eng.3", name: "League One" },
+    { id: "eng.4", name: "League Two" },
+    { id: "eng.fa", name: "FA Cup" },
+    { id: "eng.league_cup", name: "Carabao Cup" },
+    { id: "esp.2", name: "La Liga 2" },
+    { id: "esp.copa_del_rey", name: "Copa del Rey" },
+    { id: "ita.2", name: "Serie B" },
+    { id: "ita.coppa_italia", name: "Coppa Italia" },
+    { id: "ger.2", name: "2. Bundesliga" },
+    { id: "ger.3", name: "3. Liga" },
+    { id: "ger.dfb_pokal", name: "DFB Pokal" },
+    { id: "fra.2", name: "Ligue 2" },
+    { id: "fra.coupe_de_france", name: "Coupe de France" },
+    { id: "ned.2", name: "Eerste Divisie" },
+    { id: "por.2", name: "Liga Portugal 2" },
+    { id: "gre.1", name: "Super League Yunani" },
+    { id: "ukr.1", name: "Ukrainian Premier League" },
+    { id: "aut.1", name: "Austrian Bundesliga" },
+    { id: "sui.1", name: "Swiss Super League" },
+    { id: "den.1", name: "Danish Superliga" },
+    { id: "swe.1", name: "Allsvenskan" },
+    { id: "nor.1", name: "Eliteserien" },
+    { id: "pol.1", name: "Ekstraklasa" },
+    { id: "cze.1", name: "Czech First League" },
+    { id: "rou.1", name: "Liga I Romania" },
+    { id: "isr.1", name: "Israeli Premier League" },
+
+    // === AMERIKA ===
     { id: "usa.1", name: "MLS" },
+    { id: "usa.nwsl", name: "NWSL" },
+    { id: "usa.usl.1", name: "USL Championship" },
     { id: "mex.1", name: "Liga MX" },
+    { id: "mex.2", name: "Liga de Expansión MX" },
+    { id: "crc.1", name: "Liga Promerica" },
+    { id: "hon.1", name: "Liga Nacional Honduras" },
+    { id: "gua.1", name: "Liga Nacional Guatemala" },
+    { id: "slv.1", name: "Primera División El Salvador" },
+    { id: "pan.1", name: "Liga Panameña" },
+
+    // === AMERIKA SELATAN ===
     { id: "bra.1", name: "Brasileirão" },
+    { id: "bra.2", name: "Brasileirão Série B" },
+    { id: "bra.3", name: "Brasileirão Série C" },
+    { id: "bra.copa_do_brazil", name: "Copa do Brasil" },
     { id: "arg.1", name: "Liga Profesional" },
+    { id: "arg.2", name: "Primera Nacional" },
+    { id: "arg.copa", name: "Copa Argentina" },
+    { id: "chi.1", name: "Primera División Chile" },
+    { id: "col.1", name: "Primera A Colombia" },
+    { id: "uru.1", name: "Primera División Uruguay" },
+    { id: "per.1", name: "Liga 1 Perú" },
+    { id: "ecu.1", name: "Liga Pro Ecuador" },
+    { id: "par.1", name: "Primera División Paraguay" },
+    { id: "ven.1", name: "Liga FUTVE" },
+    { id: "bol.1", name: "División Profesional Bolivia" },
     { id: "conmebol.libertadores", name: "Copa Libertadores" },
     { id: "conmebol.sudamericana", name: "Copa Sudamericana" },
+
+    // === ASIA ===
     { id: "afc.champions", name: "AFC Champions" },
+    { id: "afc.cup", name: "AFC Cup" },
     { id: "jpn.1", name: "J-League" },
+    { id: "jpn.2", name: "J2 League" },
     { id: "kor.1", name: "K-League 1" },
+    { id: "kor.2", name: "K-League 2" },
+    { id: "chn.1", name: "Chinese Super League" },
     { id: "sau.1", name: "Saudi Pro League" },
-    { id: "fifa.world", name: "FIFA World Cup" }
+    { id: "uae.1", name: "UAE Pro League" },
+    { id: "qat.1", name: "Qatar Stars League" },
+    { id: "irn.1", name: "Persian Gulf Pro League" },
+    { id: "ind.1", name: "Indian Super League" },
+    { id: "tha.1", name: "Thai League 1" },
+    { id: "mys.1", name: "Malaysia Super League" },
+    { id: "idn.1", name: "Liga 1 Indonesia" },
+    { id: "vnm.1", name: "V.League 1" },
+    { id: "sgp.1", name: "Singapore Premier League" },
+    { id: "aus.1", name: "A-League" },
+
+    // === AFRIKA ===
+    { id: "egy.1", name: "Egyptian Premier League" },
+    { id: "mar.1", name: "Botola Pro" },
+    { id: "rsa.1", name: "South African Premier" },
+    { id: "nga.1", name: "Nigeria Premier League" },
+    { id: "caf.champions", name: "CAF Champions League" },
+
+    // === DUNIA ===
+    { id: "fifa.world", name: "FIFA World Cup" },
+    { id: "fifa.wwc", name: "FIFA Women's World Cup" },
+    { id: "fifa.cwc", name: "FIFA Club World Cup" },
+    { id: "fifa.friendly", name: "International Friendly" },
+    { id: "fifa.olympics", name: "Olympic Football" }
 ];
 
 const HOT_LEAGUES = ["UEFA Nations League", "Champions League", "Europa League", "Conference League", "Premier League", "La Liga", "Serie A", "Bundesliga", "Ligue 1", "Copa Libertadores", "Copa Sudamericana", "FIFA World Cup"];
