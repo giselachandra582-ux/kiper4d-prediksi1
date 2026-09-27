@@ -24,10 +24,10 @@ h1 { color: #ffd700; text-align: center; margin-bottom: 20px; }
 </head>
 <body>
 <div class="container">
-<h1>🎨 AUTO FETCH LOGO (Wikipedia)</h1>
+<h1>🎨 AUTO FETCH LOGO (Multi-Source)</h1>
 
 <div class="card">
-    <p>Auto-cari logo tim dari <b>Wikipedia</b> — support semua klub dunia (liga kecil juga).</p>
+    <p>Auto-cari logo dari <b>Wikipedia EN + ID + TheSportsDB</b>. Test dulu 1 tim sebelum proses massal.</p>
     <button id="btnFetch" class="btn btn-blue">🔍 MULAI AMBIL LOGO</button>
     <button id="btnFetchOne" class="btn btn-green">🎯 Test 1 Tim</button>
     <div id="status"></div>
@@ -83,24 +83,23 @@ function cleanTeam(name) {
         .trim();
 }
 
-// Cari logo dari Wikipedia (via halaman utama tim)
-async function searchLogoWikipedia(teamName) {
+// === SUMBER 1: Wikipedia (EN + ID) ===
+async function searchWikipedia(teamName, lang = "en") {
     const name = cleanTeam(teamName);
     if (!name) return null;
 
-    // Coba judul langsung
     const candidates = [
         name,
         name + " F.C.",
         name + " FC",
         name + " (football club)",
-        name + " football club"
+        name + " football club",
+        name + " (klub sepak bola)"
     ];
 
     for (const title of candidates) {
         try {
-            // 1. Ambil HTML halaman dari Wikipedia
-            const url = `https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&piprop=original&titles=${encodeURIComponent(title)}&format=json&origin=*`;
+            const url = `https://${lang}.wikipedia.org/w/api.php?action=query&prop=pageimages&piprop=original&titles=${encodeURIComponent(title)}&format=json&origin=*`;
             const res = await fetch(url);
             if (!res.ok) continue;
             const data = await res.json();
@@ -110,7 +109,8 @@ async function searchLogoWikipedia(teamName) {
                 if (page.original?.source) {
                     return {
                         name: page.title,
-                        logo: page.original.source
+                        logo: page.original.source,
+                        source: "wiki-" + lang
                     };
                 }
             }
@@ -119,25 +119,104 @@ async function searchLogoWikipedia(teamName) {
     return null;
 }
 
+// === SUMBER 2: TheSportsDB ===
+async function searchTheSportsDB(teamName) {
+    try {
+        const name = cleanTeam(teamName);
+        const url = `https://www.thesportsdb.com/api/v1/json/123/searchteams.php?t=${encodeURIComponent(name)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        if (!data.teams || !data.teams.length) return null;
+
+        // Cari yang paling cocok (nama persis atau mengandung)
+        const nameLower = name.toLowerCase();
+        let best = data.teams[0];
+        for (const t of data.teams) {
+            if (t.strSport !== "Soccer") continue;
+            if (t.strTeam.toLowerCase() === nameLower) { best = t; break; }
+            if (t.strTeam.toLowerCase().includes(nameLower)) best = t;
+        }
+
+        const logo = best.strTeamBadge || best.strTeamLogo || "";
+        if (!logo) return null;
+        return { name: best.strTeam, logo: logo, source: "tsdb" };
+    } catch (e) {
+        return null;
+    }
+}
+
+// === COMBINED: Coba semua sumber ===
+async function findLogo(teamName) {
+    // 1. Wikipedia EN
+    let r = await searchWikipedia(teamName, "en");
+    if (r) return r;
+
+    // 2. TheSportsDB
+    r = await searchTheSportsDB(teamName);
+    if (r) return r;
+
+    // 3. Wikipedia ID
+    r = await searchWikipedia(teamName, "id");
+    if (r) return r;
+
+    return null;
+}
+
+// === TEST 1 TIM ===
 document.getElementById("btnFetchOne").addEventListener("click", async () => {
     const teamName = prompt("Nama tim:", "Persija Jakarta");
     if (!teamName) return;
-    setStatus("Cari: " + teamName, "wait");
-    const result = await searchLogoWikipedia(teamName);
-    if (result) {
-        setStatus("✅ Ditemukan: " + result.name, "ok");
-        previewEl.innerHTML = `
-            <div class="team-item">
-                <img src="${result.logo}">
-                <b>${result.name}</b><br><small>${result.logo}</small>
-            </div>
-        `;
-    } else {
-        setStatus("❌ Tidak ditemukan: " + teamName, "err");
+
+    setStatus("⏳ Cari: " + teamName, "wait");
+    logEl.textContent = "Test: " + teamName;
+
+    // Coba satu-satu biar keliatan mana yang jalan
+    log("\n1. Coba Wikipedia EN...");
+    let r = await searchWikipedia(teamName, "en");
+    if (r) {
+        log("  ✅ " + r.name + " [" + r.source + "]");
+        showPreview(teamName, r);
+        setStatus("✅ EN: " + r.name, "ok");
+        return;
     }
+    log("  ❌ EN tidak ketemu");
+
+    log("\n2. Coba TheSportsDB...");
+    r = await searchTheSportsDB(teamName);
+    if (r) {
+        log("  ✅ " + r.name + " [" + r.source + "]");
+        showPreview(teamName, r);
+        setStatus("✅ TSDB: " + r.name, "ok");
+        return;
+    }
+    log("  ❌ TSDB tidak ketemu");
+
+    log("\n3. Coba Wikipedia ID...");
+    r = await searchWikipedia(teamName, "id");
+    if (r) {
+        log("  ✅ " + r.name + " [" + r.source + "]");
+        showPreview(teamName, r);
+        setStatus("✅ ID: " + r.name, "ok");
+        return;
+    }
+    log("  ❌ ID tidak ketemu");
+
+    setStatus("❌ Semua sumber gagal: " + teamName, "err");
 });
 
+function showPreview(team, r) {
+    previewEl.innerHTML = `
+        <div class="team-item">
+            <img src="${r.logo}" onerror="this.style.display='none'">
+            <span><b>${team}</b> → ${r.name} <small>(${r.source})</small></span>
+        </div>
+    `;
+}
+
+// === PROSES MASSAL ===
 document.getElementById("btnFetch").addEventListener("click", async () => {
+    if (!confirm("Proses semua tim? Bisa makan waktu 10-20 menit.")) return;
+
     const btn = document.getElementById("btnFetch");
     btn.disabled = true;
     btn.textContent = "⏳ Proses...";
@@ -164,21 +243,29 @@ document.getElementById("btnFetch").addEventListener("click", async () => {
         const logoMap = new Map();
         let found = 0;
         let notFound = 0;
+        let enFound = 0;
+        let tsdbFound = 0;
+        let idFound = 0;
 
         for (let i = 0; i < uniqueTeams.length; i++) {
             const team = uniqueTeams[i];
             log(`[${i+1}/${uniqueTeams.length}] ${team}`);
 
-            const result = await searchLogoWikipedia(team);
+            const result = await findLogo(team);
 
             if (result && result.logo) {
                 logoMap.set(team.toLowerCase(), result.logo);
                 found++;
-                log(`  ✅ ${result.logo.substring(0, 80)}...`);
+                if (result.source === "wiki-en") enFound++;
+                else if (result.source === "tsdb") tsdbFound++;
+                else if (result.source === "wiki-id") idFound++;
+
+                log(`  ✅ ${result.name} [${result.source}]`);
+
                 previewEl.innerHTML = `
                     <div class="team-item">
                         <img src="${result.logo}" onerror="this.style.display='none'">
-                        <span><b>${team}</b></span>
+                        <span><b>${team}</b> → ${result.name} <small>(${result.source})</small></span>
                     </div>
                 ` + previewEl.innerHTML;
             } else {
@@ -186,10 +273,10 @@ document.getElementById("btnFetch").addEventListener("click", async () => {
                 log(`  ❌ Tidak ketemu`);
             }
 
-            await new Promise(r => setTimeout(r, 150));
+            await new Promise(r => setTimeout(r, 100));
         }
 
-        setStatus(`✅ Ditemukan: ${found} | Tidak ketemu: ${notFound}`, "ok");
+        setStatus(`✅ Ditemukan: ${found} (EN: ${enFound}, TSDB: ${tsdbFound}, ID: ${idFound}) | Gagal: ${notFound}`, "ok");
 
         log(`\n📝 Update Firestore...`);
         setStatus("📝 Update Firestore...", "wait");
@@ -221,7 +308,7 @@ document.getElementById("btnFetch").addEventListener("click", async () => {
         if (count > 0) await batch.commit();
 
         log(`✅ ${updated} dokumen di-update`);
-        setStatus(`🎉 SELESAI! ${found} logo, ${updated} dokumen di-update. Buka situs + hard refresh!`, "ok");
+        setStatus(`🎉 SELESAI! ${found} logo ditemukan, ${updated} dokumen di-update. Buka situs + hard refresh!`, "ok");
 
     } catch (err) {
         console.error(err);
