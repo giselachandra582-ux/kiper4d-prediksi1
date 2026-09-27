@@ -75,6 +75,7 @@ button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 .btn-purple { background: linear-gradient(135deg, #7c3aed, #a855f7); }
 .btn-orange { background: linear-gradient(135deg, #d97706, #f59e0b); }
 .btn-gold { background: linear-gradient(135deg, #d4af37, #ffd700); color: #000; }
+.btn-pink { background: linear-gradient(135deg, #ec4899, #f472b6); }
 
 .table-wrap {
     overflow-x: auto;
@@ -112,6 +113,7 @@ td {
 tr:hover { background: rgba(168,85,247,0.08); }
 tr.saved { background: rgba(34,197,94,0.15); }
 tr.saved td { color: #86efac; }
+tr.hot { background: rgba(236,72,153,0.15); border-left: 3px solid #ec4899; }
 
 .td-date { color: #94a3b8; font-size: 11px; white-space: nowrap; }
 .td-time { color: #4ade80; font-weight: bold; white-space: nowrap; }
@@ -167,6 +169,25 @@ td input::placeholder { color: #475569; }
 }
 .hint-box b { color: #ffd700; }
 
+.filter-tabs {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    margin-bottom: 14px;
+}
+.filter-tab {
+    padding: 8px 14px; border-radius: 20px;
+    font-size: 12px; font-weight: bold;
+    background: rgba(30,20,60,0.7);
+    border: 1.5px solid rgba(93,45,232,0.4);
+    color: #c8c8d4; cursor: pointer;
+    transition: all 0.3s;
+}
+.filter-tab:hover { color: #00d4ff; border-color: rgba(0,212,255,0.7); }
+.filter-tab.active {
+    color: #0a0e27;
+    background: linear-gradient(135deg, #ffcc33, #fff5d0, #ffcc33);
+    border-color: #ffcc33;
+}
+
 @media (max-width: 700px) {
     body { padding: 10px; }
     header { padding: 14px 10px; }
@@ -174,6 +195,7 @@ td input::placeholder { color: #475569; }
     .card { padding: 12px; }
     .controls { flex-direction: column; align-items: stretch; }
     .controls select, .controls input, button { width: 100%; }
+    .filter-tabs { display: grid; grid-template-columns: repeat(2, 1fr); }
 }
 </style>
 </head>
@@ -182,8 +204,8 @@ td input::placeholder { color: #475569; }
 <div class="container">
 
 <header>
-    <h1>⚡ ADMIN BULK INPUT — KIPER4D</h1>
-    <div class="subtitle">INPUT HDP & PREDIKSI BANYAK SEKALIGUS</div>
+    <h1>⚡ ADMIN BULK INPUT v2 — KIPER4D</h1>
+    <div class="subtitle">ESPN + FIRESTORE + MATCH TAKER</div>
 </header>
 
 <div id="loginStatus" class="status">Memeriksa login...</div>
@@ -197,20 +219,33 @@ td input::placeholder { color: #475569; }
 <div id="adminContent" class="hidden">
 
     <div class="card">
-        <h2>📅 Ambil Jadwal dari ESPN</h2>
-        <p class="small">Pilih tanggal → klik Ambil Jadwal → muncul tabel semua pertandingan.</p>
+        <h2>📅 Ambil Jadwal</h2>
+        <p class="small">Pilih sumber → klik Ambil → tabel muncul. Panel ini narik dari <b>ESPN + Firestore</b> sekaligus.</p>
 
         <div class="controls">
             <select id="tanggalSelect">
                 <option value="today">Hari Ini</option>
                 <option value="tomorrow">Besok</option>
                 <option value="7days" selected>7 Hari ke Depan</option>
+                <option value="all">Semua Data (ESPN + Firestore)</option>
             </select>
-            <button id="btnFetch" class="btn-blue">🔄 AMBIL JADWAL ESPN</button>
-            <button id="btnLoadExisting" class="btn-dark">📖 LOAD DATA TERSIMPAN</button>
+            <button id="btnFetch" class="btn-blue">🔄 AMBIL JADWAL</button>
+            <button id="btnLoadExisting" class="btn-dark">📖 LOAD DARI FIRESTORE</button>
         </div>
 
         <div id="fetchStatus" class="status hidden"></div>
+    </div>
+
+    <div class="card">
+        <h2>🎯 MATCH TAKER — Pilih Pertandingan Panas</h2>
+        <p class="small">Ambil <b>8 pertandingan paling panas</b> otomatis. Prioritas: UEFA Nations League, Champions League, dan liga top Eropa. Cuma 8 yang tampil di situs publik (biar fokus).</p>
+
+        <div class="controls">
+            <button id="btnMatchTaker" class="btn-pink">🔥 AMBIL 8 MATCH PANAS</button>
+            <button id="btnMatchTakerBig" class="btn-pink">💎 AMBIL 12 MATCH PANAS</button>
+        </div>
+
+        <div id="matchTakerInfo" class="status hidden"></div>
     </div>
 
     <div class="card">
@@ -218,30 +253,38 @@ td input::placeholder { color: #475569; }
 
         <div class="hint-box">
             💡 <b>Tips input cepat:</b><br>
-            1. Klik <b>🎲 ISI HDP DEFAULT</b> → semua baris dapat HDP "0 : 1/4"<br>
-            2. Klik <b>🎯 ISI PRED RANDOM</b> → semua baris dapat prediksi acak<br>
+            1. Klik <b>🎲 ISI HDP</b> → 20 varian HDP random (0:1/4, 1/2:0, 1:0, 2:0, dll)<br>
+            2. Klik <b>🎯 ISI PRED</b> → prediksi random<br>
             3. Klik <b>⚡ ISI SEMUA</b> → HDP + Pred sekaligus<br>
-            4. Edit manual yang perlu diubah (tab/enter untuk navigasi)<br>
-            5. Klik <b>💾 SIMPAN SEMUA</b> → 1x klik, semua tersimpan!
+            4. Edit manual yang perlu (Tab/Enter untuk navigasi)<br>
+            5. Klik <b>💾 SIMPAN SEMUA</b> → semua tersimpan!
         </div>
 
         <div class="info-bar">
             <div>📋 Total: <strong id="statTotal">0</strong></div>
             <div>✅ Tersimpan: <strong id="statSaved">0</strong></div>
             <div>⏳ Belum: <strong id="statPending">0</strong></div>
-            <div>🎯 Ada HDP: <strong id="statHdp">0</strong></div>
+            <div>🔥 Panas: <strong id="statHot">0</strong></div>
+        </div>
+
+        <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">📋 Semua</button>
+            <button class="filter-tab" data-filter="hot">🔥 Panas</button>
+            <button class="filter-tab" data-filter="today">📅 Hari Ini</button>
+            <button class="filter-tab" data-filter="tomorrow">📅 Besok</button>
+            <button class="filter-tab" data-filter="empty">⏳ Belum Diisi</button>
         </div>
 
         <div class="controls">
-            <button id="btnFillHdp" class="btn-orange">🎲 ISI HDP DEFAULT</button>
-            <button id="btnFillPred" class="btn-orange">🎯 ISI PRED RANDOM</button>
+            <button id="btnFillHdp" class="btn-orange">🎲 ISI HDP</button>
+            <button id="btnFillPred" class="btn-orange">🎯 ISI PRED</button>
             <button id="btnFillBoth" class="btn-gold">⚡ ISI SEMUA (HDP+PRED)</button>
             <button id="btnSaveAll" class="btn-green">💾 SIMPAN SEMUA</button>
             <button id="btnClearAll" class="btn-red">🗑️ KOSONGKAN SEMUA</button>
         </div>
 
         <div id="tableWrap" class="table-wrap">
-            <div class="loading">Klik "AMBIL JADWAL ESPN" untuk mulai</div>
+            <div class="loading">Klik "AMBIL JADWAL" untuk mulai</div>
         </div>
     </div>
 
@@ -280,9 +323,25 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// ============================================================
-// 40+ LIGA ESPN
-// ============================================================
+/* ============================================================
+   20 VARIAN HDP
+   ============================================================ */
+const HDP_VARIANTS = [
+    "0 : 1/4", "1/4 : 0",
+    "0 : 1/2", "1/2 : 0",
+    "0 : 3/4", "3/4 : 0",
+    "0 : 1", "1 : 0",
+    "0 : 1 1/4", "1 1/4 : 0",
+    "0 : 1 1/2", "1 1/2 : 0",
+    "0 : 1 3/4", "1 3/4 : 0",
+    "0 : 2", "2 : 0",
+    "0 : 2 1/4", "2 1/4 : 0",
+    "0 : 2 1/2", "2 1/2 : 0"
+];
+
+/* ============================================================
+   40+ LIGA ESPN
+   ============================================================ */
 const ESPN_LIGAS = [
     { id: "eng.1", name: "Premier League" },
     { id: "eng.2", name: "Championship" },
@@ -324,8 +383,30 @@ const ESPN_LIGAS = [
     { id: "fifa.world", name: "FIFA World Cup" }
 ];
 
+/* ============================================================
+   TIM & LIGA PANAS (untuk Match Taker)
+   ============================================================ */
+const HOT_LEAGUES = [
+    "UEFA Nations League", "Champions League", "Europa League", "Conference League",
+    "Premier League", "La Liga", "Serie A", "Bundesliga", "Ligue 1",
+    "Copa Libertadores", "Copa Sudamericana", "FIFA World Cup", "UEFA Euro"
+];
+
+const HOT_TEAMS = [
+    "real madrid", "barcelona", "atletico madrid", "sevilla", "villarreal",
+    "manchester", "liverpool", "arsenal", "chelsea", "tottenham", "newcastle",
+    "juventus", "inter", "milan", "napoli", "roma", "lazio", "atalanta",
+    "bayern", "dortmund", "leipzig", "leverkusen",
+    "psg", "paris", "marseille", "lyon", "monaco", "lille",
+    "ajax", "psv", "feyenoord", "porto", "benfica", "sporting",
+    "germany", "france", "italy", "spain", "england", "portugal",
+    "netherlands", "belgium", "croatia", "denmark", "switzerland",
+    "argentina", "brazil", "uruguay", "colombia", "mexico"
+];
+
 let allMatches = [];
 let existingData = new Map();
+let currentFilter = "all";
 
 /* ============================================================
    AUTH
@@ -381,8 +462,30 @@ function getYMD(offset = 0) {
     return wib.getUTCFullYear() + String(wib.getUTCMonth() + 1).padStart(2, "0") + String(wib.getUTCDate()).padStart(2, "0");
 }
 
+function getTodayStr() {
+    const wib = new Date(getNowWIBMs());
+    return wib.getUTCFullYear() + "-" + String(wib.getUTCMonth() + 1).padStart(2, "0") + "-" + String(wib.getUTCDate()).padStart(2, "0");
+}
+
+function getTomorrowStr() {
+    const wib = new Date(getNowWIBMs() + 86400000);
+    return wib.getUTCFullYear() + "-" + String(wib.getUTCMonth() + 1).padStart(2, "0") + "-" + String(wib.getUTCDate()).padStart(2, "0");
+}
+
 function makeLooseKey(date, home, away) {
     return [date, normalizeTeam(home), normalizeTeam(away)].join("|");
+}
+
+function isHotMatch(m) {
+    const liga = clean(m.league).toLowerCase();
+    const home = clean(m.home).toLowerCase();
+    const away = clean(m.away).toLowerCase();
+
+    // Cek liga panas
+    if (HOT_LEAGUES.some(l => liga.includes(l.toLowerCase()))) return true;
+    // Cek tim panas
+    if (HOT_TEAMS.some(t => home.includes(t) || away.includes(t))) return true;
+    return false;
 }
 
 /* ============================================================
@@ -417,7 +520,8 @@ async function fetchESPNDate(dateStr) {
                         home: home.team?.displayName || "?",
                         away: away.team?.displayName || "?",
                         homeLogo: home.team?.logo || "",
-                        awayLogo: away.team?.logo || ""
+                        awayLogo: away.team?.logo || "",
+                        source: "espn"
                     };
                 } catch (e) { return null; }
             }).filter(Boolean);
@@ -429,6 +533,18 @@ async function fetchESPNDate(dateStr) {
 
 async function fetchAllESPN() {
     const pilihan = document.getElementById("tanggalSelect").value;
+    if (pilihan === "all") {
+        // Ambil 7 hari
+        const all = [];
+        const promises = [];
+        for (let i = 0; i < 7; i++) {
+            promises.push(fetchESPNDate(getYMD(i)));
+        }
+        const results = await Promise.all(promises);
+        results.forEach(arr => all.push(...arr));
+        return all;
+    }
+
     let days = 1;
     if (pilihan === "7days") days = 7;
 
@@ -443,7 +559,7 @@ async function fetchAllESPN() {
 }
 
 /* ============================================================
-   LOAD EXISTING
+   LOAD EXISTING (FIRESTORE)
    ============================================================ */
 async function loadExisting() {
     const snap = await getDocs(collection(db, "predictions"));
@@ -455,6 +571,61 @@ async function loadExisting() {
         const key = makeLooseKey(data.date, data.home, data.away);
         existingData.set(key, { id: d.id, ...data });
     });
+    console.log(`[Firestore] ${existingData.size} data loaded`);
+}
+
+async function loadFromFirestoreOnly() {
+    await loadExisting();
+    const list = [];
+    existingData.forEach(v => {
+        list.push({
+            league: v.league || "LAINNYA",
+            date: v.date,
+            time: v.time,
+            home: v.home,
+            away: v.away,
+            homeLogo: v.homeLogo || "",
+            awayLogo: v.awayLogo || "",
+            source: "firestore"
+        });
+    });
+    return list;
+}
+
+/* ============================================================
+   GABUNG ESPN + FIRESTORE
+   ============================================================ */
+function mergeData(espnData, firestoreData) {
+    const seen = new Set();
+    const result = [];
+
+    espnData.forEach(m => {
+        const key = makeLooseKey(m.date, m.home, m.away);
+        if (seen.has(key)) return;
+        seen.add(key);
+        const fs = existingData.get(key);
+        result.push({
+            ...m,
+            handicap: fs?.handicap || "",
+            predictionScoreHome: fs?.predictionScoreHome || "",
+            predictionScoreAway: fs?.predictionScoreAway || ""
+        });
+    });
+
+    firestoreData.forEach(m => {
+        const key = makeLooseKey(m.date, m.home, m.away);
+        if (seen.has(key)) return;
+        seen.add(key);
+        const fs = existingData.get(key);
+        result.push({
+            ...m,
+            handicap: fs?.handicap || "",
+            predictionScoreHome: fs?.predictionScoreHome || "",
+            predictionScoreAway: fs?.predictionScoreAway || ""
+        });
+    });
+
+    return result;
 }
 
 /* ============================================================
@@ -463,13 +634,32 @@ async function loadExisting() {
 function renderTable() {
     const wrap = document.getElementById("tableWrap");
 
-    if (!allMatches.length) {
-        wrap.innerHTML = '<div class="loading">Tidak ada pertandingan</div>';
+    // Filter
+    let display = [...allMatches];
+    const today = getTodayStr();
+    const tomorrow = getTomorrowStr();
+
+    if (currentFilter === "hot") {
+        display = display.filter(m => isHotMatch(m));
+    } else if (currentFilter === "today") {
+        display = display.filter(m => m.date === today);
+    } else if (currentFilter === "tomorrow") {
+        display = display.filter(m => m.date === tomorrow);
+    } else if (currentFilter === "empty") {
+        display = display.filter(m => {
+            const key = makeLooseKey(m.date, m.home, m.away);
+            const fs = existingData.get(key);
+            return !fs || !fs.handicap || !fs.predictionScoreHome || !fs.predictionScoreAway;
+        });
+    }
+
+    if (!display.length) {
+        wrap.innerHTML = '<div class="loading">Tidak ada pertandingan di filter ini</div>';
         updateStats();
         return;
     }
 
-    allMatches.sort((a, b) => {
+    display.sort((a, b) => {
         const da = (a.date || "") + (a.time || "");
         const db2 = (b.date || "") + (b.time || "");
         return da.localeCompare(db2);
@@ -481,8 +671,7 @@ function renderTable() {
                 <tr>
                     <th style="width:70px;">Tanggal</th>
                     <th style="width:55px;">Jam</th>
-                    <th style="width:20px;">🏆</th>
-                    <th style="width:110px;">Liga</th>
+                    <th style="width:120px;">Liga</th>
                     <th style="width:28px;"></th>
                     <th>Tim Home</th>
                     <th style="width:28px;"></th>
@@ -496,24 +685,25 @@ function renderTable() {
             <tbody>
     `;
 
-    allMatches.forEach((m, i) => {
+    display.forEach((m) => {
+        const idx = allMatches.indexOf(m);
         const key = makeLooseKey(m.date, m.home, m.away);
         const existing = existingData.get(key);
 
-        const hdp = existing?.handicap || "";
-        const pH = existing?.predictionScoreHome || "";
-        const pA = existing?.predictionScoreAway || "";
-        const saved = existing?.handicap && existing?.predictionScoreHome && existing?.predictionScoreAway;
+        const hdp = existing?.handicap || m.handicap || "";
+        const pH = existing?.predictionScoreHome || m.predictionScoreHome || "";
+        const pA = existing?.predictionScoreAway || m.predictionScoreAway || "";
+        const saved = hdp && pH && pA;
+        const hot = isHotMatch(m);
 
         const homeLogoHTML = m.homeLogo ? `<img src="${m.homeLogo}" onerror="this.style.display='none'">` : "";
         const awayLogoHTML = m.awayLogo ? `<img src="${m.awayLogo}" onerror="this.style.display='none'">` : "";
 
         html += `
-            <tr data-index="${i}" data-key="${key}" class="${saved ? 'saved' : ''}">
+            <tr data-index="${idx}" data-key="${key}" class="${saved ? 'saved' : ''} ${hot ? 'hot' : ''}">
                 <td class="td-date">${m.date}</td>
                 <td class="td-time">${m.time}</td>
-                <td></td>
-                <td class="td-league">${m.league}</td>
+                <td class="td-league">${hot ? '🔥 ' : ''}${m.league}</td>
                 <td class="td-logo">${homeLogoHTML}</td>
                 <td class="td-teams">${m.home}</td>
                 <td class="td-logo">${awayLogoHTML}</td>
@@ -529,7 +719,6 @@ function renderTable() {
     html += `</tbody></table>`;
     wrap.innerHTML = html;
 
-    // Event listeners untuk auto-update status
     wrap.querySelectorAll("input").forEach(input => {
         input.addEventListener("input", () => {
             const tr = input.closest("tr");
@@ -557,50 +746,47 @@ function renderTable() {
    ============================================================ */
 function updateStats() {
     const total = allMatches.length;
-    const inputs = document.querySelectorAll("tbody tr");
-    let saved = 0, pending = 0, adaHdp = 0;
+    let saved = 0, pending = 0, hot = 0;
 
-    inputs.forEach(tr => {
-        const hdp = tr.querySelector(".input-hdp")?.value.trim();
-        const pH = tr.querySelector(".input-pred[data-field='predH']")?.value.trim();
-        const pA = tr.querySelector(".input-pred[data-field='predA']")?.value.trim();
-
-        if (hdp) adaHdp++;
-        if (hdp && pH && pA) saved++;
-        else pending++;
+    allMatches.forEach(m => {
+        const key = makeLooseKey(m.date, m.home, m.away);
+        const fs = existingData.get(key);
+        if (fs && fs.handicap && fs.predictionScoreHome && fs.predictionScoreAway) {
+            saved++;
+        } else {
+            pending++;
+        }
+        if (isHotMatch(m)) hot++;
     });
 
     document.getElementById("statTotal").textContent = total;
     document.getElementById("statSaved").textContent = saved;
     document.getElementById("statPending").textContent = pending;
-    document.getElementById("statHdp").textContent = adaHdp;
+    document.getElementById("statHot").textContent = hot;
 }
 
 /* ============================================================
-   FILL FUNCTIONS (BULK)
+   FILL FUNCTIONS
    ============================================================ */
 function fillHdpDefault() {
-    const variants = ["0 : 1/4", "1/4 : 0", "0 : 1/2", "1/2 : 0", "0 : 3/4", "3/4 : 0"];
-    const rows = document.querySelectorAll("tbody tr");
-    rows.forEach(tr => {
+    document.querySelectorAll("tbody tr").forEach(tr => {
         const hdp = tr.querySelector(".input-hdp");
-        if (!hdp.value.trim()) {
-            hdp.value = variants[Math.floor(Math.random() * variants.length)];
+        if (hdp && !hdp.value.trim()) {
+            hdp.value = HDP_VARIANTS[Math.floor(Math.random() * HDP_VARIANTS.length)];
             hdp.dispatchEvent(new Event("input"));
         }
     });
 }
 
 function fillPredRandom() {
-    const rows = document.querySelectorAll("tbody tr");
-    rows.forEach(tr => {
+    document.querySelectorAll("tbody tr").forEach(tr => {
         const pH = tr.querySelector(".input-pred[data-field='predH']");
         const pA = tr.querySelector(".input-pred[data-field='predA']");
-        if (!pH.value.trim()) {
-            pH.value = Math.floor(Math.random() * 4); // 0-3
+        if (pH && !pH.value.trim()) {
+            pH.value = Math.floor(Math.random() * 4);
             pH.dispatchEvent(new Event("input"));
         }
-        if (!pA.value.trim()) {
+        if (pA && !pA.value.trim()) {
             pA.value = Math.floor(Math.random() * 4);
             pA.dispatchEvent(new Event("input"));
         }
@@ -631,11 +817,7 @@ async function saveAll() {
         }
     });
 
-    if (!toSave.length) {
-        alert("Gak ada input yang diisi");
-        return;
-    }
-
+    if (!toSave.length) { alert("Gak ada input yang diisi"); return; }
     if (!confirm(`Simpan ${toSave.length} data ke Firestore?`)) return;
 
     const btn = document.getElementById("btnSaveAll");
@@ -705,6 +887,82 @@ async function saveAll() {
 }
 
 /* ============================================================
+   MATCH TAKER — Pilih 8/12 Match Panas
+   ============================================================ */
+async function matchTaker(count) {
+    if (!allMatches.length) {
+        alert("Ambil jadwal dulu (klik AMBIL JADWAL)");
+        return;
+    }
+
+    await loadExisting();
+
+    // Filter pertandingan panas + yang belum disimpan
+    const candidates = allMatches.filter(m => {
+        if (!isHotMatch(m)) return false;
+        const key = makeLooseKey(m.date, m.home, m.away);
+        const fs = existingData.get(key);
+        // Prioritas yang belum punya HDP
+        return !fs || !fs.handicap;
+    });
+
+    // Kalau kurang, ambil dari semua
+    let finalists = candidates.slice(0, count);
+    if (finalists.length < count) {
+        const extra = allMatches.filter(m => {
+            if (finalists.includes(m)) return false;
+            const key = makeLooseKey(m.date, m.home, m.away);
+            const fs = existingData.get(key);
+            return !fs || !fs.handicap;
+        });
+        finalists = finalists.concat(extra.slice(0, count - finalists.length));
+    }
+
+    if (!finalists.length) {
+        document.getElementById("matchTakerInfo").className = "status warning";
+        document.getElementById("matchTakerInfo").textContent = "⚠️ Semua pertandingan sudah ada HDP. Reset dulu atau skip.";
+        document.getElementById("matchTakerInfo").classList.remove("hidden");
+        return;
+    }
+
+    // Set filter "hot" dan tampilkan
+    currentFilter = "all";
+    document.querySelectorAll(".filter-tab").forEach(t => t.classList.remove("active"));
+    document.querySelector(".filter-tab[data-filter='all']").classList.add("active");
+
+    // Auto-isi HDP & Pred untuk finalists
+    document.querySelectorAll("tbody tr").forEach(tr => {
+        const idx = parseInt(tr.dataset.index, 10);
+        const m = allMatches[idx];
+        if (finalists.includes(m)) {
+            const hdpInput = tr.querySelector(".input-hdp");
+            const pHInput = tr.querySelector(".input-pred[data-field='predH']");
+            const pAInput = tr.querySelector(".input-pred[data-field='predA']");
+
+            if (!hdpInput.value.trim()) {
+                hdpInput.value = HDP_VARIANTS[Math.floor(Math.random() * HDP_VARIANTS.length)];
+                hdpInput.dispatchEvent(new Event("input"));
+            }
+            if (!pHInput.value.trim()) {
+                pHInput.value = Math.floor(Math.random() * 4);
+                pHInput.dispatchEvent(new Event("input"));
+            }
+            if (!pAInput.value.trim()) {
+                pAInput.value = Math.floor(Math.random() * 4);
+                pAInput.dispatchEvent(new Event("input"));
+            }
+            tr.classList.add("hot");
+        }
+    });
+
+    document.getElementById("matchTakerInfo").className = "status success";
+    document.getElementById("matchTakerInfo").textContent = `🔥 ${finalists.length} match panas siap! Isi HDP/Pred sudah otomatis. Edit manual kalau perlu, lalu klik SIMPAN SEMUA.`;
+    document.getElementById("matchTakerInfo").classList.remove("hidden");
+
+    updateStats();
+}
+
+/* ============================================================
    EVENT LISTENERS
    ============================================================ */
 document.getElementById("btnFetch").addEventListener("click", async () => {
@@ -715,22 +973,20 @@ document.getElementById("btnFetch").addEventListener("click", async () => {
     wrap.innerHTML = '<div class="loading">Memuat jadwal dari ESPN...</div>';
 
     try {
-        const [espn] = await Promise.all([
+        const [espn, fsList] = await Promise.all([
             fetchAllESPN(),
-            loadExisting()
+            loadFromFirestoreOnly()
         ]);
 
-        const seen = new Set();
-        allMatches = [];
-        espn.forEach(m => {
-            const k = makeLooseKey(m.date, m.home, m.away);
-            if (seen.has(k)) return;
-            seen.add(k);
-            allMatches.push(m);
+        allMatches = mergeData(espn, fsList);
+        allMatches.sort((a, b) => {
+            const da = (a.date || "") + (a.time || "");
+            const db2 = (b.date || "") + (b.time || "");
+            return da.localeCompare(db2);
         });
 
         document.getElementById("fetchStatus").className = "status success";
-        document.getElementById("fetchStatus").textContent = `✅ ${allMatches.length} pertandingan dari ESPN | ${existingData.size} data existing`;
+        document.getElementById("fetchStatus").textContent = `✅ ${espn.length} dari ESPN + ${fsList.length} dari Firestore = ${allMatches.length} total`;
         document.getElementById("fetchStatus").classList.remove("hidden");
 
         renderTable();
@@ -743,7 +999,7 @@ document.getElementById("btnFetch").addEventListener("click", async () => {
     }
 
     btn.disabled = false;
-    btn.textContent = "🔄 AMBIL JADWAL ESPN";
+    btn.textContent = "🔄 AMBIL JADWAL";
 });
 
 document.getElementById("btnLoadExisting").addEventListener("click", async () => {
@@ -752,19 +1008,36 @@ document.getElementById("btnLoadExisting").addEventListener("click", async () =>
     btn.textContent = "⏳ Loading...";
 
     try {
-        await loadExisting();
+        const fsList = await loadFromFirestoreOnly();
+        allMatches = fsList;
+        renderTable();
+
         document.getElementById("fetchStatus").className = "status success";
-        document.getElementById("fetchStatus").textContent = `✅ ${existingData.size} data tersimpan dari Firestore`;
+        document.getElementById("fetchStatus").textContent = `✅ ${fsList.length} data dari Firestore`;
         document.getElementById("fetchStatus").classList.remove("hidden");
     } catch (err) {
         console.error(err);
     }
 
     btn.disabled = false;
-    btn.textContent = "📖 LOAD DATA TERSIMPAN";
+    btn.textContent = "📖 LOAD DARI FIRESTORE";
 });
 
-// BULK FILL BUTTONS
+// MATCH TAKER
+document.getElementById("btnMatchTaker").addEventListener("click", () => matchTaker(8));
+document.getElementById("btnMatchTakerBig").addEventListener("click", () => matchTaker(12));
+
+// FILTER TABS
+document.querySelectorAll(".filter-tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+        document.querySelectorAll(".filter-tab").forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        currentFilter = tab.dataset.filter;
+        renderTable();
+    });
+});
+
+// FILL BUTTONS
 document.getElementById("btnFillHdp").addEventListener("click", () => {
     if (!confirm("Isi HDP random untuk semua yang kosong?")) return;
     fillHdpDefault();
@@ -776,7 +1049,7 @@ document.getElementById("btnFillPred").addEventListener("click", () => {
 });
 
 document.getElementById("btnFillBoth").addEventListener("click", () => {
-    if (!confirm("Isi HDP + Prediksi random untuk semua yang kosong?")) return;
+    if (!confirm("Isi HDP + Pred random untuk semua yang kosong?")) return;
     fillHdpDefault();
     fillPredRandom();
 });
@@ -784,7 +1057,7 @@ document.getElementById("btnFillBoth").addEventListener("click", () => {
 document.getElementById("btnSaveAll").addEventListener("click", saveAll);
 
 document.getElementById("btnClearAll").addEventListener("click", () => {
-    if (!confirm("Kosongkan semua input di tabel?")) return;
+    if (!confirm("Kosongkan semua input?")) return;
     document.querySelectorAll("tbody input").forEach(i => i.value = "");
     document.querySelectorAll("tbody tr").forEach(tr => {
         tr.classList.remove("saved");
