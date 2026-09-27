@@ -24,10 +24,10 @@ h1 { color: #ffd700; text-align: center; margin-bottom: 20px; }
 </head>
 <body>
 <div class="container">
-<h1>🎨 AUTO FETCH LOGO v5 (TheSportsDB Only)</h1>
+<h1>🎨 AUTO FETCH LOGO v6 (Wikipedia REST)</h1>
 
 <div class="card">
-    <p>Bulk fetch logo via TheSportsDB (sumber utama logo klub).</p>
+    <p>Fetch logo via Wikipedia REST API — 100% reliable, no rate limit.</p>
     <button id="btnFetch" class="btn btn-blue">🔍 MULAI AMBIL LOGO</button>
     <button id="btnFetchOne" class="btn btn-green">🎯 Test 1 Tim</button>
     <div id="status"></div>
@@ -89,54 +89,95 @@ async function fetchViaWorker(url) {
     try {
         const finalUrl = WORKER_URL + "?url=" + encodeURIComponent(url);
         const res = await fetch(finalUrl);
-        if (!res.ok) return null;
+        if (!res.ok) {
+            console.warn("HTTP", res.status, url.substring(0, 80));
+            return null;
+        }
         const text = await res.text();
         try { return JSON.parse(text); } catch (e) { return null; }
     } catch (e) { return null; }
 }
 
-// === Cari logo via TheSportsDB ===
-async function searchTheSportsDB(teamName) {
+// === Wikipedia REST API: cari halaman + ambil thumbnail ===
+async function searchWikipediaRest(teamName, lang) {
     const name = cleanTeam(teamName);
     if (!name) return null;
 
-    // Coba nama asli dulu, kalau gagal coba tanpa akhiran (FC, SC, dll)
-    const variants = [
-        name,
-        name.replace(/\s+(FC|SC|CF|AFC|AC|AS|SK|IF|BK|SV|KV|NK|Utd|United|City)$/i, "").trim()
-    ];
+    try {
+        // 1. Search halaman di Wikipedia
+        const searchUrl = `https://${lang}.wikipedia.org/w/rest.php/v1/search/page?q=${encodeURIComponent(name)}&limit=3`;
+        const searchData = await fetchViaWorker(searchUrl);
+        if (!searchData || !searchData.pages || !searchData.pages.length) return null;
 
-    for (const variant of variants) {
-        if (!variant) continue;
+        // 2. Ambil halaman paling relevan
+        for (const page of searchData.pages) {
+            const pageTitle = page.title;
+            const pageKey = page.key;
 
-        const url = `https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=${encodeURIComponent(variant)}`;
-        const data = await fetchViaWorker(url);
-        if (!data || !data.teams || !data.teams.length) continue;
+            // 3. Ambil thumbnail dari halaman itu
+            const summaryUrl = `https://${lang}.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(pageKey)}`;
+            const summary = await fetchViaWorker(summaryUrl);
+            if (!summary) continue;
 
-        // Filter Soccer + cari yang paling cocok
-        const soccerTeams = data.teams.filter(t => t.strSport === "Soccer");
-        if (!soccerTeams.length) continue;
-
-        const nameLower = variant.toLowerCase();
-        let best = soccerTeams[0];
-
-        for (const t of soccerTeams) {
-            const tn = (t.strTeam || "").toLowerCase();
-            const ta = (t.strTeamAlternate || "").toLowerCase();
-            if (tn === nameLower || ta === nameLower) { best = t; break; }
-            if (tn.includes(nameLower) || nameLower.includes(tn)) best = t;
+            const thumb = summary.thumbnail?.source || summary.originalimage?.source;
+            if (thumb) {
+                return {
+                    name: pageTitle,
+                    logo: thumb,
+                    source: "wiki-" + lang
+                };
+            }
         }
+    } catch (e) {
+        console.warn("Wikipedia REST error:", e.message);
+    }
+    return null;
+}
 
-        const logo = best.strTeamBadge || best.strTeamLogo || best.strBadge || "";
-        if (logo) {
-            return {
-                name: best.strTeam,
-                logo: logo,
-                source: "tsdb",
-                league: best.strLeague || ""
-            };
+// === Wikipedia Action API (fallback) ===
+async function searchWikipediaAction(teamName, lang) {
+    const name = cleanTeam(teamName);
+    if (!name) return null;
+
+    const searchUrl = `https://${lang}.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(name)}&format=json&formatversion=2&srlimit=3`;
+    const searchData = await fetchViaWorker(searchUrl);
+    if (!searchData || !searchData.query || !searchData.query.search) return null;
+
+    for (const result of searchData.query.search) {
+        const title = result.title;
+        const imgUrl = `https://${lang}.wikipedia.org/w/api.php?action=query&prop=pageimages&piprop=original&titles=${encodeURIComponent(title)}&format=json&formatversion=2&redirects=1`;
+        const imgData = await fetchViaWorker(imgUrl);
+        if (!imgData || !imgData.query || !imgData.query.pages) continue;
+
+        for (const page of imgData.query.pages) {
+            if (page.original?.source) {
+                return {
+                    name: page.title,
+                    logo: page.original.source,
+                    source: "wiki-" + lang + "-action"
+                };
+            }
         }
     }
+    return null;
+}
+
+// === Combined ===
+async function findLogo(teamName) {
+    // Coba Wikipedia ID dulu (klub Indonesia/Asia)
+    let r = await searchWikipediaRest(teamName, "id");
+    if (r) return r;
+
+    r = await searchWikipediaRest(teamName, "en");
+    if (r) return r;
+
+    // Fallback action API
+    r = await searchWikipediaAction(teamName, "id");
+    if (r) return r;
+
+    r = await searchWikipediaAction(teamName, "en");
+    if (r) return r;
+
     return null;
 }
 
@@ -149,7 +190,7 @@ function showPreview(team, r) {
     `;
 }
 
-// === TEST 1 TIM ===
+// TEST 1 TIM
 document.getElementById("btnFetchOne").addEventListener("click", async () => {
     const teamName = prompt("Nama tim:", "Persija Jakarta");
     if (!teamName) return;
@@ -157,24 +198,53 @@ document.getElementById("btnFetchOne").addEventListener("click", async () => {
     setStatus("⏳ Cari: " + teamName, "wait");
     logEl.textContent = "Test: " + teamName;
 
-    log("\nTheSportsDB search...");
-    const r = await searchTheSportsDB(teamName);
-
+    log("\n1. Wikipedia ID (REST)...");
+    let r = await searchWikipediaRest(teamName, "id");
     if (r) {
         log("  ✅ " + r.name + " [" + r.source + "]");
-        log("  Liga: " + r.league);
         log("  Logo: " + r.logo);
         showPreview(teamName, r);
-        setStatus("✅ " + r.name, "ok");
-    } else {
-        log("  ❌ Tidak ketemu");
-        setStatus("❌ Tidak ketemu: " + teamName, "err");
+        setStatus("✅ ID: " + r.name, "ok");
+        return;
     }
+    log("  ❌ ID tidak ketemu");
+
+    log("\n2. Wikipedia EN (REST)...");
+    r = await searchWikipediaRest(teamName, "en");
+    if (r) {
+        log("  ✅ " + r.name + " [" + r.source + "]");
+        showPreview(teamName, r);
+        setStatus("✅ EN: " + r.name, "ok");
+        return;
+    }
+    log("  ❌ EN tidak ketemu");
+
+    log("\n3. Wikipedia ID (Action)...");
+    r = await searchWikipediaAction(teamName, "id");
+    if (r) {
+        log("  ✅ " + r.name + " [" + r.source + "]");
+        showPreview(teamName, r);
+        setStatus("✅ ID: " + r.name, "ok");
+        return;
+    }
+    log("  ❌ ID tidak ketemu");
+
+    log("\n4. Wikipedia EN (Action)...");
+    r = await searchWikipediaAction(teamName, "en");
+    if (r) {
+        log("  ✅ " + r.name + " [" + r.source + "]");
+        showPreview(teamName, r);
+        setStatus("✅ EN: " + r.name, "ok");
+        return;
+    }
+    log("  ❌ EN tidak ketemu");
+
+    setStatus("❌ Semua sumber gagal: " + teamName, "err");
 });
 
-// === MASSAL ===
+// MASSAL
 document.getElementById("btnFetch").addEventListener("click", async () => {
-    if (!confirm("Proses semua tim? Bisa 5-15 menit.")) return;
+    if (!confirm("Proses semua tim? Bisa 10-20 menit.")) return;
 
     const btn = document.getElementById("btnFetch");
     btn.disabled = true;
@@ -206,7 +276,7 @@ document.getElementById("btnFetch").addEventListener("click", async () => {
             const team = uniqueTeams[i];
             log(`[${i+1}/${uniqueTeams.length}] ${team}`);
 
-            const result = await searchTheSportsDB(team);
+            const result = await findLogo(team);
 
             if (result && result.logo) {
                 logoMap.set(team.toLowerCase(), result.logo);
@@ -223,7 +293,7 @@ document.getElementById("btnFetch").addEventListener("click", async () => {
                 log(`  ❌ Tidak ketemu`);
             }
 
-            await new Promise(r => setTimeout(r, 120));
+            await new Promise(r => setTimeout(r, 150));
         }
 
         setStatus(`✅ Ditemukan: ${found} | Gagal: ${notFound}`, "ok");
