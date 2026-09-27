@@ -29,10 +29,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Teko:wght@500;600;700&family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@600;700;800;900&display=swap" rel="stylesheet">
 <style>
-
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-
 body {
     margin: 0;
     font-family: 'Inter', Arial, sans-serif;
@@ -43,12 +41,7 @@ body {
     -webkit-font-smoothing: antialiased;
     letter-spacing: 0.2px;
 }
-
-/* AURORA BACKGROUND */
-.aurora-bg {
-    position: fixed; inset: 0; z-index: -4;
-    pointer-events: none; overflow: hidden;
-}
+.aurora-bg { position: fixed; inset: 0; z-index: -4; pointer-events: none; overflow: hidden; }
 .aurora-bg::before {
     content: ""; position: absolute; inset: -50%;
     background:
@@ -64,45 +57,18 @@ body {
     33% { transform: translate(5%, -5%) rotate(120deg) scale(1.1); }
     66% { transform: translate(-5%, 5%) rotate(240deg) scale(0.95); }
 }
-
-.liquid-bg {
-    position: fixed; inset: 0; z-index: -5;
-    pointer-events: none; opacity: 0.5;
-}
-.liquid-blob {
-    position: absolute; border-radius: 50%; filter: blur(80px);
-    animation: liquidMove 20s ease-in-out infinite;
-}
-.liquid-blob:nth-child(1) {
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(93,45,232,0.6), transparent 70%);
-    top: -100px; left: -100px;
-}
-.liquid-blob:nth-child(2) {
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(0,212,255,0.4), transparent 70%);
-    bottom: -200px; right: -200px;
-    animation-delay: -7s;
-}
-.liquid-blob:nth-child(3) {
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(255,204,51,0.3), transparent 70%);
-    top: 40%; left: 50%;
-    animation-delay: -14s;
-}
+.liquid-bg { position: fixed; inset: 0; z-index: -5; pointer-events: none; opacity: 0.5; }
+.liquid-blob { position: absolute; border-radius: 50%; filter: blur(80px); animation: liquidMove 20s ease-in-out infinite; }
+.liquid-blob:nth-child(1) { width: 500px; height: 500px; background: radial-gradient(circle, rgba(93,45,232,0.6), transparent 70%); top: -100px; left: -100px; }
+.liquid-blob:nth-child(2) { width: 600px; height: 600px; background: radial-gradient(circle, rgba(0,212,255,0.4), transparent 70%); bottom: -200px; right: -200px; animation-delay: -7s; }
+.liquid-blob:nth-child(3) { width: 400px; height: 400px; background: radial-gradient(circle, rgba(255,204,51,0.3), transparent 70%); top: 40%; left: 50%; animation-delay: -14s; }
 @keyframes liquidMove {
     0%, 100% { transform: translate(0, 0) scale(1); }
     25% { transform: translate(80px, -60px) scale(1.2); }
     50% { transform: translate(-60px, 80px) scale(0.9); }
     75% { transform: translate(60px, 60px) scale(1.1); }
 }
-
-#particleCanvas {
-    position: fixed; inset: 0; z-index: -2;
-    pointer-events: none; opacity: 0.7;
-}
-
-/* PROGRESS BAR */
+#particleCanvas { position: fixed; inset: 0; z-index: -2; pointer-events: none; opacity: 0.7; }
 .reading-progress {
     position: fixed; top: 0; left: 0; height: 3px; width: 0%;
     background: linear-gradient(90deg, #ffcc33, #00d4ff, #5d2de8);
@@ -110,14 +76,7 @@ body {
     z-index: 99999;
     transition: width 0.1s ease-out;
     box-shadow: 0 0 15px rgba(0,212,255,0.8);
-    animation: progressShine 3s linear infinite;
 }
-@keyframes progressShine {
-    0% { background-position: 0% center; }
-    100% { background-position: 200% center; }
-}
-
-/* LOADING SCREEN */
 #loadingScreen {
     position: fixed; inset: 0; z-index: 99999;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -126,10 +85,7 @@ body {
     overflow: hidden;
 }
 #loadingScreen.hide { opacity: 0; visibility: hidden; }
-.loading-logo-wrap {
-    position: relative; display: flex; align-items: center; justify-content: center;
-    margin-bottom: 45px;
-}
+.loading-logo-wrap { position: relative; display: flex; align-items: center; justify-content: center; margin-bottom: 45px; }
 .loading-ring {
     position: absolute; width: 200px; height: 200px; border-radius: 50%;
     border: 1.5px solid rgba(93,45,232,0.20); border-top-color: rgba(93,45,232,1);
@@ -140,25 +96,15 @@ body {
     border: 1.5px solid rgba(0,212,255,0.15); border-bottom-color: rgba(0,212,255,1);
     animation-duration: 3.2s; animation-direction: reverse;
 }
-@keyframes loadingRingSpin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+@keyframes loadingRingSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 .loading-logo-wrap img {
     width: 145px; height: 145px; object-fit: contain;
     position: relative; z-index: 2;
     filter: drop-shadow(0 0 30px rgba(93,45,232,1)) drop-shadow(0 0 60px rgba(0,212,255,0.6));
     animation: floatLogo 2.5s ease-in-out infinite;
 }
-@keyframes floatLogo {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-.loading-text-wrap {
-    position: relative; width: 100%; height: 30px;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 24px;
-}
+@keyframes floatLogo { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.loading-text-wrap { position: relative; width: 100%; height: 30px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; }
 .loading-text {
     position: absolute; inset: 0;
     display: flex; align-items: center; justify-content: center;
@@ -169,10 +115,7 @@ body {
 }
 .loading-text.active { opacity: 1; transform: translateY(0); }
 .loading-text.exit { opacity: 0; transform: translateY(-12px); }
-.loading-bar {
-    width: 280px; height: 4px; border-radius: 20px;
-    background: rgba(93,45,232,0.20); overflow: hidden; margin-bottom: 18px;
-}
+.loading-bar { width: 280px; height: 4px; border-radius: 20px; background: rgba(93,45,232,0.20); overflow: hidden; margin-bottom: 18px; }
 .loading-bar-fill {
     height: 100%; width: 0%;
     background: linear-gradient(90deg, #5d2de8, #00d4ff, #ffcc33);
@@ -187,17 +130,8 @@ body {
     -webkit-text-fill-color: transparent;
     display: flex; align-items: baseline; gap: 4px;
 }
-.loading-percent::after {
-    content: "%"; font-size: 22px; color: #00d4ff;
-    -webkit-text-fill-color: #00d4ff;
-}
-.loading-brand {
-    margin-top: 20px; font-family: 'Orbitron', sans-serif;
-    font-size: 11px; font-weight: 900; letter-spacing: 10px;
-    color: #ffcc33; opacity: 0.85;
-}
-
-/* HEADER */
+.loading-percent::after { content: "%"; font-size: 22px; color: #00d4ff; -webkit-text-fill-color: #00d4ff; }
+.loading-brand { margin-top: 20px; font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 900; letter-spacing: 10px; color: #ffcc33; opacity: 0.85; }
 header {
     position: sticky; top: 0; z-index: 999;
     background: rgba(10, 14, 39, 0.75);
@@ -213,10 +147,7 @@ header::before {
     background-size: 200% 100%;
     animation: headerBorder 8s linear infinite;
 }
-@keyframes headerBorder {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 200% 50%; }
-}
+@keyframes headerBorder { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
 .header-inner {
     position: relative; z-index: 2;
     max-width: 1250px; margin: auto;
@@ -224,11 +155,7 @@ header::before {
     display: flex; align-items: center; justify-content: space-between;
     gap: 22px;
 }
-.logo {
-    display: flex; flex-direction: column; align-items: flex-start;
-    text-decoration: none;
-    transition: transform 0.3s;
-}
+.logo { display: flex; flex-direction: column; align-items: flex-start; text-decoration: none; transition: transform 0.3s; }
 .logo:hover { transform: scale(1.04); }
 .logo img {
     display: block; width: 150px; height: 55px;
@@ -237,30 +164,22 @@ header::before {
     transition: filter 0.3s;
     animation: floatLogo 3.5s ease-in-out infinite;
 }
-.logo:hover img {
-    filter: drop-shadow(0 0 20px rgba(93,45,232,1)) drop-shadow(0 0 35px rgba(0,212,255,0.6));
-}
 .logo-subtitle {
     margin-top: 4px;
-    font-family: 'Rajdhani', sans-serif; font-size: 10px;
-    font-weight: 700; letter-spacing: 3px;
+    font-family: 'Rajdhani', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px;
     background: linear-gradient(90deg, #ffcc33, #fff5d0, #00d4ff, #fff5d0, #ffcc33);
     background-size: 250% auto;
     -webkit-background-clip: text; background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: logoShine 7s linear infinite;
 }
-@keyframes logoShine {
-    0% { background-position: 0% center; }
-    100% { background-position: 250% center; }
-}
+@keyframes logoShine { 0% { background-position: 0% center; } 100% { background-position: 250% center; } }
 nav { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 nav a.nav-link {
     color: #c8c8d4; text-decoration: none;
     padding: 10px 20px; border-radius: 22px;
-    font-family: 'Rajdhani', sans-serif; font-size: 13px;
-    font-weight: 700; letter-spacing: 1px;
-    text-transform: uppercase;
+    font-family: 'Rajdhani', sans-serif; font-size: 13px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
     border: 1px solid transparent;
     transition: all 0.3s;
 }
@@ -274,9 +193,8 @@ nav a.nav-link:hover {
 nav a.nav-login {
     color: #00d4ff; text-decoration: none;
     padding: 9px 24px; border-radius: 24px;
-    font-family: 'Rajdhani', sans-serif; font-size: 13px;
-    font-weight: 800; letter-spacing: 1px;
-    text-transform: uppercase;
+    font-family: 'Rajdhani', sans-serif; font-size: 13px; font-weight: 800;
+    letter-spacing: 1px; text-transform: uppercase;
     border: 1.5px solid rgba(0,212,255,0.8);
     box-shadow: 0 0 15px rgba(0,212,255,0.3);
     transition: all 0.3s;
@@ -290,31 +208,17 @@ nav a.nav-login:hover {
 nav a.nav-daftar {
     color: #0a0e27; text-decoration: none;
     padding: 10px 28px; border-radius: 24px;
-    font-family: 'Rajdhani', sans-serif; font-size: 13px;
-    font-weight: 900; letter-spacing: 1px;
-    text-transform: uppercase;
+    font-family: 'Rajdhani', sans-serif; font-size: 13px; font-weight: 900;
+    letter-spacing: 1px; text-transform: uppercase;
     background: linear-gradient(135deg, #ffcc33 0%, #fff5d0 50%, #ffcc33 100%);
     background-size: 200% auto;
     box-shadow: 0 6px 25px rgba(255,204,51,0.6);
     animation: btnShine 3.5s ease-in-out infinite;
     transition: all 0.3s;
 }
-@keyframes btnShine {
-    0% { background-position: 0% center; }
-    100% { background-position: 200% center; }
-}
-nav a.nav-daftar:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 45px rgba(255,204,51,0.9);
-}
-
-.container {
-    max-width: 1250px; margin: auto;
-    padding: 28px 20px 70px;
-    position: relative; z-index: 1;
-}
-
-/* LUX TEXT */
+@keyframes btnShine { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+nav a.nav-daftar:hover { transform: translateY(-3px); box-shadow: 0 10px 45px rgba(255,204,51,0.9); }
+.container { max-width: 1250px; margin: auto; padding: 28px 20px 70px; position: relative; z-index: 1; }
 .lux-text-wrap {
     position: relative; width: 100%;
     margin-bottom: 22px; padding: 20px 65px;
@@ -349,24 +253,15 @@ nav a.nav-daftar:hover {
 }
 .lux-text-wrap .icon-side.left { left: 28px; }
 .lux-text-wrap .icon-side.right { right: 28px; animation-direction: reverse; }
-@keyframes iconSpin {
-    0% { transform: translateY(-50%) rotate(0deg) scale(1); }
-    50% { transform: translateY(-50%) rotate(180deg) scale(1.2); }
-    100% { transform: translateY(-50%) rotate(360deg) scale(1); }
-}
-.lux-text-slide {
-    position: relative; width: 100%; height: 30px;
-    display: flex; align-items: center; justify-content: center; z-index: 2;
-}
+@keyframes iconSpin { 0% { transform: translateY(-50%) rotate(0deg) scale(1); } 50% { transform: translateY(-50%) rotate(180deg) scale(1.2); } 100% { transform: translateY(-50%) rotate(360deg) scale(1); } }
+.lux-text-slide { position: relative; width: 100%; height: 30px; display: flex; align-items: center; justify-content: center; z-index: 2; }
 .lux-text-item {
     position: absolute; inset: 0;
     display: flex; align-items: center; justify-content: center;
     text-align: center;
     font-family: 'Rajdhani', sans-serif; font-size: 16px;
-    font-weight: 700; letter-spacing: 2.5px;
-    text-transform: uppercase;
-    opacity: 0; transform: translateY(22px) scale(0.94);
-    filter: blur(8px);
+    font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase;
+    opacity: 0; transform: translateY(22px) scale(0.94); filter: blur(8px);
     transition: opacity 0.8s, transform 0.8s, filter 0.8s;
     pointer-events: none;
     background: linear-gradient(90deg, #ffcc33, #fff5d0, #00d4ff, #fff5d0, #ffcc33);
@@ -375,14 +270,9 @@ nav a.nav-daftar:hover {
     -webkit-text-fill-color: transparent;
     animation: luxTextShine 6s linear infinite;
 }
-@keyframes luxTextShine {
-    0% { background-position: 0% center; }
-    100% { background-position: 250% center; }
-}
+@keyframes luxTextShine { 0% { background-position: 0% center; } 100% { background-position: 250% center; } }
 .lux-text-item.active { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
 .lux-text-item.exit-up { opacity: 0; transform: translateY(-22px) scale(0.94); filter: blur(8px); }
-
-/* BANNER */
 .banner {
     position: relative; width: 100%;
     border-radius: 24px; overflow: hidden;
@@ -391,28 +281,10 @@ nav a.nav-daftar:hover {
     background: #050813; line-height: 0;
     box-shadow: 0 0 40px rgba(93,45,232,0.35), 0 0 80px rgba(0,212,255,0.15);
 }
-.banner img {
-    display: block; width: 100%; height: auto;
-    object-fit: contain; content-visibility: auto;
-}
-.banner::after {
-    content: ""; position: absolute;
-    top: 0; left: -120%; width: 60%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-    transform: skewX(-20deg);
-    animation: bannerShine 7s infinite;
-    pointer-events: none;
-}
-@keyframes bannerShine {
-    0% { left: -120%; }
-    35% { left: 140%; }
-    100% { left: 140%; }
-}
-
-/* BIG MATCH TICKER */
+.banner img { display: block; width: 100%; height: auto; object-fit: contain; content-visibility: auto; }
 .big-match-ticker-wrap {
-    position: relative; width: 100%;
-    margin-bottom: 18px; border-radius: 18px; overflow: hidden;
+    position: relative; width: 100%; margin-bottom: 18px;
+    border-radius: 18px; overflow: hidden;
     background: rgba(10,14,39,0.75);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -428,10 +300,7 @@ nav a.nav-daftar:hover {
 }
 .big-match-ticker-wrap::before { top: 0; }
 .big-match-ticker-wrap::after { bottom: 0; animation-direction: reverse; }
-@keyframes tickerBorderTop {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 200% 50%; }
-}
+@keyframes tickerBorderTop { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
 .big-match-ticker-wrap .fade-left, .big-match-ticker-wrap .fade-right {
     position: absolute; top: 0;
     width: 80px; height: 100%;
@@ -439,24 +308,10 @@ nav a.nav-daftar:hover {
 }
 .big-match-ticker-wrap .fade-left { left: 0; background: linear-gradient(90deg, rgba(5,8,19,1), transparent); }
 .big-match-ticker-wrap .fade-right { right: 0; background: linear-gradient(-90deg, rgba(5,8,19,1), transparent); }
-.big-match-ticker {
-    position: relative; width: 100%;
-    padding: 16px 0; overflow: hidden;
-}
-.big-match-ticker-track {
-    display: flex; align-items: center; gap: 16px;
-    width: max-content;
-    animation: tickerRun 40s linear infinite;
-}
-@keyframes tickerRun {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-}
-.big-match-ticker-empty {
-    padding: 25px 30px;
-    font-size: 11px; font-weight: 700; letter-spacing: 4px;
-    color: #777788; text-align: center; text-transform: uppercase;
-}
+.big-match-ticker { position: relative; width: 100%; padding: 16px 0; overflow: hidden; }
+.big-match-ticker-track { display: flex; align-items: center; gap: 16px; width: max-content; animation: tickerRun 40s linear infinite; }
+@keyframes tickerRun { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+.big-match-ticker-empty { padding: 25px 30px; font-size: 11px; font-weight: 700; letter-spacing: 4px; color: #777788; text-align: center; text-transform: uppercase; }
 .bmt-card {
     position: relative; flex: 0 0 auto;
     width: 200px; padding: 14px;
@@ -468,27 +323,12 @@ nav a.nav-daftar:hover {
     overflow: hidden;
     transition: all 0.4s;
 }
-.bmt-card::after {
-    content: ""; position: absolute;
-    top: 0; left: -120%; width: 60%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,215,100,0.25), transparent);
-    transform: skewX(-20deg);
-    pointer-events: none;
-    transition: left 0.6s ease;
-    z-index: 2;
-}
-.bmt-card:hover::after { left: 140%; }
-.bmt-card:hover {
-    border-color: rgba(0,212,255,0.9);
-    box-shadow: 0 12px 50px rgba(0,0,0,0.9), 0 0 40px rgba(0,212,255,0.55);
-    transform: translateY(-4px);
-}
+.bmt-card:hover { border-color: rgba(0,212,255,0.9); box-shadow: 0 12px 50px rgba(0,0,0,0.9), 0 0 40px rgba(0,212,255,0.55); transform: translateY(-4px); }
 .bmt-badge {
     display: inline-flex; align-items: center; gap: 4px;
     padding: 4px 12px;
-    font-family: 'Rajdhani', sans-serif; font-size: 9px;
-    font-weight: 800; letter-spacing: 2px;
-    color: #fff5e0;
+    font-family: 'Rajdhani', sans-serif; font-size: 9px; font-weight: 800;
+    letter-spacing: 2px; color: #fff5e0;
     background: linear-gradient(90deg, rgba(220,60,20,0.85), rgba(255,100,40,0.95), rgba(220,60,20,0.85));
     border: 1px solid rgba(255,180,100,0.75);
     border-radius: 20px; text-transform: uppercase;
@@ -497,20 +337,13 @@ nav a.nav-daftar:hover {
 }
 .bmt-league {
     display: block;
-    font-family: 'Rajdhani', sans-serif; font-size: 9px;
-    font-weight: 800; letter-spacing: 2px;
-    color: #00d4ff; text-transform: uppercase;
+    font-family: 'Rajdhani', sans-serif; font-size: 9px; font-weight: 800;
+    letter-spacing: 2px; color: #00d4ff; text-transform: uppercase;
     margin-bottom: 10px;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     position: relative; z-index: 3;
 }
-.bmt-teams {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center; gap: 6px;
-    margin-bottom: 10px;
-    position: relative; z-index: 3;
-}
+.bmt-teams { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 6px; margin-bottom: 10px; position: relative; z-index: 3; }
 .bmt-team { display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center; min-width: 0; }
 .bmt-logo {
     width: 40px; height: 40px; border-radius: 50%;
@@ -523,15 +356,11 @@ nav a.nav-daftar:hover {
 .bmt-logo img { width: 30px; height: 30px; object-fit: contain; display: block; }
 .bmt-logo.logo-loaded { background: radial-gradient(circle, #ffffff, #eeeeee); border: 1.5px solid rgba(255,204,51,0.9); }
 .bmt-team-name {
-    font-family: 'Rajdhani', sans-serif; font-size: 10.5px;
-    font-weight: 700; color: #f2f2f5;
-    max-width: 72px;
+    font-family: 'Rajdhani', sans-serif; font-size: 10.5px; font-weight: 700;
+    color: #f2f2f5; max-width: 72px;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.bmt-vs {
-    font-family: 'Orbitron', sans-serif; font-size: 11px;
-    font-weight: 800; color: #ffcc33; letter-spacing: 1.5px;
-}
+.bmt-vs { font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 800; color: #ffcc33; letter-spacing: 1.5px; }
 .bmt-time {
     display: flex; align-items: center; justify-content: center; gap: 5px;
     padding: 7px 0;
@@ -543,11 +372,8 @@ nav a.nav-daftar:hover {
     border-radius: 8px;
     position: relative; z-index: 3;
 }
-
-/* NEWS TICKER */
 .news-ticker {
-    position: relative; width: 100%;
-    overflow: hidden;
+    position: relative; width: 100%; overflow: hidden;
     border-radius: 14px;
     background: rgba(26,10,32,0.85);
     backdrop-filter: blur(20px);
@@ -563,19 +389,12 @@ nav a.nav-daftar:hover {
     padding: 12px 20px;
     background: linear-gradient(135deg, #c1121f, #ff2a3d);
     color: #fff;
-    font-family: 'Rajdhani', sans-serif; font-size: 12px;
-    font-weight: 800; letter-spacing: 3px; text-transform: uppercase;
+    font-family: 'Rajdhani', sans-serif; font-size: 12px; font-weight: 800;
+    letter-spacing: 3px; text-transform: uppercase;
     z-index: 2;
 }
-.news-ticker-label::before {
-    content: "●"; display: inline-block;
-    margin-right: 10px;
-    animation: newsBlink 1.3s ease-in-out infinite;
-}
-@keyframes newsBlink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-}
+.news-ticker-label::before { content: "●"; display: inline-block; margin-right: 10px; animation: newsBlink 1.3s ease-in-out infinite; }
+@keyframes newsBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 .news-ticker-wrap { flex: 1; overflow: hidden; position: relative; height: 46px; }
 .news-ticker-content {
     position: absolute; top: 50%; transform: translateY(-50%);
@@ -585,17 +404,8 @@ nav a.nav-daftar:hover {
     animation: newsScroll 150s linear infinite;
     padding-left: 100%;
 }
-@keyframes newsScroll {
-    0% { transform: translate(0, -50%); }
-    100% { transform: translate(-100%, -50%); }
-}
-
-/* STATS */
-.stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px; margin-bottom: 32px;
-}
+@keyframes newsScroll { 0% { transform: translate(0, -50%); } 100% { transform: translate(-100%, -50%); } }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 32px; }
 .stat-box {
     position: relative;
     padding: 20px 14px 18px;
@@ -607,22 +417,7 @@ nav a.nav-daftar:hover {
     overflow: hidden;
     transition: all 0.4s;
 }
-.stat-box:hover {
-    border-color: rgba(0,212,255,0.9);
-    box-shadow: 0 18px 60px rgba(0,0,0,0.75), 0 0 50px rgba(0,212,255,0.45);
-    transform: translateY(-4px);
-}
-.stat-box::before {
-    content: "★"; position: absolute;
-    top: 6px; left: 50%; transform: translateX(-50%);
-    font-size: 10px; color: #ffcc33; opacity: 0.7;
-}
-.stat-box::after {
-    content: ""; position: absolute;
-    top: 22px; left: 15%;
-    width: 70%; height: 1px;
-    background: linear-gradient(90deg, transparent, #5d2de8, #00d4ff, #5d2de8, transparent);
-}
+.stat-box:hover { border-color: rgba(0,212,255,0.9); box-shadow: 0 18px 60px rgba(0,0,0,0.75), 0 0 50px rgba(0,212,255,0.45); transform: translateY(-4px); }
 .stat-number {
     display: block;
     font-family: 'Teko', sans-serif; font-size: 38px; font-weight: 700;
@@ -634,24 +429,13 @@ nav a.nav-daftar:hover {
 }
 .stat-label {
     color: #a0b8d0;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 10.5px; font-weight: 700;
+    font-family: 'Rajdhani', sans-serif; font-size: 10.5px; font-weight: 700;
     letter-spacing: 2px; text-transform: uppercase;
     margin-top: 4px;
 }
-
 #pertandingan { scroll-margin-top: 30px; }
-
-.section-head {
-    display: flex; justify-content: space-between;
-    align-items: center; gap: 18px;
-    margin: 28px 0 22px;
-}
-.section-title {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 26px; font-weight: 700;
-    letter-spacing: 3px; margin: 0; text-transform: uppercase;
-}
+.section-head { display: flex; justify-content: space-between; align-items: center; gap: 18px; margin: 28px 0 22px; }
+.section-title { font-family: 'Rajdhani', sans-serif; font-size: 26px; font-weight: 700; letter-spacing: 3px; margin: 0; text-transform: uppercase; }
 .section-title span {
     background: linear-gradient(90deg, #ffcc33, #00d4ff, #ffcc33);
     background-size: 200% auto;
@@ -659,12 +443,7 @@ nav a.nav-daftar:hover {
     -webkit-text-fill-color: transparent;
     animation: titleGradient 6s linear infinite;
 }
-@keyframes titleGradient {
-    0% { background-position: 0% center; }
-    100% { background-position: 200% center; }
-}
-
-/* FILTER ROW */
+@keyframes titleGradient { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
 .filter-row {
     display: flex; align-items: center; gap: 12px;
     flex-wrap: wrap; padding: 14px;
@@ -675,7 +454,6 @@ nav a.nav-daftar:hover {
     border: 1px solid rgba(93,45,232,0.5);
     box-shadow: 0 0 30px rgba(93,45,232,0.15);
 }
-
 .next-match-bar-inline {
     position: relative; width: 100%;
     border-radius: 14px; overflow: hidden;
@@ -691,15 +469,8 @@ nav a.nav-daftar:hover {
     display: flex; align-items: center; justify-content: center;
     gap: 18px; flex-wrap: wrap;
 }
-.next-match-label {
-    font-family: 'Rajdhani', sans-serif; font-size: 11px;
-    font-weight: 800; letter-spacing: 3px;
-    color: #00d4ff; text-transform: uppercase;
-}
-.next-match-teams {
-    font-family: 'Rajdhani', sans-serif; font-size: 15px;
-    font-weight: 700; color: #fff; text-transform: uppercase;
-}
+.next-match-label { font-family: 'Rajdhani', sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 3px; color: #00d4ff; text-transform: uppercase; }
+.next-match-teams { font-family: 'Rajdhani', sans-serif; font-size: 15px; font-weight: 700; color: #fff; text-transform: uppercase; }
 .next-match-countdown {
     font-family: 'Teko', monospace; font-size: 22px; font-weight: 700;
     letter-spacing: 2px;
@@ -709,15 +480,8 @@ nav a.nav-daftar:hover {
     color: #0a0e27;
     animation: nextMatchShine 3s linear infinite;
 }
-@keyframes nextMatchShine {
-    0% { background-position: 0% center; }
-    100% { background-position: 200% center; }
-}
-
-.tab-filter-row {
-    display: flex; align-items: center; gap: 10px;
-    flex-wrap: wrap; margin-bottom: 8px; width: 100%;
-}
+@keyframes nextMatchShine { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+.tab-filter-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; width: 100%; }
 .tab-clock {
     display: flex; align-items: center; gap: 6px;
     padding: 9px 16px; border-radius: 14px;
@@ -728,29 +492,16 @@ nav a.nav-daftar:hover {
     flex-shrink: 0;
 }
 .tab-clock-icon { font-size: 14px; }
-.tab-clock-value {
-    font-family: 'Teko', monospace; font-size: 20px; font-weight: 700;
-    color: #fff; line-height: 1; position: relative;
-}
-.tab-clock-value::after {
-    content: ":"; color: #00d4ff;
-    animation: blink 1s infinite; margin: 0 2px;
-}
-@keyframes blink {
-    0%, 49% { opacity: 1; }
-    50%, 100% { opacity: 0.2; }
-}
-.tab-clock-label {
-    font-family: 'Rajdhani', sans-serif; font-size: 11px;
-    font-weight: 800; letter-spacing: 1.5px;
-    color: #ffcc33; text-transform: uppercase;
-}
+.tab-clock-value { font-family: 'Teko', monospace; font-size: 20px; font-weight: 700; color: #fff; line-height: 1; position: relative; }
+.tab-clock-value::after { content: ":"; color: #00d4ff; animation: blink 1s infinite; margin: 0 2px; }
+@keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0.2; } }
+.tab-clock-label { font-family: 'Rajdhani', sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 1.5px; color: #ffcc33; text-transform: uppercase; }
 .tab-filter-wrap { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; flex: 1; }
 .tab-filter {
     display: flex; align-items: center; gap: 6px;
     padding: 9px 18px; border-radius: 14px;
-    font-family: 'Rajdhani', sans-serif; font-size: 12.5px;
-    font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    font-family: 'Rajdhani', sans-serif; font-size: 12.5px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
     color: #c8c8d4;
     background: rgba(30,20,60,0.7);
     backdrop-filter: blur(10px);
@@ -759,20 +510,7 @@ nav a.nav-daftar:hover {
     cursor: pointer; transition: all 0.35s;
     position: relative; overflow: hidden;
 }
-.tab-filter::before {
-    content: ""; position: absolute;
-    top: 0; left: -100%; width: 60%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(0,212,255,0.2), transparent);
-    transform: skewX(-20deg);
-    transition: left 0.5s ease;
-}
-.tab-filter:hover {
-    color: #00d4ff;
-    border-color: rgba(0,212,255,0.7);
-    box-shadow: 0 0 20px rgba(0,212,255,0.4);
-    transform: translateY(-2px);
-}
-.tab-filter:hover::before { left: 140%; }
+.tab-filter:hover { color: #00d4ff; border-color: rgba(0,212,255,0.7); box-shadow: 0 0 20px rgba(0,212,255,0.4); transform: translateY(-2px); }
 .tab-filter.active {
     color: #0a0e27;
     background: linear-gradient(135deg, #ffcc33, #fff5d0, #ffcc33);
@@ -781,14 +519,9 @@ nav a.nav-daftar:hover {
     box-shadow: 0 4px 25px rgba(255,204,51,0.6);
     animation: tabActiveShine 3s linear infinite;
 }
-@keyframes tabActiveShine {
-    0% { background-position: 0% center; }
-    100% { background-position: 200% center; }
-}
+@keyframes tabActiveShine { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
 .tab-icon { font-size: 14px; }
 .tab-text { font-size: 12.5px; }
-
-/* SEARCH */
 .search-box {
     position: relative; display: flex; align-items: center;
     min-width: 230px;
@@ -799,10 +532,7 @@ nav a.nav-daftar:hover {
     border-radius: 14px;
     transition: all 0.4s;
 }
-.search-box:focus-within {
-    border-color: rgba(0,212,255,0.9);
-    box-shadow: 0 0 30px rgba(0,212,255,0.5);
-}
+.search-box:focus-within { border-color: rgba(0,212,255,0.9); box-shadow: 0 0 30px rgba(0,212,255,0.5); }
 .search-icon { padding: 0 14px; color: #00d4ff; font-size: 14px; pointer-events: none; }
 #searchInput {
     flex: 1; border: none; outline: none;
@@ -812,29 +542,18 @@ nav a.nav-daftar:hover {
     font-weight: 600; font-size: 14px;
 }
 #searchInput::placeholder { color: #6b7b9d; }
-.search-clear {
-    background: transparent; border: none; color: #999;
-    cursor: pointer; padding: 0 16px;
-    font-size: 15px; font-weight: bold;
-}
+.search-clear { background: transparent; border: none; color: #999; cursor: pointer; padding: 0 16px; font-size: 15px; font-weight: bold; }
 .search-clear:hover { color: #00d4ff; }
 .search-clear.hidden { display: none; }
-
-/* DATE FILTER */
 .date-filter { display: flex; align-items: center; gap: 10px; }
-.date-filter label {
-    color: #b0a8d8;
-    font-family: 'Rajdhani', sans-serif; font-size: 11.5px;
-    font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
-}
+.date-filter label { color: #b0a8d8; font-family: 'Rajdhani', sans-serif; font-size: 11.5px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
 #tanggalFilter, #ligaFilter, #statusFilter {
     appearance: none;
     border: 1.5px solid rgba(93,45,232,0.6);
     background-color: #0a0e27; color: #fff;
     padding: 11px 38px 11px 16px;
     border-radius: 14px;
-    font-family: 'Rajdhani', sans-serif;
-    font-weight: 700; font-size: 13px;
+    font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 13px;
     outline: none; cursor: pointer; max-width: 220px;
     background-image:
         linear-gradient(145deg, rgba(20,14,45,1), rgba(10,14,39,1)),
@@ -844,21 +563,12 @@ nav a.nav-daftar:hover {
     background-size: 100% 100%, 12px 12px;
     color-scheme: dark;
 }
-#tanggalFilter option, #ligaFilter option, #statusFilter option {
-    background-color: #0a0e27; color: #fff; font-weight: 700;
-}
-#tanggalFilter:focus, #ligaFilter:focus, #statusFilter:focus {
-    border-color: #00d4ff;
-    box-shadow: 0 0 28px rgba(0,212,255,0.7);
-}
-
-/* DATE GROUP */
+#tanggalFilter option, #ligaFilter option, #statusFilter option { background-color: #0a0e27; color: #fff; font-weight: 700; }
+#tanggalFilter:focus, #ligaFilter:focus, #statusFilter:focus { border-color: #00d4ff; box-shadow: 0 0 28px rgba(0,212,255,0.7); }
 .date-group { margin-bottom: 30px; }
 .date-group-header {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 18px; font-weight: 800;
-    letter-spacing: 3px; color: #ffcc33;
-    text-transform: uppercase;
+    font-family: 'Rajdhani', sans-serif; font-size: 18px; font-weight: 800;
+    letter-spacing: 3px; color: #ffcc33; text-transform: uppercase;
     padding: 14px 20px; margin-bottom: 18px;
     border-radius: 14px;
     background: rgba(93,45,232,0.25);
@@ -868,23 +578,7 @@ nav a.nav-daftar:hover {
     text-align: center;
     box-shadow: 0 0 25px rgba(255,204,51,0.25);
     text-shadow: 0 0 15px rgba(255,204,51,0.8);
-    position: relative; overflow: hidden;
 }
-.date-group-header::after {
-    content: ""; position: absolute;
-    top: 0; left: -120%; width: 60%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,215,100,0.3), transparent);
-    transform: skewX(-20deg);
-    animation: shineSweep 5s ease-in-out infinite;
-    pointer-events: none;
-}
-@keyframes shineSweep {
-    0% { left: -120%; }
-    40% { left: 140%; }
-    100% { left: 140%; }
-}
-
-/* Selesai toggle */
 .selesai-section { margin-top: 18px; margin-bottom: 10px; }
 .selesai-toggle {
     display: flex; align-items: center; justify-content: center;
@@ -895,36 +589,17 @@ nav a.nav-daftar:hover {
     -webkit-backdrop-filter: blur(20px);
     border: 1.5px solid rgba(16,185,129,0.5);
     color: #10b981;
-    font-family: 'Rajdhani', sans-serif; font-size: 13px;
-    font-weight: 800; letter-spacing: 2.5px;
-    text-transform: uppercase; cursor: pointer;
+    font-family: 'Rajdhani', sans-serif; font-size: 13px; font-weight: 800;
+    letter-spacing: 2.5px; text-transform: uppercase; cursor: pointer;
     transition: all 0.35s;
     box-shadow: 0 0 20px rgba(16,185,129,0.15);
 }
-.selesai-toggle:hover {
-    background: rgba(16,185,129,0.25);
-    border-color: rgba(16,185,129,0.9);
-    box-shadow: 0 0 30px rgba(16,185,129,0.4);
-    transform: translateY(-2px);
-}
-.selesai-toggle.open {
-    border-color: rgba(16,185,129,0.9);
-    background: rgba(16,185,129,0.25);
-}
+.selesai-toggle:hover { background: rgba(16,185,129,0.25); border-color: rgba(16,185,129,0.9); box-shadow: 0 0 30px rgba(16,185,129,0.4); transform: translateY(-2px); }
+.selesai-toggle.open { border-color: rgba(16,185,129,0.9); background: rgba(16,185,129,0.25); }
 .selesai-icon { font-size: 16px; }
 .selesai-text { flex: 1; text-align: center; }
 .selesai-arrow { font-size: 12px; transition: transform 0.3s; }
-.selesai-content {
-    margin-top: 18px; padding-top: 18px;
-    border-top: 1.5px dashed rgba(16,185,129,0.3);
-    animation: fadeInSelesai 0.4s ease;
-}
-@keyframes fadeInSelesai {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* LEAGUE */
+.selesai-content { margin-top: 18px; padding-top: 18px; border-top: 1.5px dashed rgba(16,185,129,0.3); }
 .league {
     margin-bottom: 30px; border-radius: 22px; overflow: hidden;
     background: rgba(15,10,40,0.75);
@@ -934,38 +609,23 @@ nav a.nav-daftar:hover {
     box-shadow: 0 25px 70px rgba(0,0,0,0.5);
     transition: transform 0.4s, box-shadow 0.4s;
 }
-.league:hover {
-    box-shadow: 0 25px 70px rgba(0,0,0,0.5), 0 0 50px rgba(93,45,232,0.25);
-}
 .league-header {
     position: relative;
     padding: 20px 25px; text-align: center;
-    font-family: 'Rajdhani', sans-serif;
-    font-weight: 700; font-size: 16px;
-    letter-spacing: 5px; color: #fff5d0;
-    text-transform: uppercase;
+    font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 16px;
+    letter-spacing: 5px; color: #fff5d0; text-transform: uppercase;
     background: linear-gradient(90deg, rgba(93,45,232,0.25), rgba(0,212,255,0.15), rgba(93,45,232,0.25));
     background-size: 200% 100%;
     animation: leagueAurora 8s ease-in-out infinite;
     border-bottom: 1.5px solid rgba(93,45,232,0.5);
     text-shadow: 0 0 25px rgba(0,212,255,1);
 }
-@keyframes leagueAurora {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-}
-.single-column-wrap {
-    display: flex; flex-direction: column;
-    gap: 22px; padding: 24px 16px 18px;
-}
-
-/* MATCH ROW */
+@keyframes leagueAurora { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+.single-column-wrap { display: flex; flex-direction: column; gap: 22px; padding: 24px 16px 18px; }
 .match-row-single {
     display: grid;
     grid-template-columns: auto 1fr auto auto;
-    grid-template-areas:
-        "clock clock clock clock"
-        "time teams hdp pred";
+    grid-template-areas: "clock clock clock clock" "time teams hdp pred";
     align-items: center;
     gap: 14px; row-gap: 12px;
     padding: 32px 16px 32px;
@@ -976,64 +636,108 @@ nav a.nav-daftar:hover {
     background: rgba(0, 212, 255, 0.06);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    box-shadow:
-        0 0 0 1px rgba(0, 212, 255, 0.6),
-        0 0 20px rgba(0, 212, 255, 0.55),
-        0 0 40px rgba(93, 45, 232, 0.4),
-        0 0 60px rgba(0, 212, 255, 0.2),
-        0 8px 25px rgba(0, 0, 0, 0.7),
-        inset 0 0 30px rgba(0, 212, 255, 0.12);
-}
-.match-row-single::before {
-    content: ""; position: absolute;
-    top: 0; left: -80%;
-    width: 60%; height: 100%;
-    background: linear-gradient(100deg, transparent 0%, rgba(255, 215, 100, 0.12) 30%, rgba(255, 240, 180, 0.45) 50%, rgba(255, 215, 100, 0.12) 70%, transparent 100%);
-    transform: skewX(-20deg);
-    animation: matchShine 4.5s ease-in-out infinite;
-    pointer-events: none; z-index: 1;
-}
-@keyframes matchShine {
-    0%   { left: -80%; opacity: 0; }
-    10%  { opacity: 1; }
-    45%  { left: 130%; opacity: 1; }
-    55%  { left: 130%; opacity: 0; }
-    100% { left: 130%; opacity: 0; }
+    box-shadow: 0 0 0 1px rgba(0, 212, 255, 0.6), 0 0 20px rgba(0, 212, 255, 0.55), 0 0 40px rgba(93, 45, 232, 0.4), 0 8px 25px rgba(0, 0, 0, 0.7), inset 0 0 30px rgba(0, 212, 255, 0.12);
 }
 .match-row-single:hover {
     border-color: rgba(255, 204, 51, 0.95);
     transform: translateX(5px) translateY(-4px);
-    box-shadow: 0 0 0 1px rgba(255, 204, 51, 0.8), 0 0 30px rgba(255, 204, 51, 0.7), 0 0 60px rgba(0, 212, 255, 0.6), 0 0 90px rgba(93, 45, 232, 0.5), 0 12px 35px rgba(0, 0, 0, 0.8), inset 0 0 40px rgba(0, 212, 255, 0.2);
+}
+.match-time-badge {
+    grid-area: time;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 3px; padding: 8px 12px;
+    min-width: 72px; border-radius: 12px;
+    background: rgba(30,20,60,0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1.5px solid rgba(93,45,232,0.7);
+    z-index: 2; position: relative;
+}
+.match-time-badge .time-value { font-family: 'Teko', monospace; font-size: 18px; font-weight: 600; color: #fff; line-height: 1; }
+.match-time-badge .time-date { font-family: 'Rajdhani', sans-serif; font-size: 10px; font-weight: 700; color: #a0b8d0; letter-spacing: 1.2px; }
+.match-teams-block {
+    grid-area: teams;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center; gap: 16px;
+    min-width: 0; z-index: 2; position: relative;
+}
+.match-team-mini { display: flex; align-items: center; justify-content: center; min-width: 0; }
+.match-team-mini.right { justify-content: center; }
+.match-team-mini .mini-name {
+    font-family: 'Rajdhani', sans-serif; font-size: 15px; font-weight: 700;
+    color: #fff; text-align: center;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    max-width: 100%; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.match-vs-mini { font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 800; color: #ffcc33; letter-spacing: 2px; }
+.match-value-box {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 4px; padding: 8px 16px;
+    min-width: 90px; border-radius: 12px;
+    z-index: 2; position: relative;
+}
+.match-value-box.hdp {
+    grid-area: hdp;
+    background: rgba(93,45,232,0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1.5px solid rgba(93,45,232,0.75);
+}
+.match-value-box.pred {
+    grid-area: pred;
+    background: rgba(0,212,255,0.22);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1.5px solid rgba(0,212,255,0.85);
+}
+.match-value-box .val-label { font-family: 'Rajdhani', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 2px; color: #b0a8d8; text-transform: uppercase; }
+.match-value-box .val-number { font-family: 'Teko', monospace; font-size: 22px; font-weight: 700; letter-spacing: 1px; line-height: 1; color: #fff; }
+.match-value-box.hdp .val-number { text-shadow: 0 0 18px rgba(93,45,232,1); }
+.match-value-box.pred .val-number { text-shadow: 0 0 18px rgba(0,212,255,1); }
+.match-value-box.empty { opacity: 0.5; }
+.match-value-box.empty .val-number { color: #555568; text-shadow: none; }
+.match-clock-line {
+    grid-area: clock;
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px; padding: 8px 16px; border-radius: 12px;
+    background: rgba(93,45,232,0.20);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1.5px solid rgba(0,212,255,0.55);
+    font-family: 'Rajdhani', sans-serif; font-size: 12px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase; width: 100%;
+}
+.match-clock-icon { font-size: 14px; flex-shrink: 0; }
+.match-clock-label { color: #b0a8d8; font-size: 11px; font-weight: 700; }
+.match-clock-value {
+    background: linear-gradient(90deg, #ffcc33, #fff5d0, #00d4ff, #fff5d0, #ffcc33);
+    background-size: 250% auto;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: 'Teko', monospace; font-weight: 600; font-size: 14px;
 }
 .match-live-badge {
     position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
     z-index: 10; padding: 4px 18px; border-radius: 20px;
-    background: linear-gradient(135deg, #7f1d1d 0%, #dc2626 25%, #ff2a3d 50%, #dc2626 75%, #7f1d1d 100%);
-    background-size: 200% auto; color: #fff;
-    font-family: 'Rajdhani', sans-serif; font-size: 11px;
-    font-weight: 800; letter-spacing: 3px; text-transform: uppercase;
+    background: linear-gradient(135deg, #7f1d1d, #dc2626, #ff2a3d);
+    color: #fff;
+    font-family: 'Rajdhani', sans-serif; font-size: 11px; font-weight: 800;
+    letter-spacing: 3px; text-transform: uppercase;
     border: 2px solid rgba(255,220,220,0.95);
-    box-shadow: 0 0 20px rgba(255,42,61,0.9), inset 0 0 12px rgba(255,255,255,0.2);
-    animation: liveGradient 4s linear infinite;
-}
-@keyframes liveGradient {
-    0% { background-position: 0% center; }
-    100% { background-position: 200% center; }
+    box-shadow: 0 0 20px rgba(255,42,61,0.9);
 }
 .match-finished-badge {
     position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
     z-index: 10; padding: 4px 18px; border-radius: 20px;
-    background: linear-gradient(135deg, #064e3b 0%, #059669 25%, #10b981 50%, #059669 75%, #064e3b 100%);
-    background-size: 200% auto; color: #ecfdf5;
-    font-family: 'Rajdhani', sans-serif; font-size: 11px;
-    font-weight: 800; letter-spacing: 3px; text-transform: uppercase;
+    background: linear-gradient(135deg, #064e3b, #10b981);
+    color: #ecfdf5;
+    font-family: 'Rajdhani', sans-serif; font-size: 11px; font-weight: 800;
+    letter-spacing: 3px; text-transform: uppercase;
     border: 2px solid rgba(190,250,220,0.95);
-    box-shadow: 0 0 20px rgba(16,185,129,0.9), inset 0 0 12px rgba(255,255,255,0.2);
-    animation: finishedGradient 5s linear infinite;
-}
-@keyframes finishedGradient {
-    0% { background-position: 0% center; }
-    100% { background-position: 200% center; }
+    box-shadow: 0 0 20px rgba(16,185,129,0.9);
 }
 .match-countdown-badge {
     position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
@@ -1050,135 +754,11 @@ nav a.nav-daftar:hover {
     border-color: rgba(255,240,160,1);
     color: #0a0e27;
 }
-.match-special-badges {
-    position: absolute; top: 6px; left: 8px;
-    display: flex; gap: 5px; z-index: 11; pointer-events: none;
-}
-.special-badge {
-    display: inline-flex; align-items: center; gap: 3px;
-    padding: 3px 9px; border-radius: 20px;
-    font-family: 'Rajdhani', sans-serif; font-size: 8.5px;
-    font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;
-}
-.special-badge.hot { color: #fff5e0; background: linear-gradient(135deg, #dc2626, #ff6b35, #dc2626); border: 1px solid rgba(255,180,100,0.8); }
-.special-badge.vip { color: #0a0e27; background: linear-gradient(135deg, #ffcc33, #fff5d0, #ffcc33); border: 1px solid #fff5d0; }
-.special-badge.premium { color: #fff; background: linear-gradient(135deg, #5d2de8, #00d4ff, #5d2de8); border: 1px solid rgba(180,240,255,0.8); }
-.special-badge .icon-mini { font-size: 9px; }
-
-.match-clock-line {
-    grid-area: clock;
-    display: flex; align-items: center; justify-content: center;
-    gap: 10px; padding: 8px 16px; border-radius: 12px;
-    background: rgba(93,45,232,0.20);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1.5px solid rgba(0,212,255,0.55);
-    font-family: 'Rajdhani', sans-serif; font-size: 12px;
-    font-weight: 700; letter-spacing: 1.5px;
-    text-transform: uppercase; width: 100%;
-}
-.match-clock-icon { font-size: 14px; flex-shrink: 0; }
-.match-clock-label { color: #b0a8d8; font-size: 11px; font-weight: 700; }
-.match-clock-value {
-    background: linear-gradient(90deg, #ffcc33, #fff5d0, #00d4ff, #fff5d0, #ffcc33);
-    background-size: 250% auto;
-    -webkit-background-clip: text; background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: clockShine 7s linear infinite;
-    font-family: 'Teko', monospace; font-weight: 600; font-size: 14px;
-}
-@keyframes clockShine {
-    0% { background-position: 0% center; }
-    100% { background-position: 250% center; }
-}
-
-.match-row-single .match-time-badge { grid-area: time; }
-.match-row-single .match-teams-block { grid-area: teams; }
-.match-row-single .match-value-box.hdp { grid-area: hdp; }
-.match-row-single .match-value-box.pred { grid-area: pred; }
-
-.match-time-badge {
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 3px; padding: 8px 12px;
-    min-width: 72px; border-radius: 12px;
-    background: rgba(30,20,60,0.75);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1.5px solid rgba(93,45,232,0.7);
-    z-index: 2; position: relative;
-}
-.match-time-badge .time-value {
-    font-family: 'Teko', monospace; font-size: 18px;
-    font-weight: 600; color: #fff; line-height: 1;
-}
-.match-time-badge .time-date {
-    font-family: 'Rajdhani', sans-serif; font-size: 10px;
-    font-weight: 700; color: #a0b8d0; letter-spacing: 1.2px;
-}
-.match-teams-block {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center; gap: 16px;
-    min-width: 0; z-index: 2; position: relative;
-}
-.match-team-mini {
-    display: flex; align-items: center; justify-content: center;
-    min-width: 0;
-}
-.match-team-mini.right { justify-content: center; }
-.match-team-mini .mini-name {
-    font-family: 'Rajdhani', sans-serif; font-size: 15px;
-    font-weight: 700; color: #fff; text-align: center;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    max-width: 100%; text-transform: uppercase; letter-spacing: 0.5px;
-}
-.match-vs-mini {
-    font-family: 'Orbitron', sans-serif; font-size: 12px;
-    font-weight: 800; color: #ffcc33; letter-spacing: 2px;
-}
-.match-value-box {
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 4px; padding: 8px 16px;
-    min-width: 90px; border-radius: 12px;
-    z-index: 2; position: relative;
-}
-.match-value-box.hdp {
-    background: rgba(93,45,232,0.25);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1.5px solid rgba(93,45,232,0.75);
-}
-.match-value-box.pred {
-    background: rgba(0,212,255,0.22);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1.5px solid rgba(0,212,255,0.85);
-}
-.match-value-box .val-label {
-    font-family: 'Rajdhani', sans-serif; font-size: 9px;
-    font-weight: 800; letter-spacing: 2px;
-    color: #b0a8d8; text-transform: uppercase;
-}
-.match-value-box .val-number {
-    font-family: 'Teko', monospace; font-size: 22px;
-    font-weight: 700; letter-spacing: 1px; line-height: 1; color: #fff;
-}
-.match-value-box.hdp .val-number { text-shadow: 0 0 18px rgba(93,45,232,1); }
-.match-value-box.pred .val-number { text-shadow: 0 0 18px rgba(0,212,255,1); }
-.match-value-box.empty { opacity: 0.5; }
-.match-value-box.empty .val-number { color: #555568; text-shadow: none; }
-
 .single-col-empty {
     padding: 50px 20px; text-align: center;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 14px; font-weight: 700;
-    letter-spacing: 4px; color: #555568;
-    text-transform: uppercase;
+    font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 700;
+    letter-spacing: 4px; color: #555568; text-transform: uppercase;
 }
-
-/* FOOTER */
 .site-footer {
     position: relative; margin-top: 60px;
     padding: 50px 15px 35px; text-align: center;
@@ -1187,42 +767,27 @@ nav a.nav-daftar:hover {
     -webkit-backdrop-filter: blur(20px);
     border-top: 1.5px solid rgba(93,45,232,0.5);
 }
-.footer-logo-wrap {
-    position: relative;
-    display: inline-flex; align-items: center; justify-content: center;
-    margin-bottom: 22px; min-height: 90px;
-}
-.footer-logo-wrap img {
-    width: 140px; height: 60px; object-fit: contain;
-    filter: drop-shadow(0 0 30px rgba(93,45,232,0.9));
-    animation: floatLogo 3.5s ease-in-out infinite;
-}
+.footer-logo-wrap { position: relative; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 22px; min-height: 90px; }
+.footer-logo-wrap img { width: 140px; height: 60px; object-fit: contain; filter: drop-shadow(0 0 30px rgba(93,45,232,0.9)); animation: floatLogo 3.5s ease-in-out infinite; }
 .footer-title {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 26px; font-weight: 700;
+    font-family: 'Rajdhani', sans-serif; font-size: 26px; font-weight: 700;
     letter-spacing: 10px; margin: 15px 0 12px;
     background: linear-gradient(90deg, #ffcc33, #fff5d0, #00d4ff, #fff5d0, #ffcc33);
     background-size: 250% auto;
     -webkit-background-clip: text; background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: logoShine 7s linear infinite;
     text-transform: uppercase;
 }
 .footer-tagline {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 13px; font-weight: 700;
+    font-family: 'Rajdhani', sans-serif; font-size: 13px; font-weight: 700;
     letter-spacing: 4px; color: #a0b8d0;
     text-transform: uppercase; margin-bottom: 25px;
 }
 .footer-copy {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 12px; font-weight: 600;
-    letter-spacing: 2px; color: #6b7b9d;
-    margin-top: 15px;
+    font-family: 'Rajdhani', sans-serif; font-size: 12px; font-weight: 600;
+    letter-spacing: 2px; color: #6b7b9d; margin-top: 15px;
 }
 .footer-copy span { color: #ffcc33; font-weight: 800; }
-
-/* BOTTOM NAV */
 .bottom-nav {
     display: none; position: fixed;
     bottom: 0; left: 0; right: 0;
@@ -1232,45 +797,20 @@ nav a.nav-daftar:hover {
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border-top: 1.5px solid rgba(93,45,232,0.55);
 }
-.bottom-nav-inner {
-    max-width: 500px; margin: auto;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
-}
+.bottom-nav-inner { max-width: 500px; margin: auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
 .bottom-nav-item {
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     gap: 4px; padding: 8px 5px;
     border-radius: 14px; text-decoration: none;
     color: #8a98b8;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 10.5px; font-weight: 700;
+    font-family: 'Rajdhani', sans-serif; font-size: 10.5px; font-weight: 700;
     letter-spacing: 1px; text-transform: uppercase;
     border: 1.5px solid transparent;
     transition: all 0.4s;
 }
-.bottom-nav-item:hover {
-    color: #00d4ff;
-    background: linear-gradient(135deg, rgba(93,45,232,0.25), rgba(0,212,255,0.18));
-    border-color: rgba(0,212,255,0.7);
-}
+.bottom-nav-item:hover { color: #00d4ff; background: linear-gradient(135deg, rgba(93,45,232,0.25), rgba(0,212,255,0.18)); border-color: rgba(0,212,255,0.7); }
 .bottom-nav-item .bn-icon { font-size: 22px; line-height: 1; }
-
-/* CONFETTI */
-.confetti-container {
-    position: fixed; inset: 0;
-    pointer-events: none; z-index: 9999; overflow: hidden;
-}
-.confetti {
-    position: absolute; width: 8px; height: 8px;
-    animation: confettiFall 3s linear forwards;
-}
-@keyframes confettiFall {
-    0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
-}
-
 @media (max-width: 800px) {
     body { padding-bottom: 85px; }
     .bottom-nav { display: block; }
@@ -1287,156 +827,62 @@ nav a.nav-daftar:hover {
     .news-ticker-wrap { height: 36px; }
     .news-ticker { min-height: 36px; margin-bottom: 18px; }
     .lux-text-wrap { padding: 12px 38px; min-height: 54px; height: auto; margin-bottom: 14px; border-radius: 14px; }
-    .lux-text-wrap .icon-side { font-size: 13px; }
-    .lux-text-wrap .icon-side.left { left: 15px; }
-    .lux-text-wrap .icon-side.right { right: 15px; }
-    .lux-text-wrap::before, .lux-text-wrap::after,
-    .lux-text-wrap .corner-bl, .lux-text-wrap .corner-br { width: 16px; height: 16px; }
     .lux-text-slide { height: auto; min-height: 46px; position: relative; }
-    .lux-text-item { position: relative; inset: auto; display: none; font-size: 11.5px; letter-spacing: 1.2px; line-height: 1.45; white-space: normal; padding: 4px 0; word-break: break-word; }
+    .lux-text-item { position: relative; inset: auto; display: none; font-size: 11.5px; letter-spacing: 1.2px; line-height: 1.45; white-space: normal; padding: 4px 0; }
     .lux-text-item.active { display: flex; }
     .lux-text-item.exit-up { display: none; }
     .banner { border-radius: 16px; margin-bottom: 16px; }
-    .banner img { width: 100%; height: auto; object-fit: contain; }
     .bmt-card { width: 130px !important; padding: 9px !important; border-radius: 12px !important; }
-    .bmt-badge { font-size: 7.5px !important; padding: 3px 8px !important; }
-    .bmt-league { font-size: 7.5px !important; letter-spacing: 1.2px !important; }
     .bmt-logo { width: 26px !important; height: 26px !important; }
     .bmt-logo img { width: 20px !important; height: 20px !important; }
-    .bmt-team-name { font-size: 8px !important; max-width: 42px !important; }
-    .bmt-vs { font-size: 8.5px !important; }
-    .bmt-time { font-size: 9.5px !important; padding: 5px 0 !important; }
-    .big-match-ticker-track { gap: 8px !important; }
-    .big-match-ticker { padding: 12px 0 !important; }
     .stats { grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 24px; }
     .stat-box { padding: 14px 6px 12px; border-radius: 14px; }
     .stat-number { font-size: 26px; }
     .stat-label { font-size: 9px; letter-spacing: 1px; }
     .filter-row { display: flex; flex-direction: column; gap: 10px; padding: 12px; width: 100%; }
-    .next-match-bar-inline { width: 100%; margin-bottom: 4px; }
-    .next-match-inner { display: flex; flex-direction: column; gap: 8px; padding: 14px 16px; text-align: center; }
-    .next-match-label { font-size: 10px; letter-spacing: 2.5px; }
-    .next-match-teams { font-size: 13.5px; text-align: center; }
-    .next-match-countdown { font-size: 20px; padding: 4px 20px; }
     .tab-filter-row { display: flex; flex-direction: column; gap: 10px; width: 100%; }
     .tab-clock { display: flex; justify-content: center; padding: 10px 16px; width: 100%; }
-    .tab-clock-icon { font-size: 15px; }
-    .tab-clock-value { font-size: 21px; }
-    .tab-clock-label { font-size: 11.5px; letter-spacing: 1.5px; }
     .tab-filter-wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 100%; }
-    .tab-filter { display: flex; align-items: center; justify-content: center; gap: 5px; padding: 10px 6px; font-size: 10.5px; width: 100%; letter-spacing: 0.5px; text-align: center; min-width: 0; }
-    .tab-icon { font-size: 13px; }
-    .tab-text { font-size: 10.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .tab-filter { display: flex; align-items: center; justify-content: center; gap: 5px; padding: 10px 6px; font-size: 10.5px; width: 100%; }
     .search-box { width: 100%; min-width: unset; }
-    #searchInput { font-size: 13px; }
     .date-filter { width: 100%; }
-    .date-filter label { font-size: 11px; letter-spacing: 1px; min-width: 55px; }
     #ligaFilter, #statusFilter { flex: 1; width: 100%; max-width: unset; font-size: 12.5px; padding: 11px 34px 11px 14px; }
-    .section-head { flex-direction: row; align-items: center; justify-content: flex-start; margin: 20px 0 14px; }
     .section-title { font-size: 18px; letter-spacing: 2px; }
-    .date-group { margin-bottom: 22px; }
     .date-group-header { font-size: 14px; letter-spacing: 2px; padding: 11px 15px; margin-bottom: 14px; border-radius: 12px; }
-    .selesai-toggle { font-size: 11px; letter-spacing: 1.5px; padding: 11px 14px; gap: 8px; }
-    .selesai-icon { font-size: 14px; }
-    .selesai-arrow { font-size: 10px; }
     .league { border-radius: 16px; }
     .league-header { padding: 14px 30px; font-size: 12.5px; letter-spacing: 2.5px; }
     .single-column-wrap { gap: 16px; padding: 20px 10px 14px; }
-    .match-row-single { padding: 28px 12px 28px; gap: 8px; row-gap: 10px; border-width: 1.5px; }
-    .match-clock-line { font-size: 10.5px; padding: 7px 14px; gap: 7px; }
-    .match-clock-icon { font-size: 12px; }
-    .match-clock-label { font-size: 10px; }
-    .match-clock-value { font-size: 12px; }
+    .match-row-single { padding: 28px 12px 28px; gap: 8px; row-gap: 10px; }
     .match-row-single { grid-template-columns: auto 1fr auto; grid-template-areas: "clock clock clock" "time teams hdp" "time teams pred"; }
-    .match-row-single .match-time-badge { grid-area: time; align-self: center; }
-    .match-row-single .match-teams-block { grid-area: teams; }
-    .match-row-single .match-value-box.hdp { grid-area: hdp; min-width: 72px; padding: 6px 10px; }
-    .match-row-single .match-value-box.pred { grid-area: pred; min-width: 72px; padding: 6px 10px; }
-    .match-live-badge, .match-finished-badge { top: 6px; padding: 3px 14px; font-size: 10px; letter-spacing: 2px; }
-    .match-countdown-badge { bottom: 6px; padding: 2px 10px; font-size: 10px; }
     .match-team-mini .mini-name { max-width: 120px; font-size: 13px; }
     .match-value-box .val-number { font-size: 18px; }
     .match-value-box .val-label { font-size: 8.5px; }
-    .match-special-badges { top: 5px; left: 6px; }
-    .special-badge { padding: 2px 7px; font-size: 7.5px; letter-spacing: 1px; }
-    .footer-logo-wrap { min-height: 70px; }
-    .footer-logo-wrap img { width: 110px; height: 48px; }
-    .footer-title { font-size: 20px; letter-spacing: 7px; }
-    .footer-tagline { font-size: 11px; letter-spacing: 2.5px; }
-    .liquid-blob { filter: blur(60px); }
+    .match-value-box.hdp { grid-area: hdp; min-width: 72px; padding: 6px 10px; }
+    .match-value-box.pred { grid-area: pred; min-width: 72px; padding: 6px 10px; }
 }
-
 @media (max-width: 430px) {
     .logo img { width: 100px; height: 38px; }
-    .logo-subtitle { font-size: 6.5px; }
     nav a.nav-link { padding: 6px 10px; font-size: 10px; }
     nav a.nav-login { padding: 5px 12px; font-size: 10px; }
     nav a.nav-daftar { padding: 6px 14px; font-size: 10px; }
-    .loading-logo-wrap img { width: 110px; height: 110px; }
-    .loading-ring { width: 165px; height: 165px; }
-    .loading-ring:nth-child(2) { width: 200px; height: 200px; }
-    .loading-percent { font-size: 34px; }
-    .news-ticker-label { font-size: 9px; padding: 6px 10px; letter-spacing: 1.2px; }
-    .news-ticker-content { font-size: 10px !important; animation-duration: 40s !important; }
-    .lux-text-wrap { padding: 13px 34px; min-height: 56px; }
-    .lux-text-wrap .icon-side { font-size: 11px; }
-    .lux-text-wrap .icon-side.left { left: 11px; }
-    .lux-text-wrap .icon-side.right { right: 11px; }
-    .lux-text-slide { height: auto; min-height: 42px; }
-    .lux-text-item { font-size: 10.5px; letter-spacing: 0.8px; line-height: 1.45; }
-    .banner { border-radius: 14px; margin-bottom: 14px; }
-    .single-column-wrap { gap: 14px; padding: 18px 8px 12px; }
-    .match-clock-line { font-size: 9.5px; padding: 6px 11px; gap: 5px; }
-    .match-clock-icon { font-size: 11px; }
-    .match-clock-label { font-size: 9px; }
-    .match-clock-value { font-size: 11px; }
-    .match-row-single { grid-template-columns: auto 1fr; grid-template-areas: "clock clock" "time teams" "hdp pred"; gap: 8px; padding: 26px 10px 26px; }
-    .match-row-single .match-time-badge { grid-area: time; }
-    .match-row-single .match-teams-block { grid-area: teams; }
-    .match-row-single .match-value-box.hdp { grid-area: hdp; min-width: unset; padding: 6px 9px; }
-    .match-row-single .match-value-box.pred { grid-area: pred; min-width: unset; padding: 6px 9px; }
-    .match-live-badge, .match-finished-badge { font-size: 9px; padding: 3px 12px; letter-spacing: 1.5px; }
-    .match-countdown-badge { font-size: 9px; padding: 2px 8px; }
-    .match-time-badge { min-width: 62px; padding: 5px 9px; }
-    .match-time-badge .time-value { font-size: 15px; }
-    .match-time-badge .time-date { font-size: 9px; }
-    .match-team-mini .mini-name { font-size: 12px; max-width: 95px; }
-    .match-value-box .val-number { font-size: 16px; }
     .bmt-card { width: 115px !important; padding: 8px !important; }
     .bmt-logo { width: 24px !important; height: 24px !important; }
     .bmt-logo img { width: 18px !important; height: 18px !important; }
-    .bmt-team-name { font-size: 7.5px !important; max-width: 38px !important; }
-    .bmt-time { font-size: 9px !important; }
-    .bmt-league { font-size: 7px !important; }
-    .big-match-ticker-track { gap: 6px !important; }
-    .footer-logo-wrap { min-height: 60px; }
-    .footer-logo-wrap img { width: 90px; height: 40px; }
-    .footer-title { font-size: 18px; letter-spacing: 6px; }
-    .footer-tagline { font-size: 10px; letter-spacing: 2px; }
     .date-group-header { font-size: 12px; padding: 10px 12px; letter-spacing: 1.5px; }
     .league-header { font-size: 12px; padding: 14px 34px; letter-spacing: 2px; }
-    .tab-filter { padding: 9px 4px; font-size: 10px; gap: 4px; }
-    .tab-icon { font-size: 12px; }
-    .tab-text { font-size: 10px; }
-    .tab-clock-value { font-size: 19px; }
-    .date-filter label { font-size: 10.5px; min-width: 50px; }
-    #ligaFilter, #statusFilter { font-size: 12px; padding: 10px 30px 10px 12px; }
-    .section-title { font-size: 16px; }
+    .tab-filter { padding: 9px 4px; font-size: 10px; }
 }
 </style>
 </head>
 <body id="top">
 
 <div class="reading-progress" id="readingProgress"></div>
-
 <div class="aurora-bg"></div>
-
 <div class="liquid-bg">
     <div class="liquid-blob"></div>
     <div class="liquid-blob"></div>
     <div class="liquid-blob"></div>
 </div>
-
 <canvas id="particleCanvas"></canvas>
 
 <div id="loadingScreen">
@@ -1533,7 +979,6 @@ nav a.nav-daftar:hover {
     </div>
 
     <div class="filter-row">
-
         <div class="next-match-bar-inline" id="nextMatchBar">
             <div class="next-match-inner">
                 <span class="next-match-label">⏱ MATCH BERIKUTNYA</span>
@@ -1595,7 +1040,6 @@ nav a.nav-daftar:hover {
                 <option value="riwayat">📜 Riwayat</option>
             </select>
         </div>
-
     </div>
 
     <select id="tanggalFilter" style="display:none;">
@@ -1685,146 +1129,15 @@ const ESPN_LIGAS = [
     { id: "fifa.world", name: "FIFA World Cup" }
 ];
 
-let semuaData = []; // Data gabungan ESPN + Firestore
+let semuaData = [];
 
 /* ============================================================
-   FETCH ESPN — Ambil jadwal dari ESPN API
+   UTILITY - Semua didefinisikan duluan
    ============================================================ */
-async function fetchESPN(dateStr) {
-    // dateStr format: YYYYMMDD
-    console.log(`[ESPN] Fetch jadwal untuk ${dateStr}...`);
-    const promises = ESPN_LIGAS.map(async (liga) => {
-        try {
-            const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${liga.id}/scoreboard?dates=${dateStr}`;
-            const res = await fetch(url);
-            if (!res.ok) return [];
-            const data = await res.json();
-            if (!data.events || data.events.length === 0) return [];
-
-            return data.events.map(ev => {
-                const comp = ev.competitions?.[0];
-                if (!comp) return null;
-
-                const homeComp = comp.competitors?.find(c => c.homeAway === "home");
-                const awayComp = comp.competitors?.find(c => c.homeAway === "away");
-                if (!homeComp || !awayComp) return null;
-
-                // ESPN kasih waktu UTC, kita convert ke WIB (+7)
-                const kickoffUTC = new Date(ev.date);
-                const wibMs = kickoffUTC.getTime() + (7 * 60 * 60 * 1000);
-                const wib = new Date(wibMs);
-                const dateWib = wib.toISOString().slice(0, 10); // YYYY-MM-DD
-                const timeWib = String(wib.getUTCHours()).padStart(2, "0") + ":" + String(wib.getUTCMinutes()).padStart(2, "0");
-
-                return {
-                    league: liga.name,
-                    leagueId: liga.id,
-                    date: dateWib,
-                    time: timeWib,
-                    home: homeComp.team?.displayName || homeComp.team?.name || "?",
-                    away: awayComp.team?.displayName || awayComp.team?.name || "?",
-                    homeLogo: homeComp.team?.logo || "",
-                    awayLogo: awayComp.team?.logo || "",
-                    // default HDP & pred kosong (nanti diisi dari Firestore)
-                    handicap: "",
-                    predictionScoreHome: "",
-                    predictionScoreAway: "",
-                    actualScoreHome: comp.status?.type?.completed ? (homeComp.score || "") : "",
-                    actualScoreAway: comp.status?.type?.completed ? (awayComp.score || "") : "",
-                    espnId: ev.id
-                };
-            }).filter(Boolean);
-        } catch (err) {
-            console.warn(`[ESPN] Gagal fetch ${liga.id}:`, err.message);
-            return [];
-        }
-    });
-
-    const hasil = await Promise.all(promises);
-    return hasil.flat();
+function clean(v) {
+    if (v === undefined || v === null) return "";
+    return String(v).trim();
 }
-
-/* ============================================================
-   FETCH FIRESTORE — Ambil HDP & prediksi manual
-   ============================================================ */
-async function fetchFirestore() {
-    try {
-        const snap = await getDocs(collection(db, "predictions"));
-        const data = [];
-        snap.forEach(d => data.push(d.data()));
-        console.log(`[Firestore] ${data.length} data manual loaded`);
-        return data;
-    } catch (err) {
-        console.warn("[Firestore] Gagal fetch:", err);
-        return [];
-    }
-}
-
-/* ============================================================
-   GABUNG DATA ESPN + FIRESTORE
-   ============================================================ */
-function gabungData(espnData, firestoreData) {
-    // Buat map Firestore berdasarkan key (tanggal + tim)
-    const mapFS = new Map();
-    firestoreData.forEach(item => {
-        const key = makeMatchKey(item.date, item.time, item.home, item.away);
-        mapFS.set(key, item);
-    });
-
-    // Gabung: ESPN sebagai basis, timpa dengan HDP/pred dari Firestore kalau ada
-    const hasil = espnData.map(match => {
-        const key = makeMatchKey(match.date, match.time, match.home, match.away);
-        const fsData = mapFS.get(key);
-
-        if (fsData) {
-            // Ada data manual → pakai HDP & prediksi dari Firestore
-            return {
-                ...match,
-                league: fsData.league || match.league,
-                handicap: fsData.handicap || match.handicap,
-                predictionScoreHome: fsData.predictionScoreHome || match.predictionScoreHome,
-                predictionScoreAway: fsData.predictionScoreAway || match.predictionScoreAway
-            };
-        }
-        // Tidak ada data manual → tetap tampil dengan HDP/pred kosong
-        return match;
-    });
-
-    // Tambahkan data Firestore yang tidak ada di ESPN (misal input manual lama)
-    const espnKeys = new Set(espnData.map(m => makeMatchKey(m.date, m.time, m.home, m.away)));
-    firestoreData.forEach(item => {
-        const key = makeMatchKey(item.date, item.time, item.home, item.away);
-        if (!espnKeys.has(key) && item.active !== false) {
-            hasil.push({
-                league: item.league || "LAINNYA",
-                date: item.date,
-                time: item.time,
-                home: item.home,
-                away: item.away,
-                homeLogo: item.homeLogo || "",
-                awayLogo: item.awayLogo || "",
-                handicap: item.handicap || "",
-                predictionScoreHome: item.predictionScoreHome || "",
-                predictionScoreAway: item.predictionScoreAway || "",
-                actualScoreHome: item.actualScoreHome || "",
-                actualScoreAway: item.actualScoreAway || "",
-                source: "firestore"
-            });
-        }
-    });
-
-    return hasil;
-}
-
-function makeMatchKey(date, time, home, away) {
-    const norm = (s) => clean(s).toLowerCase().replace(/\s+/g, " ").trim();
-    return [norm(date), norm(time), norm(home), norm(away)].join("|");
-}
-
-/* ============================================================
-   UTILITY
-   ============================================================ */
-function clean(v) { return String(v || "").trim(); }
 
 function escapeHtml(s) {
     return clean(s)
@@ -1846,9 +1159,18 @@ function getTeamInitial(name) {
 function normalizeDate(input) {
     if (!input) return "";
     const s = String(input).trim();
+    // Format YYYY-MM-DD
     if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(s)) {
         const [y, m, d] = s.split("-");
         return y + "-" + m.padStart(2, "0") + "-" + d.padStart(2, "0");
+    }
+    // Format DD/MM/YYYY
+    const dmy = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+    if (dmy) {
+        const d = dmy[1].padStart(2, "0");
+        const m = dmy[2].padStart(2, "0");
+        const y = dmy[3];
+        return y + "-" + m + "-" + d;
     }
     return s;
 }
@@ -1857,8 +1179,11 @@ function normalizeTime(input) {
     if (!input) return "";
     let s = String(input).trim();
     s = s.replace(/wib|utc|gmt/gi, "").trim();
+    s = s.replace(/\./g, ":");
     const hm = s.match(/^(\d{1,2}):(\d{1,2})/);
     if (hm) return hm[1].padStart(2, "0") + ":" + hm[2].padStart(2, "0");
+    const four = s.match(/^(\d{2})(\d{2})$/);
+    if (four) return four[1] + ":" + four[2];
     return s;
 }
 
@@ -1895,6 +1220,7 @@ function getKickoffWIBMs(data) {
     if (!date || !time) return null;
     const [y, m, d] = date.split("-").map(Number);
     const [h, mn] = time.split(":").map(Number);
+    if (isNaN(y) || isNaN(m) || isNaN(d) || isNaN(h) || isNaN(mn)) return null;
     return Date.UTC(y, m - 1, d, h, mn, 0);
 }
 
@@ -1944,74 +1270,238 @@ function getClockText() {
     return `${HARI_INDO[d.getUTCDay()]}, ${d.getUTCDate()} ${BULAN_INDO[d.getUTCMonth()]} ${d.getUTCFullYear()} ${String(d.getUTCHours()).padStart(2, "0")}.${String(d.getUTCMinutes()).padStart(2, "0")}.${String(d.getUTCSeconds()).padStart(2, "0")}`;
 }
 
-/* ============================================================
-   RENDER MATCH ROW
-   ============================================================ */
-function renderMatchRowSingle(data) {
-    const home = clean(data.home);
-    const away = clean(data.away);
-    const time = normalizeTime(clean(data.time));
-    const date = normalizeDate(clean(data.date));
-    const handicap = clean(data.handicap);
-    const scoreHome = clean(data.predictionScoreHome);
-    const scoreAway = clean(data.predictionScoreAway);
-    const status = getMatchStatus(data);
-
-    const hasHdp = handicap !== "";
-    const hdpClass = hasHdp ? "" : "empty";
-    const hdpText = hasHdp ? handicap : "-";
-
-    const hasPred = scoreHome !== "" && scoreAway !== "";
-    const predClass = hasPred ? "" : "empty";
-    const predText = hasPred ? escapeHtml(scoreHome) + " - " + escapeHtml(scoreAway) : "-";
-
-    let badgeHtml = "";
-    if (status === "live") badgeHtml = `<div class="match-live-badge">LIVE</div>`;
-    else if (status === "selesai") badgeHtml = `<div class="match-finished-badge">SELESAI</div>`;
-
-    const countdownText = getCountdownText(data);
-    const countdownSoon = countdownText && countdownText.includes("m") && !countdownText.includes("j") && !countdownText.includes("h");
-    const countdownBadge = (countdownText && status === "akan") ? `<div class="match-countdown-badge${countdownSoon ? ' soon' : ''}">⏱ ${countdownText}</div>` : "";
-
-    const clockNow = getClockText();
-
-    return `
-        <div class="match-row-single">
-            ${badgeHtml}
-            ${countdownBadge}
-            <div class="match-clock-line">
-                <span class="match-clock-icon">🕐</span>
-                <span class="match-clock-label">Waktu sekarang:</span>
-                <span class="match-clock-value">${escapeHtml(clockNow)}</span>
-            </div>
-            <div class="match-time-badge">
-                <span class="time-value">${escapeHtml(time)}</span>
-                <span class="time-date">${escapeHtml(formatTanggalShort(date))}</span>
-            </div>
-            <div class="match-teams-block">
-                <div class="match-team-mini">
-                    <div class="mini-name">${escapeHtml(home)}</div>
-                </div>
-                <div class="match-vs-mini">VS</div>
-                <div class="match-team-mini right">
-                    <div class="mini-name">${escapeHtml(away)}</div>
-                </div>
-            </div>
-            <div class="match-value-box hdp ${hdpClass}">
-                <span class="val-label">HDP</span>
-                <span class="val-number">${escapeHtml(hdpText)}</span>
-            </div>
-            <div class="match-value-box pred ${predClass}">
-                <span class="val-label">Prediksi</span>
-                <span class="val-number">${predText}</span>
-            </div>
-        </div>
-    `;
+function makeMatchKey(date, time, home, away) {
+    const norm = (s) => clean(s).toLowerCase().replace(/\s+/g, " ").trim();
+    return [norm(normalizeDate(date)), norm(normalizeTime(time)), norm(home), norm(away)].join("|");
 }
 
 /* ============================================================
-   RENDER PREDIKSI
+   FETCH ESPN
    ============================================================ */
+async function fetchESPN(dateStr) {
+    console.log(`[ESPN] Fetch jadwal untuk ${dateStr}...`);
+    const promises = ESPN_LIGAS.map(async (liga) => {
+        try {
+            const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${liga.id}/scoreboard?dates=${dateStr}`;
+            const res = await fetch(url);
+            if (!res.ok) return [];
+            const data = await res.json();
+            if (!data.events || data.events.length === 0) return [];
+
+            return data.events.map(ev => {
+                try {
+                    const comp = ev.competitions?.[0];
+                    if (!comp) return null;
+                    const homeComp = comp.competitors?.find(c => c.homeAway === "home");
+                    const awayComp = comp.competitors?.find(c => c.homeAway === "away");
+                    if (!homeComp || !awayComp) return null;
+
+                    const kickoffUTC = new Date(ev.date);
+                    if (isNaN(kickoffUTC.getTime())) return null;
+
+                    const wibMs = kickoffUTC.getTime() + (7 * 60 * 60 * 1000);
+                    const wib = new Date(wibMs);
+                    const dateWib = wib.toISOString().slice(0, 10);
+                    const timeWib = String(wib.getUTCHours()).padStart(2, "0") + ":" + String(wib.getUTCMinutes()).padStart(2, "0");
+
+                    return {
+                        league: liga.name,
+                        leagueId: liga.id,
+                        date: dateWib,
+                        time: timeWib,
+                        home: homeComp.team?.displayName || homeComp.team?.name || "?",
+                        away: awayComp.team?.displayName || awayComp.team?.name || "?",
+                        homeLogo: homeComp.team?.logo || "",
+                        awayLogo: awayComp.team?.logo || "",
+                        handicap: "",
+                        predictionScoreHome: "",
+                        predictionScoreAway: "",
+                        actualScoreHome: "",
+                        actualScoreAway: "",
+                        espnId: ev.id,
+                        source: "espn"
+                    };
+                } catch (e) {
+                    return null;
+                }
+            }).filter(Boolean);
+        } catch (err) {
+            console.warn(`[ESPN] Gagal fetch ${liga.id}:`, err.message);
+            return [];
+        }
+    });
+
+    const hasil = await Promise.all(promises);
+    return hasil.flat();
+}
+
+/* ============================================================
+   FETCH FIRESTORE
+   ============================================================ */
+async function fetchFirestore() {
+    try {
+        const snap = await getDocs(collection(db, "predictions"));
+        const data = [];
+        snap.forEach(d => {
+            const item = d.data();
+            data.push({
+                league: clean(item.league),
+                date: normalizeDate(item.date),
+                time: normalizeTime(item.time),
+                home: clean(item.home),
+                away: clean(item.away),
+                homeLogo: clean(item.homeLogo),
+                awayLogo: clean(item.awayLogo),
+                handicap: clean(item.handicap),
+                predictionScoreHome: clean(item.predictionScoreHome),
+                predictionScoreAway: clean(item.predictionScoreAway),
+                actualScoreHome: clean(item.actualScoreHome),
+                actualScoreAway: clean(item.actualScoreAway),
+                active: item.active !== false,
+                source: "firestore"
+            });
+        });
+        console.log(`[Firestore] ${data.length} data manual loaded`);
+        return data;
+    } catch (err) {
+        console.warn("[Firestore] Gagal fetch:", err);
+        return [];
+    }
+}
+
+/* ============================================================
+   GABUNG DATA
+   ============================================================ */
+function gabungData(espnData, firestoreData) {
+    const mapFS = new Map();
+    firestoreData.forEach(item => {
+        if (item.active === false) return;
+        if (!item.home || !item.away) return;
+        const key = makeMatchKey(item.date, item.time, item.home, item.away);
+        mapFS.set(key, item);
+    });
+
+    const hasil = [];
+    const usedKeys = new Set();
+
+    // ESPN dulu
+    espnData.forEach(match => {
+        const key = makeMatchKey(match.date, match.time, match.home, match.away);
+        const fsData = mapFS.get(key);
+        usedKeys.add(key);
+
+        if (fsData) {
+            hasil.push({
+                ...match,
+                league: fsData.league || match.league,
+                handicap: fsData.handicap || "",
+                predictionScoreHome: fsData.predictionScoreHome || "",
+                predictionScoreAway: fsData.predictionScoreAway || "",
+                actualScoreHome: fsData.actualScoreHome || match.actualScoreHome,
+                actualScoreAway: fsData.actualScoreAway || match.actualScoreAway
+            });
+        } else {
+            hasil.push(match);
+        }
+    });
+
+    // Tambah Firestore yang gak ada di ESPN
+    firestoreData.forEach(item => {
+        if (item.active === false) return;
+        if (!item.home || !item.away) return;
+        const key = makeMatchKey(item.date, item.time, item.home, item.away);
+        if (!usedKeys.has(key)) {
+            hasil.push({
+                league: item.league || "LAINNYA",
+                date: item.date,
+                time: item.time,
+                home: item.home,
+                away: item.away,
+                homeLogo: item.homeLogo || "",
+                awayLogo: item.awayLogo || "",
+                handicap: item.handicap || "",
+                predictionScoreHome: item.predictionScoreHome || "",
+                predictionScoreAway: item.predictionScoreAway || "",
+                actualScoreHome: item.actualScoreHome || "",
+                actualScoreAway: item.actualScoreAway || "",
+                source: "firestore"
+            });
+        }
+    });
+
+    return hasil;
+}
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function renderMatchRowSingle(data) {
+    try {
+        const home = clean(data.home);
+        const away = clean(data.away);
+        const time = normalizeTime(clean(data.time));
+        const date = normalizeDate(clean(data.date));
+        const handicap = clean(data.handicap);
+        const scoreHome = clean(data.predictionScoreHome);
+        const scoreAway = clean(data.predictionScoreAway);
+        const status = getMatchStatus(data);
+
+        const hasHdp = handicap !== "";
+        const hdpClass = hasHdp ? "" : "empty";
+        const hdpText = hasHdp ? handicap : "-";
+
+        const hasPred = scoreHome !== "" && scoreAway !== "";
+        const predClass = hasPred ? "" : "empty";
+        const predText = hasPred ? escapeHtml(scoreHome) + " - " + escapeHtml(scoreAway) : "-";
+
+        let badgeHtml = "";
+        if (status === "live") badgeHtml = `<div class="match-live-badge">LIVE</div>`;
+        else if (status === "selesai") badgeHtml = `<div class="match-finished-badge">SELESAI</div>`;
+
+        const countdownText = getCountdownText(data);
+        const countdownSoon = countdownText && countdownText.includes("m") && !countdownText.includes("j") && !countdownText.includes("h");
+        const countdownBadge = (countdownText && status === "akan") ? `<div class="match-countdown-badge${countdownSoon ? ' soon' : ''}">⏱ ${countdownText}</div>` : "";
+
+        const clockNow = getClockText();
+
+        return `
+            <div class="match-row-single">
+                ${badgeHtml}
+                ${countdownBadge}
+                <div class="match-clock-line">
+                    <span class="match-clock-icon">🕐</span>
+                    <span class="match-clock-label">Waktu sekarang:</span>
+                    <span class="match-clock-value">${escapeHtml(clockNow)}</span>
+                </div>
+                <div class="match-time-badge">
+                    <span class="time-value">${escapeHtml(time)}</span>
+                    <span class="time-date">${escapeHtml(formatTanggalShort(date))}</span>
+                </div>
+                <div class="match-teams-block">
+                    <div class="match-team-mini">
+                        <div class="mini-name">${escapeHtml(home)}</div>
+                    </div>
+                    <div class="match-vs-mini">VS</div>
+                    <div class="match-team-mini right">
+                        <div class="mini-name">${escapeHtml(away)}</div>
+                    </div>
+                </div>
+                <div class="match-value-box hdp ${hdpClass}">
+                    <span class="val-label">HDP</span>
+                    <span class="val-number">${escapeHtml(hdpText)}</span>
+                </div>
+                <div class="match-value-box pred ${predClass}">
+                    <span class="val-label">Prediksi</span>
+                    <span class="val-number">${predText}</span>
+                </div>
+            </div>
+        `;
+    } catch (err) {
+        console.warn("Error render match:", data, err);
+        return "";
+    }
+}
+
 function renderPrediksi(data) {
     const container = document.getElementById("prediksiContainer");
     if (!container) return;
@@ -2032,12 +1522,17 @@ function renderPrediksi(data) {
 
     tanggalSorted.forEach(tanggal => {
         const matches = groupTanggal[tanggal];
-        const dateObj = new Date(tanggal + "T00:00:00Z");
-        const hari = HARI_INDO[dateObj.getUTCDay()];
-        const tgl = dateObj.getUTCDate();
-        const bulan = BULAN_INDO[dateObj.getUTCMonth()];
-        const tahun = dateObj.getUTCFullYear();
-        const headerTgl = `${hari}, ${tgl} ${bulan} ${tahun}`;
+        let headerTgl = tanggal;
+        try {
+            const dateObj = new Date(tanggal + "T00:00:00Z");
+            if (!isNaN(dateObj.getTime())) {
+                const hari = HARI_INDO[dateObj.getUTCDay()];
+                const tgl = dateObj.getUTCDate();
+                const bulan = BULAN_INDO[dateObj.getUTCMonth()];
+                const tahun = dateObj.getUTCFullYear();
+                headerTgl = `${hari}, ${tgl} ${bulan} ${tahun}`;
+            }
+        } catch (e) {}
 
         const aktif = matches.filter(m => getMatchStatus(m) !== "selesai");
         const selesai = matches.filter(m => getMatchStatus(m) === "selesai");
@@ -2318,7 +1813,7 @@ function updateNewsTicker(data) {
 }
 
 /* ============================================================
-   UPDATE CLOCK & COUNTDOWN
+   CLOCK & COUNTDOWN
    ============================================================ */
 let nextMatchData = null;
 
@@ -2439,13 +1934,13 @@ setTimeout(finishLoading, 4000);
 })();
 
 /* ============================================================
-   MAIN LOAD — Ambil ESPN + Firestore, gabung, tampilkan
+   MAIN LOAD
    ============================================================ */
 async function loadAllData() {
     try {
+        console.log("[LOAD] Mulai load data...");
         updateLoadingProgress(40, 400);
 
-        // Fetch 2 hari: hari ini + besok
         const todayYMD = getTodayYMD();
         const tomorrowYMD = getTomorrowYMD();
 
@@ -2459,13 +1954,17 @@ async function loadAllData() {
 
         const espnData = [...espnToday, ...espnTomorrow];
         console.log(`[ESPN] Total: ${espnData.length} pertandingan`);
+        console.log(`[Firestore] Total: ${firestoreData.length} pertandingan`);
 
         // Gabung
         semuaData = gabungData(espnData, firestoreData);
+
+        // Urutkan
         semuaData.sort((a, b) => (getKickoffWIBMs(a) || 0) - (getKickoffWIBMs(b) || 0));
 
         console.log(`[Gabung] Total: ${semuaData.length} pertandingan`);
 
+        // Render
         updateLigaFilter(semuaData);
         updateStats(semuaData);
         updateNewsTicker(semuaData);
@@ -2475,9 +1974,10 @@ async function loadAllData() {
         renderBigMatch(semuaData);
 
         updateLoadingProgress(100, 400);
+        console.log("[LOAD] Selesai!");
 
     } catch (err) {
-        console.error("Error load data:", err);
+        console.error("[LOAD] Error:", err);
         const el = document.getElementById("prediksiContainer");
         if (el) el.innerHTML = `<div class="single-column-wrap"><div class="single-col-empty">Gagal memuat data. Coba refresh.</div></div>`;
         updateLoadingProgress(100, 300);
@@ -2518,16 +2018,8 @@ document.querySelectorAll(".tab-filter").forEach(tab => {
 setInterval(updateTabClock, 1000);
 setInterval(tickNextMatchCountdown, 1000);
 
-// Auto-refresh data dari ESPN tiap 5 menit
+// Auto-refresh
 setInterval(loadAllData, 5 * 60 * 1000);
-
-// Update countdown + status
-setInterval(() => {
-    if (semuaData.length > 0) {
-        applyFilter();
-        renderBigMatch(semuaData);
-    }
-}, 60000);
 
 /* ============================================================
    INIT
