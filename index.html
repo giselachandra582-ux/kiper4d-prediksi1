@@ -55,9 +55,6 @@ body {
 .loading-bar { width: 280px; height: 4px; border-radius: 20px; background: rgba(6,182,212,0.20); overflow: hidden; }
 .loading-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #0891b2, #22d3ee, #67e8f9); transition: width 0.3s; box-shadow: 0 0 15px rgba(34,211,238,0.8); }
 
-/* ============================================
-   HEADER
-   ============================================ */
 header {
     position: sticky; top: 0; z-index: 999;
     background: rgba(0, 0, 0, 0.95);
@@ -104,17 +101,11 @@ nav a.nav-daftar:hover { transform: translateY(-2px); box-shadow: 0 5px 30px rgb
 
 .container { max-width: 1400px; margin: auto; padding: 16px 12px 60px; }
 
-/* ============================================
-   BANNER
-   ============================================ */
 .banner { position: relative; width: 100%; border-radius: 18px; overflow: hidden; margin-bottom: 16px; border: 2px solid rgba(34,211,238,0.8); background: #000; line-height: 0; box-shadow: 0 0 60px rgba(34,211,238,0.4), 0 0 120px rgba(59,130,246,0.3); }
 .banner img { display: block; width: 100%; height: auto; }
 .banner::after { content: ""; position: absolute; top: 0; left: -120%; width: 60%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transform: skewX(-20deg); animation: bannerShine 6s infinite; pointer-events: none; }
 @keyframes bannerShine { 0% { left: -120%; } 40% { left: 140%; } 100% { left: 140%; } }
 
-/* ============================================
-   BIG MATCH — STATIS (GELAP)
-   ============================================ */
 .big-match-section { margin-bottom: 16px; border-radius: 18px; overflow: hidden; background: #0a0a0a; border: 1.5px solid rgba(34,211,238,0.3); position: relative; }
 .big-match-section::before { display: none !important; }
 .big-match-header { padding: 10px 14px; font-family: 'Rajdhani'; font-weight: 800; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; text-align: center; background: #0f1a2e; border-bottom: 1.5px solid rgba(34,211,238,0.3); color: #67e8f9; text-shadow: 0 0 10px rgba(103,232,249,0.5); }
@@ -146,18 +137,12 @@ nav a.nav-daftar:hover { transform: translateY(-2px); box-shadow: 0 5px 30px rgb
 .big-match-time { display: flex; align-items: center; justify-content: center; gap: 4px; padding: 5px 0; font-family: 'Teko'; font-size: 12px; font-weight: 600; letter-spacing: 1.2px; color: #e0f7ff; background: rgba(34,211,238,0.15); border-radius: 8px; border: 1px solid rgba(34,211,238,0.3); position: relative; z-index: 2; }
 .big-match-empty { padding: 24px; text-align: center; color: #a0b8d0; font-family: 'Rajdhani'; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
 
-/* ============================================
-   NEWS TICKER
-   ============================================ */
 .news-ticker { display: flex; align-items: center; margin-bottom: 16px; border-radius: 12px; overflow: hidden; background: #0a0a0a; border: 1.5px solid rgba(34,211,238,0.4); height: 40px; }
 .news-ticker-label { flex-shrink: 0; padding: 0 16px; height: 100%; display: flex; align-items: center; background: linear-gradient(90deg, #dc2626, #ef4444); color: #fff; font-family: 'Rajdhani'; font-size: 11px; font-weight: 900; letter-spacing: 2.5px; text-transform: uppercase; text-shadow: 0 0 10px rgba(255,255,255,0.8); }
 .news-ticker-content { flex: 1; white-space: nowrap; overflow: hidden; position: relative; height: 100%; }
 .news-ticker-text { position: absolute; top: 50%; transform: translateY(-50%); padding-left: 100%; font-family: 'Rajdhani'; font-size: 12px; font-weight: 600; color: #67e8f9; letter-spacing: 0.5px; animation: newsScroll 40s linear infinite; }
 @keyframes newsScroll { 0% { transform: translate(0, -50%); } 100% { transform: translate(-100%, -50%); } }
 
-/* ============================================
-   STATS — STATIS GELAP
-   ============================================ */
 .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
 .stat-box { position: relative; padding: 16px 12px; text-align: center; border-radius: 16px; background: #0a0a0a; border: 1.5px solid rgba(34,211,238,0.35); overflow: hidden; transition: all 0.4s; }
 .stat-box::before { display: none !important; }
@@ -167,9 +152,6 @@ nav a.nav-daftar:hover { transform: translateY(-2px); box-shadow: 0 5px 30px rgb
 .stat-label { color: #a0b8d0; font-family: 'Rajdhani'; font-size: 9.5px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 5px; position: relative; z-index: 2; }
 .live-box .stat-label { color: #fca5a5; font-weight: 800; }
 
-/* ============================================
-   FILTER
-   ============================================ */
 #pertandingan { scroll-margin-top: 20px; }
 .section-head { margin: 18px 0 14px; }
 .section-title { font-family: 'Rajdhani'; font-size: 22px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; }
@@ -198,24 +180,15 @@ nav a.nav-daftar:hover { transform: translateY(-2px); box-shadow: 0 5px 30px rgb
 #ligaFilter { appearance: none; border: 1.5px solid rgba(34,211,238,0.4); background-color: #000; color: #fff; padding: 9px 28px 9px 12px; border-radius: 12px; font-family: 'Rajdhani'; font-weight: 700; font-size: 11.5px; outline: none; cursor: pointer; max-width: 200px; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2322d3ee' stroke-width='3'><polyline points='6 9 12 15 18 9'></polyline></svg>"); background-repeat: no-repeat; background-position: right 10px center; }
 #ligaFilter option { background: #000; }
 
-/* ============================================
-   DATE GROUP — STATIS GELAP
-   ============================================ */
 .date-group { margin-bottom: 20px; }
 .date-group-header { font-family: 'Rajdhani'; font-size: 14px; font-weight: 800; letter-spacing: 2px; color: #67e8f9; text-transform: uppercase; padding: 10px 16px; margin-bottom: 12px; border-radius: 12px; background: #0a0a0a; border: 1.5px solid rgba(34,211,238,0.4); position: relative; text-align: center; text-shadow: 0 0 10px rgba(103,232,249,0.5); }
 .date-group-header::before { display: none !important; }
 
-/* ============================================
-   LEAGUE BOX — STATIS GELAP
-   ============================================ */
 .league { margin-bottom: 16px; border-radius: 16px; overflow: hidden; background: #0a0a0a; border: 1.5px solid rgba(34,211,238,0.3); position: relative; }
 .league::before { display: none !important; }
 .league-header { padding: 12px 18px; text-align: center; font-family: 'Rajdhani'; font-weight: 700; font-size: 13.5px; letter-spacing: 2.5px; color: #67e8f9; text-transform: uppercase; background: #0f1a2e; border-bottom: 1.5px solid rgba(34,211,238,0.3); text-shadow: 0 0 10px rgba(103,232,249,0.5); position: relative; z-index: 3; word-break: break-word; overflow-wrap: break-word; }
 .single-column-wrap { display: flex; flex-direction: column; gap: 10px; padding: 14px 10px; position: relative; z-index: 3; }
 
-/* ============================================
-   MATCH ROW — SATU-SATUNYA YANG WARNA-WARNI
-   ============================================ */
 .match-row-single { display: grid; grid-template-columns: auto 1fr auto auto; grid-template-areas: "time teams hdp pred"; align-items: center; gap: 10px; padding: 16px 12px; border-radius: 14px; background: linear-gradient(145deg, rgba(15,15,20,0.95), rgba(10,10,15,0.9)); position: relative; transition: all 0.4s; min-height: 70px; }
 .match-row-single::before { 
     content: ""; position: absolute; inset: -2px; border-radius: 14px; padding: 2px; 
@@ -257,9 +230,6 @@ nav a.nav-daftar:hover { transform: translateY(-2px); box-shadow: 0 5px 30px rgb
 .match-value-box.empty .val-number { color: #6b7b9d; }
 .single-col-empty { padding: 30px 16px; text-align: center; font-family: 'Rajdhani'; font-size: 12px; font-weight: 700; letter-spacing: 3px; color: #6b7b9d; text-transform: uppercase; }
 
-/* ============================================
-   FOOTER
-   ============================================ */
 .site-footer { margin-top: 40px; padding: 32px 16px 24px; text-align: center; background: #0a0a0a; border-top: 1.5px solid rgba(34,211,238,0.4); }
 .footer-logo-wrap img { width: 110px; height: 48px; object-fit: contain; filter: drop-shadow(0 0 20px rgba(34,211,238,0.8)); animation: logoMove 3s ease-in-out infinite; }
 .footer-title { font-family: 'Rajdhani'; font-size: 20px; font-weight: 700; letter-spacing: 7px; margin: 10px 0 8px; background: linear-gradient(90deg, #67e8f9, #22d3ee, #0891b2, #22d3ee, #67e8f9); background-size: 250% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; animation: shine 6s linear infinite; }
@@ -267,9 +237,6 @@ nav a.nav-daftar:hover { transform: translateY(-2px); box-shadow: 0 5px 30px rgb
 .footer-copy { font-family: 'Rajdhani'; font-size: 10.5px; font-weight: 600; letter-spacing: 2px; color: #6b7b9d; }
 .footer-copy span { color: #67e8f9; font-weight: 800; }
 
-/* ============================================
-   MOBILE RESPONSIVE
-   ============================================ */
 @media (max-width: 800px) {
     .header-inner { padding: 10px 12px; gap: 8px; flex-wrap: nowrap; align-items: center; justify-content: space-between; }
     .logo { flex-shrink: 0; max-width: 42%; }
@@ -492,105 +459,50 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// ⭐ WORKER PROXY UNTUK BYPASS CORS
+const WORKER_URL = "https://kiper4d-logo-proxy.giselachandra582.workers.dev";
+
 const ESPN_LIGAS = [
-    { id: "eng.1", name: "Premier League" },
-    { id: "esp.1", name: "La Liga" },
-    { id: "ita.1", name: "Serie A" },
-    { id: "ger.1", name: "Bundesliga" },
-    { id: "fra.1", name: "Ligue 1" },
-    { id: "ned.1", name: "Eredivisie" },
-    { id: "por.1", name: "Primeira Liga" },
-    { id: "tur.1", name: "Süper Lig" },
-    { id: "sco.1", name: "Scottish Premiership" },
-    { id: "rus.1", name: "Russian Premier League" },
-    { id: "bel.1", name: "Pro League Belgia" },
-    { id: "uefa.champions", name: "Champions League" },
-    { id: "uefa.europa", name: "Europa League" },
-    { id: "uefa.europa.conf", name: "Conference League" },
-    { id: "uefa.nations", name: "UEFA Nations League" },
-    { id: "uefa.euro", name: "UEFA Euro" },
-    { id: "eng.2", name: "Championship" },
-    { id: "eng.3", name: "League One" },
-    { id: "eng.4", name: "League Two" },
-    { id: "eng.fa", name: "FA Cup" },
-    { id: "eng.league_cup", name: "Carabao Cup" },
-    { id: "esp.2", name: "La Liga 2" },
-    { id: "esp.copa_del_rey", name: "Copa del Rey" },
-    { id: "ita.2", name: "Serie B" },
-    { id: "ita.coppa_italia", name: "Coppa Italia" },
-    { id: "ger.2", name: "2. Bundesliga" },
-    { id: "ger.3", name: "3. Liga" },
-    { id: "ger.dfb_pokal", name: "DFB Pokal" },
-    { id: "fra.2", name: "Ligue 2" },
-    { id: "fra.coupe_de_france", name: "Coupe de France" },
-    { id: "ned.2", name: "Eerste Divisie" },
-    { id: "por.2", name: "Liga Portugal 2" },
-    { id: "gre.1", name: "Super League Yunani" },
-    { id: "ukr.1", name: "Ukrainian Premier League" },
-    { id: "aut.1", name: "Austrian Bundesliga" },
-    { id: "sui.1", name: "Swiss Super League" },
-    { id: "den.1", name: "Danish Superliga" },
-    { id: "swe.1", name: "Allsvenskan" },
-    { id: "nor.1", name: "Eliteserien" },
-    { id: "pol.1", name: "Ekstraklasa" },
-    { id: "cze.1", name: "Czech First League" },
-    { id: "rou.1", name: "Liga I Romania" },
-    { id: "isr.1", name: "Israeli Premier League" },
-    { id: "usa.1", name: "MLS" },
-    { id: "usa.nwsl", name: "NWSL" },
-    { id: "usa.usl.1", name: "USL Championship" },
-    { id: "mex.1", name: "Liga MX" },
-    { id: "mex.2", name: "Liga de Expansión MX" },
-    { id: "crc.1", name: "Liga Promerica" },
-    { id: "hon.1", name: "Liga Nacional Honduras" },
-    { id: "gua.1", name: "Liga Nacional Guatemala" },
-    { id: "slv.1", name: "Primera División El Salvador" },
-    { id: "pan.1", name: "Liga Panameña" },
-    { id: "bra.1", name: "Brasileirão" },
-    { id: "bra.2", name: "Brasileirão Série B" },
-    { id: "bra.3", name: "Brasileirão Série C" },
-    { id: "bra.copa_do_brazil", name: "Copa do Brasil" },
-    { id: "arg.1", name: "Liga Profesional" },
-    { id: "arg.2", name: "Primera Nacional" },
-    { id: "arg.copa", name: "Copa Argentina" },
-    { id: "chi.1", name: "Primera División Chile" },
-    { id: "col.1", name: "Primera A Colombia" },
-    { id: "uru.1", name: "Primera División Uruguay" },
-    { id: "per.1", name: "Liga 1 Perú" },
-    { id: "ecu.1", name: "Liga Pro Ecuador" },
-    { id: "par.1", name: "Primera División Paraguay" },
-    { id: "ven.1", name: "Liga FUTVE" },
-    { id: "bol.1", name: "División Profesional Bolivia" },
-    { id: "conmebol.libertadores", name: "Copa Libertadores" },
-    { id: "conmebol.sudamericana", name: "Copa Sudamericana" },
-    { id: "afc.champions", name: "AFC Champions" },
-    { id: "afc.cup", name: "AFC Cup" },
-    { id: "jpn.1", name: "J-League" },
-    { id: "jpn.2", name: "J2 League" },
-    { id: "kor.1", name: "K-League 1" },
-    { id: "kor.2", name: "K-League 2" },
-    { id: "chn.1", name: "Chinese Super League" },
-    { id: "sau.1", name: "Saudi Pro League" },
-    { id: "uae.1", name: "UAE Pro League" },
-    { id: "qat.1", name: "Qatar Stars League" },
-    { id: "irn.1", name: "Persian Gulf Pro League" },
-    { id: "ind.1", name: "Indian Super League" },
-    { id: "tha.1", name: "Thai League 1" },
-    { id: "mys.1", name: "Malaysia Super League" },
-    { id: "idn.1", name: "Liga 1 Indonesia" },
-    { id: "vnm.1", name: "V.League 1" },
-    { id: "sgp.1", name: "Singapore Premier League" },
-    { id: "aus.1", name: "A-League" },
-    { id: "egy.1", name: "Egyptian Premier League" },
-    { id: "mar.1", name: "Botola Pro" },
-    { id: "rsa.1", name: "South African Premier" },
-    { id: "nga.1", name: "Nigeria Premier League" },
-    { id: "caf.champions", name: "CAF Champions League" },
-    { id: "fifa.world", name: "FIFA World Cup" },
-    { id: "fifa.wwc", name: "FIFA Women's World Cup" },
-    { id: "fifa.cwc", name: "FIFA Club World Cup" },
-    { id: "fifa.friendly", name: "International Friendly" },
-    { id: "fifa.olympics", name: "Olympic Football" }
+    { id: "eng.1", name: "Premier League" }, { id: "esp.1", name: "La Liga" }, { id: "ita.1", name: "Serie A" },
+    { id: "ger.1", name: "Bundesliga" }, { id: "fra.1", name: "Ligue 1" }, { id: "ned.1", name: "Eredivisie" },
+    { id: "por.1", name: "Primeira Liga" }, { id: "tur.1", name: "Süper Lig" }, { id: "sco.1", name: "Scottish Premiership" },
+    { id: "rus.1", name: "Russian Premier League" }, { id: "bel.1", name: "Pro League Belgia" },
+    { id: "uefa.champions", name: "Champions League" }, { id: "uefa.europa", name: "Europa League" },
+    { id: "uefa.europa.conf", name: "Conference League" }, { id: "uefa.nations", name: "UEFA Nations League" },
+    { id: "uefa.euro", name: "UEFA Euro" }, { id: "eng.2", name: "Championship" }, { id: "eng.3", name: "League One" },
+    { id: "eng.4", name: "League Two" }, { id: "eng.fa", name: "FA Cup" }, { id: "eng.league_cup", name: "Carabao Cup" },
+    { id: "esp.2", name: "La Liga 2" }, { id: "esp.copa_del_rey", name: "Copa del Rey" }, { id: "ita.2", name: "Serie B" },
+    { id: "ita.coppa_italia", name: "Coppa Italia" }, { id: "ger.2", name: "2. Bundesliga" }, { id: "ger.3", name: "3. Liga" },
+    { id: "ger.dfb_pokal", name: "DFB Pokal" }, { id: "fra.2", name: "Ligue 2" }, { id: "fra.coupe_de_france", name: "Coupe de France" },
+    { id: "ned.2", name: "Eerste Divisie" }, { id: "por.2", name: "Liga Portugal 2" }, { id: "gre.1", name: "Super League Yunani" },
+    { id: "ukr.1", name: "Ukrainian Premier League" }, { id: "aut.1", name: "Austrian Bundesliga" },
+    { id: "sui.1", name: "Swiss Super League" }, { id: "den.1", name: "Danish Superliga" }, { id: "swe.1", name: "Allsvenskan" },
+    { id: "nor.1", name: "Eliteserien" }, { id: "pol.1", name: "Ekstraklasa" }, { id: "cze.1", name: "Czech First League" },
+    { id: "rou.1", name: "Liga I Romania" }, { id: "isr.1", name: "Israeli Premier League" },
+    { id: "usa.1", name: "MLS" }, { id: "usa.nwsl", name: "NWSL" }, { id: "usa.usl.1", name: "USL Championship" },
+    { id: "mex.1", name: "Liga MX" }, { id: "mex.2", name: "Liga de Expansión MX" }, { id: "crc.1", name: "Liga Promerica" },
+    { id: "hon.1", name: "Liga Nacional Honduras" }, { id: "gua.1", name: "Liga Nacional Guatemala" },
+    { id: "slv.1", name: "Primera División El Salvador" }, { id: "pan.1", name: "Liga Panameña" },
+    { id: "bra.1", name: "Brasileirão" }, { id: "bra.2", name: "Brasileirão Série B" }, { id: "bra.3", name: "Brasileirão Série C" },
+    { id: "bra.copa_do_brazil", name: "Copa do Brasil" }, { id: "arg.1", name: "Liga Profesional" },
+    { id: "arg.2", name: "Primera Nacional" }, { id: "arg.copa", name: "Copa Argentina" },
+    { id: "chi.1", name: "Primera División Chile" }, { id: "col.1", name: "Primera A Colombia" },
+    { id: "uru.1", name: "Primera División Uruguay" }, { id: "per.1", name: "Liga 1 Perú" },
+    { id: "ecu.1", name: "Liga Pro Ecuador" }, { id: "par.1", name: "Primera División Paraguay" },
+    { id: "ven.1", name: "Liga FUTVE" }, { id: "bol.1", name: "División Profesional Bolivia" },
+    { id: "conmebol.libertadores", name: "Copa Libertadores" }, { id: "conmebol.sudamericana", name: "Copa Sudamericana" },
+    { id: "afc.champions", name: "AFC Champions" }, { id: "afc.cup", name: "AFC Cup" },
+    { id: "jpn.1", name: "J-League" }, { id: "jpn.2", name: "J2 League" }, { id: "kor.1", name: "K-League 1" },
+    { id: "kor.2", name: "K-League 2" }, { id: "chn.1", name: "Chinese Super League" }, { id: "sau.1", name: "Saudi Pro League" },
+    { id: "uae.1", name: "UAE Pro League" }, { id: "qat.1", name: "Qatar Stars League" },
+    { id: "irn.1", name: "Persian Gulf Pro League" }, { id: "ind.1", name: "Indian Super League" },
+    { id: "tha.1", name: "Thai League 1" }, { id: "mys.1", name: "Malaysia Super League" },
+    { id: "idn.1", name: "Liga 1 Indonesia" }, { id: "vnm.1", name: "V.League 1" },
+    { id: "sgp.1", name: "Singapore Premier League" }, { id: "aus.1", name: "A-League" },
+    { id: "egy.1", name: "Egyptian Premier League" }, { id: "mar.1", name: "Botola Pro" },
+    { id: "rsa.1", name: "South African Premier" }, { id: "nga.1", name: "Nigeria Premier League" },
+    { id: "caf.champions", name: "CAF Champions League" }, { id: "fifa.world", name: "FIFA World Cup" },
+    { id: "fifa.friendly", name: "International Friendly" }
 ];
 
 const HOT_LEAGUES = ["UEFA Nations League", "Champions League", "Europa League", "Conference League", "Premier League", "La Liga", "Serie A", "Bundesliga", "Ligue 1", "Copa Libertadores", "Copa Sudamericana", "FIFA World Cup"];
@@ -603,18 +515,13 @@ let nextMatchData = null;
 function clean(v) { return String(v || "").trim(); }
 
 function escapeHtml(s) {
-    return clean(s)
-        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    return clean(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
 
 function normalizeTeamName(name) {
-    return clean(name).toLowerCase()
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        .replace(/\[[^\]]*\]/g, "")
-        .replace(/\([^)]*\)/g, "")
-        .replace(/[^a-z0-9\s]/g, " ")
-        .replace(/\s+/g, " ").trim();
+    return clean(name).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/\[[^\]]*\]/g, "").replace(/\([^)]*\)/g, "")
+        .replace(/[^a-z0-9\s]/g, " ").replace(/\s+/g, " ").trim();
 }
 
 function normalizeDate(input) {
@@ -703,10 +610,12 @@ function isHotMatch(m) {
     return false;
 }
 
+// ⭐ FETCH ESPN VIA WORKER PROXY
 async function fetchESPNDate(dateStr) {
     const promises = ESPN_LIGAS.map(async (liga) => {
         try {
-            const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${liga.id}/scoreboard?dates=${dateStr}`;
+            const espnUrl = `https://site.api.espn.com/apis/site/v2/sports/soccer/${liga.id}/scoreboard?dates=${dateStr}`;
+            const url = WORKER_URL + "?url=" + encodeURIComponent(espnUrl);
             const res = await fetch(url);
             if (!res.ok) return [];
             const data = await res.json();
@@ -726,13 +635,9 @@ async function fetchESPNDate(dateStr) {
                     const timeWib = String(wib.getUTCHours()).padStart(2, "0") + ":" + String(wib.getUTCMinutes()).padStart(2, "0");
 
                     return {
-                        league: liga.name,
-                        date: dateWib,
-                        time: timeWib,
-                        home: home.team?.displayName || "?",
-                        away: away.team?.displayName || "?",
-                        homeLogo: home.team?.logo || "",
-                        awayLogo: away.team?.logo || "",
+                        league: liga.name, date: dateWib, time: timeWib,
+                        home: home.team?.displayName || "?", away: away.team?.displayName || "?",
+                        homeLogo: home.team?.logo || "", awayLogo: away.team?.logo || "",
                         actualScoreHome: comp.status?.type?.completed ? String(home.score || "") : "",
                         actualScoreAway: comp.status?.type?.completed ? String(away.score || "") : "",
                         source: "espn"
@@ -747,9 +652,7 @@ async function fetchESPNDate(dateStr) {
 
 async function fetchESPN7Days() {
     const promises = [];
-    for (let i = 0; i < 7; i++) {
-        promises.push(fetchESPNDate(getYMD(i)));
-    }
+    for (let i = 0; i < 7; i++) promises.push(fetchESPNDate(getYMD(i)));
     const results = await Promise.all(promises);
     const all = [];
     results.forEach(arr => all.push(...arr));
@@ -766,12 +669,9 @@ async function fetchFirestore() {
             if (item.active === false) return;
             data.push({
                 league: clean(item.league) || "LAINNYA",
-                date: normalizeDate(item.date),
-                time: normalizeTime(item.time),
-                home: clean(item.home),
-                away: clean(item.away),
-                homeLogo: clean(item.homeLogo),
-                awayLogo: clean(item.awayLogo),
+                date: normalizeDate(item.date), time: normalizeTime(item.time),
+                home: clean(item.home), away: clean(item.away),
+                homeLogo: clean(item.homeLogo), awayLogo: clean(item.awayLogo),
                 handicap: clean(item.handicap),
                 predictionScoreHome: clean(item.predictionScoreHome),
                 predictionScoreAway: clean(item.predictionScoreAway),
@@ -789,58 +689,43 @@ function gabungData(espnData, firestoreData) {
     firestoreData.forEach(item => {
         const key = makeLooseKey(item.date, item.home, item.away);
         const existing = mapFS.get(key);
-        if (!existing || (!existing.handicap && item.handicap)) {
-            mapFS.set(key, item);
-        }
+        if (!existing || (!existing.handicap && item.handicap)) mapFS.set(key, item);
     });
-
     const hasil = [];
     const seenKeys = new Set();
-
     espnData.forEach(match => {
         const looseKey = makeLooseKey(match.date, match.home, match.away);
         if (seenKeys.has(looseKey)) return;
         seenKeys.add(looseKey);
         const fs = mapFS.get(looseKey);
         if (fs) {
-            hasil.push({
-                ...match,
-                league: fs.league || match.league,
-                handicap: fs.handicap || "",
-                predictionScoreHome: fs.predictionScoreHome || "",
+            hasil.push({ ...match, league: fs.league || match.league,
+                handicap: fs.handicap || "", predictionScoreHome: fs.predictionScoreHome || "",
                 predictionScoreAway: fs.predictionScoreAway || "",
                 actualScoreHome: fs.actualScoreHome || match.actualScoreHome,
-                actualScoreAway: fs.actualScoreAway || match.actualScoreAway
-            });
-        } else {
-            hasil.push(match);
-        }
+                actualScoreAway: fs.actualScoreAway || match.actualScoreAway });
+        } else hasil.push(match);
     });
-
     firestoreData.forEach(item => {
         const looseKey = makeLooseKey(item.date, item.home, item.away);
         if (seenKeys.has(looseKey)) return;
         seenKeys.add(looseKey);
         hasil.push(item);
     });
-
     return hasil;
 }
 
 function renderBigMatch() {
     const track = document.getElementById("bigMatchTrack");
     if (!track) return;
-
     const today = getTodayString();
     const limitDate = get7DaysString();
-
     const candidates = semuaData.filter(m => {
         const d = normalizeDate(clean(m.date));
         if (d < today || d > limitDate) return false;
         const status = getMatchStatus(m);
         return status === "akan" || status === "live";
     });
-
     const hot = candidates.filter(m => isHotMatch(m));
     const sorted = hot.sort((a, b) => {
         const sa = getMatchStatus(a) === "live" ? 0 : 1;
@@ -848,30 +733,20 @@ function renderBigMatch() {
         if (sa !== sb) return sa - sb;
         return (getKickoffWIBMs(a) || 0) - (getKickoffWIBMs(b) || 0);
     });
-
     const top8 = sorted.slice(0, 10);
-
     if (!top8.length) {
         track.innerHTML = '<div class="big-match-empty">Belum ada pertandingan panas</div>';
         return;
     }
-
     const cardsHTML = top8.map(m => {
         const status = getMatchStatus(m);
         const isLive = status === "live";
         const homeInitial = m.home ? m.home.substring(0, 2).toUpperCase() : "?";
         const awayInitial = m.away ? m.away.substring(0, 2).toUpperCase() : "?";
-
-        const homeLogoHTML = m.homeLogo 
-            ? `<img src="${escapeHtml(m.homeLogo)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">` 
-            : "";
-        const awayLogoHTML = m.awayLogo 
-            ? `<img src="${escapeHtml(m.awayLogo)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">` 
-            : "";
-
+        const homeLogoHTML = m.homeLogo ? `<img src="${escapeHtml(m.homeLogo)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">` : "";
+        const awayLogoHTML = m.awayLogo ? `<img src="${escapeHtml(m.awayLogo)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">` : "";
         const homeInitialHTML = `<div class="team-initial" style="${m.homeLogo ? 'display:none;' : ''}">${homeInitial}</div>`;
         const awayInitialHTML = `<div class="team-initial" style="${m.awayLogo ? 'display:none;' : ''}">${awayInitial}</div>`;
-
         return `
             <div class="big-match-card ${isLive ? 'is-live' : ''}" data-key="${escapeHtml(makeLooseKey(m.date, m.home, m.away))}">
                 <div class="big-match-badge">
@@ -880,31 +755,17 @@ function renderBigMatch() {
                 </div>
                 <div class="big-match-league">${escapeHtml(m.league)}</div>
                 <div class="big-match-teams">
-                    <div class="big-match-team">
-                        ${homeLogoHTML}
-                        ${homeInitialHTML}
-                        <div class="team-name">${escapeHtml(m.home)}</div>
-                    </div>
+                    <div class="big-match-team">${homeLogoHTML}${homeInitialHTML}<div class="team-name">${escapeHtml(m.home)}</div></div>
                     <div class="big-match-vs">VS</div>
-                    <div class="big-match-team">
-                        ${awayLogoHTML}
-                        ${awayInitialHTML}
-                        <div class="team-name">${escapeHtml(m.away)}</div>
-                    </div>
+                    <div class="big-match-team">${awayLogoHTML}${awayInitialHTML}<div class="team-name">${escapeHtml(m.away)}</div></div>
                 </div>
-                <div class="big-match-time">
-                    <span>🕐</span>
-                    <span>${escapeHtml(m.time)} WIB</span>
-                </div>
+                <div class="big-match-time"><span>🕐</span><span>${escapeHtml(m.time)} WIB</span></div>
             </div>
         `;
     }).join("");
-
     track.innerHTML = cardsHTML + cardsHTML;
-
     const duration = Math.max(30, 7 * top8.length);
     track.style.animationDuration = duration + "s";
-
     track.querySelectorAll(".big-match-card").forEach(card => {
         card.addEventListener("click", () => {
             const key = card.dataset.key;
@@ -914,10 +775,7 @@ function renderBigMatch() {
                 target.style.transition = "all 0.5s";
                 target.style.transform = "scale(1.03)";
                 target.style.boxShadow = "0 0 40px rgba(103,232,249,1)";
-                setTimeout(() => {
-                    target.style.transform = "";
-                    target.style.boxShadow = "";
-                }, 2000);
+                setTimeout(() => { target.style.transform = ""; target.style.boxShadow = ""; }, 2000);
             }
         });
     });
@@ -933,47 +791,27 @@ function renderMatch(data) {
     const scoreAway = clean(data.predictionScoreAway);
     const status = getMatchStatus(data);
     const key = makeLooseKey(date, home, away);
-
     const hasHdp = handicap !== "";
     const hasPred = scoreHome !== "" && scoreAway !== "";
-
     const homeLogoHTML = data.homeLogo ? `<img src="${escapeHtml(data.homeLogo)}" alt="" onerror="this.style.display='none'">` : "";
     const awayLogoHTML = data.awayLogo ? `<img src="${escapeHtml(data.awayLogo)}" alt="" onerror="this.style.display='none'">` : "";
-
     let badge = "";
     if (status === "live") badge = `<div class="match-live-badge"><span class="dot"></span>LIVE</div>`;
     else if (status === "selesai") badge = `<div class="match-finished-badge">SELESAI</div>`;
-
     let cls = "match-row-single";
     if (status === "live") cls += " is-live";
     else if (status === "selesai") cls += " is-finished";
-
     return `
         <div class="${cls}" data-key="${escapeHtml(key)}">
             ${badge}
-            <div class="match-time-badge">
-                <span class="time-value">${escapeHtml(time)}</span>
-                <span class="time-date">${escapeHtml(formatTanggalShort(date))}</span>
-            </div>
+            <div class="match-time-badge"><span class="time-value">${escapeHtml(time)}</span><span class="time-date">${escapeHtml(formatTanggalShort(date))}</span></div>
             <div class="match-teams-block">
-                <div class="match-team-mini">
-                    ${homeLogoHTML}
-                    <div class="mini-name">${escapeHtml(home)}</div>
-                </div>
+                <div class="match-team-mini">${homeLogoHTML}<div class="mini-name">${escapeHtml(home)}</div></div>
                 <div class="match-vs-mini">VS</div>
-                <div class="match-team-mini">
-                    ${awayLogoHTML}
-                    <div class="mini-name">${escapeHtml(away)}</div>
-                </div>
+                <div class="match-team-mini">${awayLogoHTML}<div class="mini-name">${escapeHtml(away)}</div></div>
             </div>
-            <div class="match-value-box hdp ${hasHdp ? "" : "empty"}">
-                <span class="val-label">HDP</span>
-                <span class="val-number">${hasHdp ? escapeHtml(handicap) : "-"}</span>
-            </div>
-            <div class="match-value-box pred ${hasPred ? "" : "empty"}">
-                <span class="val-label">PREDIKSI</span>
-                <span class="val-number">${hasPred ? escapeHtml(scoreHome) + "-" + escapeHtml(scoreAway) : "-"}</span>
-            </div>
+            <div class="match-value-box hdp ${hasHdp ? "" : "empty"}"><span class="val-label">HDP</span><span class="val-number">${hasHdp ? escapeHtml(handicap) : "-"}</span></div>
+            <div class="match-value-box pred ${hasPred ? "" : "empty"}"><span class="val-label">PREDIKSI</span><span class="val-number">${hasPred ? escapeHtml(scoreHome) + "-" + escapeHtml(scoreAway) : "-"}</span></div>
         </div>
     `;
 }
@@ -985,53 +823,42 @@ function renderPrediksi(data) {
         container.innerHTML = `<div class="single-column-wrap"><div class="single-col-empty">Tidak ada pertandingan</div></div>`;
         return;
     }
-
     const sorted = [...data].sort((a, b) => {
         const sa = getMatchStatus(a) === "live" ? 0 : 1;
         const sb = getMatchStatus(b) === "live" ? 0 : 1;
         if (sa !== sb) return sa - sb;
         return (getKickoffWIBMs(a) || 0) - (getKickoffWIBMs(b) || 0);
     });
-
     const groupTanggal = {};
     sorted.forEach(item => {
         const d = normalizeDate(clean(item.date)) || "0000-00-00";
         if (!groupTanggal[d]) groupTanggal[d] = [];
         groupTanggal[d].push(item);
     });
-
     const tanggalSorted = Object.keys(groupTanggal).sort();
     let html = "";
-
     tanggalSorted.forEach(tanggal => {
         const matches = groupTanggal[tanggal];
         let headerTgl = tanggal;
         try {
             const dateObj = new Date(tanggal + "T00:00:00Z");
-            if (!isNaN(dateObj.getTime())) {
-                headerTgl = `${HARI_INDO[dateObj.getUTCDay()]}, ${dateObj.getUTCDate()} ${BULAN_INDO[dateObj.getUTCMonth()]} ${dateObj.getUTCFullYear()}`;
-            }
+            if (!isNaN(dateObj.getTime())) headerTgl = `${HARI_INDO[dateObj.getUTCDay()]}, ${dateObj.getUTCDate()} ${BULAN_INDO[dateObj.getUTCMonth()]} ${dateObj.getUTCFullYear()}`;
         } catch (e) {}
-
         const groupLiga = {};
         matches.forEach(item => {
             const liga = clean(item.league) || "LAINNYA";
             if (!groupLiga[liga]) groupLiga[liga] = [];
             groupLiga[liga].push(item);
         });
-
         html += `<div class="date-group">`;
         html += `<div class="date-group-header">📅 ${escapeHtml(headerTgl)}</div>`;
-
         Object.keys(groupLiga).sort().forEach(liga => {
             const matchList = groupLiga[liga].sort((a, b) => (getKickoffWIBMs(a) || 0) - (getKickoffWIBMs(b) || 0));
             const rows = matchList.map(renderMatch).join("");
             html += `<div class="league"><div class="league-header">${escapeHtml(liga)}</div><div class="single-column-wrap">${rows}</div></div>`;
         });
-
         html += `</div>`;
     });
-
     container.innerHTML = html;
 }
 
@@ -1062,41 +889,26 @@ function applyFilter() {
     const today = getTodayString();
     const tomorrow = getTomorrowString();
     let filtered = [...semuaData];
-
     if (currentFilter === "today") {
-        filtered = filtered.filter(item => {
-            const d = normalizeDate(clean(item.date));
-            return d === today || d === tomorrow;
-        });
+        filtered = filtered.filter(item => { const d = normalizeDate(clean(item.date)); return d === today || d === tomorrow; });
     } else if (currentFilter === "tomorrow") {
         filtered = filtered.filter(item => normalizeDate(clean(item.date)) === tomorrow);
     } else if (currentFilter === "7days") {
         const limit = get7DaysString();
-        filtered = filtered.filter(item => {
-            const d = normalizeDate(clean(item.date));
-            return d >= today && d <= limit;
-        });
+        filtered = filtered.filter(item => { const d = normalizeDate(clean(item.date)); return d >= today && d <= limit; });
     } else if (currentFilter === "all") {
         filtered = filtered.filter(item => normalizeDate(clean(item.date)) >= today);
     } else if (currentFilter === "live") {
         filtered = filtered.filter(item => getMatchStatus(item) === "live");
     }
-
-    if (selectedLiga !== "all") {
-        filtered = filtered.filter(item => (clean(item.league) || "LAINNYA") === selectedLiga);
-    }
-    if (keyword) {
-        filtered = filtered.filter(item => {
-            const h = clean(item.home).toLowerCase();
-            const a = clean(item.away).toLowerCase();
-            const l = clean(item.league).toLowerCase();
-            return h.includes(keyword) || a.includes(keyword) || l.includes(keyword);
-        });
-    }
-
-    if (keyword) btnClear.classList.remove("hidden");
-    else btnClear.classList.add("hidden");
-
+    if (selectedLiga !== "all") filtered = filtered.filter(item => (clean(item.league) || "LAINNYA") === selectedLiga);
+    if (keyword) filtered = filtered.filter(item => {
+        const h = clean(item.home).toLowerCase();
+        const a = clean(item.away).toLowerCase();
+        const l = clean(item.league).toLowerCase();
+        return h.includes(keyword) || a.includes(keyword) || l.includes(keyword);
+    });
+    if (keyword) btnClear.classList.remove("hidden"); else btnClear.classList.add("hidden");
     renderPrediksi(filtered);
 }
 
@@ -1106,8 +918,7 @@ function animateNumber(el, target, duration) {
     function update(now) {
         const p = Math.min((now - start) / duration, 1);
         el.textContent = Math.floor(target * p);
-        if (p < 1) requestAnimationFrame(update);
-        else el.textContent = target;
+        if (p < 1) requestAnimationFrame(update); else el.textContent = target;
     }
     requestAnimationFrame(update);
 }
@@ -1116,17 +927,14 @@ function updateStats(data) {
     const total = data.length;
     const live = data.filter(m => getMatchStatus(m) === "live").length;
     const liga = new Set(data.map(i => clean(i.league) || "LAINNYA")).size;
-
     animateNumber(document.getElementById("totalPertandingan"), total, 1200);
     animateNumber(document.getElementById("totalLive"), live, 800);
     animateNumber(document.getElementById("totalLiga"), liga, 1000);
-
     const newsEl = document.getElementById("newsTickerText");
     if (newsEl) {
         if (live > 0) {
             const liveMatches = data.filter(m => getMatchStatus(m) === "live").slice(0, 5);
-            const items = liveMatches.map(m => `🔴 LIVE ${m.home} vs ${m.away} — ${m.league}`);
-            newsEl.textContent = items.join("  •  ");
+            newsEl.textContent = liveMatches.map(m => `🔴 LIVE ${m.home} vs ${m.away} — ${m.league}`).join("  •  ");
         } else {
             const upcoming = data.filter(m => getMatchStatus(m) === "akan").slice(0, 5);
             const items = upcoming.map(m => `⚡ ${m.home} vs ${m.away} — ${m.time} WIB (${m.league})`);
@@ -1145,11 +953,7 @@ function updateNextMatch() {
         if (d < today) return false;
         return getMatchStatus(item) === "akan";
     });
-    if (!candidates.length) {
-        bar.style.display = "none";
-        nextMatchData = null;
-        return;
-    }
+    if (!candidates.length) { bar.style.display = "none"; nextMatchData = null; return; }
     candidates.sort((a, b) => (getKickoffWIBMs(a) || 0) - (getKickoffWIBMs(b) || 0));
     nextMatchData = candidates[0];
     document.getElementById("nextMatchTeams").textContent = `${nextMatchData.home} VS ${nextMatchData.away}`;
@@ -1175,16 +979,11 @@ function tickNextMatch() {
 
 function scrollToLive() {
     const liveMatches = semuaData.filter(m => getMatchStatus(m) === "live");
-    if (!liveMatches.length) {
-        alert("Tidak ada pertandingan LIVE saat ini bro!");
-        return;
-    }
-
+    if (!liveMatches.length) { alert("Tidak ada pertandingan LIVE saat ini bro!"); return; }
     currentFilter = "live";
     document.querySelectorAll(".tab-filter").forEach(t => t.classList.remove("active"));
     document.getElementById("tabLive").classList.add("active");
     applyFilter();
-
     setTimeout(() => {
         const firstLive = document.querySelector(".match-row-single.is-live");
         if (firstLive) {
@@ -1192,10 +991,7 @@ function scrollToLive() {
             firstLive.style.transition = "all 0.5s";
             firstLive.style.transform = "scale(1.05)";
             firstLive.style.boxShadow = "0 0 50px rgba(220,38,38,1)";
-            setTimeout(() => {
-                firstLive.style.transform = "";
-                firstLive.style.boxShadow = "";
-            }, 2500);
+            setTimeout(() => { firstLive.style.transform = ""; firstLive.style.boxShadow = ""; }, 2500);
         }
     }, 300);
 }
@@ -1211,8 +1007,7 @@ function updateLoading(target, duration) {
         progress = Math.floor(start + (target - start) * p);
         const fill = document.getElementById("loadingBarFill");
         if (fill) fill.style.width = progress + "%";
-        if (p < 1) requestAnimationFrame(update);
-        else if (progress >= 100) finishLoading();
+        if (p < 1) requestAnimationFrame(update); else if (progress >= 100) finishLoading();
     }
     requestAnimationFrame(update);
 }
@@ -1220,10 +1015,7 @@ function updateLoading(target, duration) {
 function finishLoading() {
     if (finished) return;
     finished = true;
-    setTimeout(() => {
-        const el = document.getElementById("loadingScreen");
-        if (el) el.classList.add("hide");
-    }, 300);
+    setTimeout(() => { const el = document.getElementById("loadingScreen"); if (el) el.classList.add("hide"); }, 300);
 }
 
 updateLoading(30, 400);
@@ -1235,29 +1027,19 @@ setTimeout(finishLoading, 2500);
 async function init() {
     try {
         updateLoading(40, 400);
-
-        const [espnData, fsData] = await Promise.all([
-            fetchESPN7Days(),
-            fetchFirestore()
-        ]);
-
+        const [espnData, fsData] = await Promise.all([fetchESPN7Days(), fetchFirestore()]);
         updateLoading(75, 400);
-
         semuaData = gabungData(espnData, fsData);
         semuaData.sort((a, b) => (getKickoffWIBMs(a) || 0) - (getKickoffWIBMs(b) || 0));
-
         updateLigaFilter(semuaData);
         updateStats(semuaData);
         renderBigMatch();
         updateNextMatch();
         applyFilter();
-
         updateLoading(100, 400);
-
     } catch (err) {
         console.error("[LOAD] Error:", err);
-        document.getElementById("prediksiContainer").innerHTML =
-            `<div class="single-column-wrap"><div class="single-col-empty">Gagal memuat. Refresh.</div></div>`;
+        document.getElementById("prediksiContainer").innerHTML = `<div class="single-column-wrap"><div class="single-col-empty">Gagal memuat. Refresh.</div></div>`;
         updateLoading(100, 300);
     }
 }
@@ -1281,7 +1063,6 @@ document.getElementById("btnClearSearch").addEventListener("click", () => {
 document.getElementById("statLiveBox").addEventListener("click", scrollToLive);
 
 setInterval(tickNextMatch, 1000);
-
 setInterval(() => {
     if (semuaData.length) {
         updateStats(semuaData);
@@ -1290,7 +1071,6 @@ setInterval(() => {
         if (currentFilter === "live") applyFilter();
     }
 }, 60000);
-
 setInterval(init, 5 * 60 * 1000);
 
 init();
