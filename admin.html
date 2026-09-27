@@ -3,15 +3,65 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Bulk Input - KIPER4D</title>
-<link rel="icon" type="image/png" href="favicon.png">
+<title>Admin Panel — KIPER4D</title>
+<link rel="icon" type="image/png" href="logo-kiper4d.png">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: Arial, sans-serif; background: radial-gradient(circle at top, #0a2050 0%, #02060f 60%); color: #f8fafc; min-height: 100vh; padding: 20px; }
 .container { max-width: 1600px; margin: auto; }
-header { text-align: center; padding: 18px 15px; margin-bottom: 18px; background: rgba(8, 30, 60, 0.95); border: 1px solid rgba(34, 211, 238, 0.35); border-radius: 14px; }
-header h1 { font-size: 22px; margin-bottom: 6px; background: linear-gradient(90deg, #67e8f9, #22d3ee, #0891b2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-header .subtitle { color: #94a3b8; font-size: 12px; letter-spacing: 1px; }
+.header {
+    text-align: center; padding: 20px 15px; margin-bottom: 18px;
+    background: rgba(8, 30, 60, 0.95);
+    border: 1px solid rgba(34, 211, 238, 0.35);
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+}
+.header::before {
+    content: "";
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(34,211,238,0.1), transparent 70%);
+    animation: headerGlow 8s ease-in-out infinite;
+    pointer-events: none;
+}
+@keyframes headerGlow {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(20px, -20px) scale(1.1); }
+}
+.header-logo {
+    display: block;
+    width: 130px;
+    height: 130px;
+    object-fit: contain;
+    margin: 0 auto 12px;
+    filter: drop-shadow(0 0 25px rgba(34,211,238,1)) drop-shadow(0 0 50px rgba(34,211,238,0.5));
+    animation: logoFloat 3s ease-in-out infinite;
+    position: relative;
+    z-index: 1;
+}
+@keyframes logoFloat {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-8px) scale(1.05); }
+}
+.header h1 {
+    font-size: 24px; margin-bottom: 6px;
+    background: linear-gradient(90deg, #67e8f9, #22d3ee, #0891b2);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    z-index: 1;
+    letter-spacing: 1px;
+}
+.header .subtitle {
+    color: #94a3b8;
+    font-size: 12px;
+    letter-spacing: 3px;
+    position: relative;
+    z-index: 1;
+    text-transform: uppercase;
+}
 .status { padding: 12px 16px; border-radius: 10px; margin-bottom: 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); font-size: 13px; }
 .status.success { background: rgba(34,197,94,0.12); border-color: rgba(34,197,94,0.35); color: #86efac; }
 .status.error { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.35); color: #fca5a5; }
@@ -67,17 +117,27 @@ td input::placeholder { color: #475569; }
 .filter-tab { padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; background: rgba(30,20,60,0.7); border: 1.5px solid rgba(34, 211, 238, 0.4); color: #c8c8d4; cursor: pointer; transition: all 0.3s; }
 .filter-tab:hover { color: #00d4ff; border-color: rgba(0,212,255,0.7); }
 .filter-tab.active { color: #000; background: linear-gradient(135deg, #67e8f9, #22d3ee, #67e8f9); border-color: #67e8f9; }
-@media (max-width: 700px) { body { padding: 10px; } header { padding: 14px 10px; } header h1 { font-size: 17px; } .card { padding: 12px; } .controls { flex-direction: column; align-items: stretch; } .controls select, .controls input, button { width: 100%; } .filter-tabs { display: grid; grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 700px) {
+    body { padding: 10px; }
+    .header { padding: 14px 10px; }
+    .header-logo { width: 80px; height: 80px; }
+    .header h1 { font-size: 17px; }
+    .card { padding: 12px; }
+    .controls { flex-direction: column; align-items: stretch; }
+    .controls select, .controls input, button { width: 100%; }
+    .filter-tabs { display: grid; grid-template-columns: repeat(2, 1fr); }
+}
 </style>
 </head>
 <body>
 
 <div class="container">
 
-<header>
-    <h1>⚡ ADMIN BULK INPUT — KIPER4D</h1>
+<div class="header">
+    <img src="logo-kiper4d.png" alt="KIPER4D" class="header-logo">
+    <h1>⚡ ADMIN PANEL — KIPER4D</h1>
     <div class="subtitle">80+ LIGA ESPN + FIRESTORE</div>
-</header>
+</div>
 
 <div id="loginStatus" class="status">Memeriksa login...</div>
 
@@ -91,7 +151,7 @@ td input::placeholder { color: #475569; }
 
     <div class="card">
         <h2>📅 Ambil Jadwal ESPN</h2>
-        <p class="small">Klik <b>🔄 AMBIL JADWAL</b> untuk fetch data terbaru dari ESPN + Firestore. Pertandingan baru akan ditandai 🆕.</p>
+        <p class="small">Klik <b>🔄 AMBIL JADWAL</b> untuk fetch dari ESPN via Worker Proxy + Firestore.</p>
 
         <div class="controls">
             <select id="tanggalSelect">
@@ -172,117 +232,55 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* ============================================================
-   80+ LIGA ESPN — SAMA DENGAN INDEX.HTML
-   ============================================================ */
+const WORKER_URL = "https://kiper4d-logo-proxy.giselachandra582.workers.dev";
+
 const ESPN_LIGAS = [
-    { id: "eng.1", name: "Premier League" },
-    { id: "esp.1", name: "La Liga" },
-    { id: "ita.1", name: "Serie A" },
-    { id: "ger.1", name: "Bundesliga" },
-    { id: "fra.1", name: "Ligue 1" },
-    { id: "ned.1", name: "Eredivisie" },
-    { id: "por.1", name: "Primeira Liga" },
-    { id: "tur.1", name: "Süper Lig" },
-    { id: "sco.1", name: "Scottish Premiership" },
-    { id: "rus.1", name: "Russian Premier League" },
-    { id: "bel.1", name: "Pro League Belgia" },
-    { id: "uefa.champions", name: "Champions League" },
-    { id: "uefa.europa", name: "Europa League" },
-    { id: "uefa.europa.conf", name: "Conference League" },
-    { id: "uefa.nations", name: "UEFA Nations League" },
-    { id: "uefa.euro", name: "UEFA Euro" },
-    { id: "eng.2", name: "Championship" },
-    { id: "eng.3", name: "League One" },
-    { id: "eng.4", name: "League Two" },
-    { id: "eng.fa", name: "FA Cup" },
-    { id: "eng.league_cup", name: "Carabao Cup" },
-    { id: "esp.2", name: "La Liga 2" },
-    { id: "esp.copa_del_rey", name: "Copa del Rey" },
-    { id: "ita.2", name: "Serie B" },
-    { id: "ita.coppa_italia", name: "Coppa Italia" },
-    { id: "ger.2", name: "2. Bundesliga" },
-    { id: "ger.3", name: "3. Liga" },
-    { id: "ger.dfb_pokal", name: "DFB Pokal" },
-    { id: "fra.2", name: "Ligue 2" },
-    { id: "fra.coupe_de_france", name: "Coupe de France" },
-    { id: "ned.2", name: "Eerste Divisie" },
-    { id: "por.2", name: "Liga Portugal 2" },
-    { id: "gre.1", name: "Super League Yunani" },
-    { id: "ukr.1", name: "Ukrainian Premier League" },
-    { id: "aut.1", name: "Austrian Bundesliga" },
-    { id: "sui.1", name: "Swiss Super League" },
-    { id: "den.1", name: "Danish Superliga" },
-    { id: "swe.1", name: "Allsvenskan" },
-    { id: "nor.1", name: "Eliteserien" },
-    { id: "pol.1", name: "Ekstraklasa" },
-    { id: "cze.1", name: "Czech First League" },
-    { id: "rou.1", name: "Liga I Romania" },
-    { id: "isr.1", name: "Israeli Premier League" },
-    { id: "usa.1", name: "MLS" },
-    { id: "usa.nwsl", name: "NWSL" },
-    { id: "usa.usl.1", name: "USL Championship" },
-    { id: "mex.1", name: "Liga MX" },
-    { id: "mex.2", name: "Liga de Expansión MX" },
-    { id: "crc.1", name: "Liga Promerica" },
-    { id: "hon.1", name: "Liga Nacional Honduras" },
-    { id: "gua.1", name: "Liga Nacional Guatemala" },
-    { id: "slv.1", name: "Primera División El Salvador" },
-    { id: "pan.1", name: "Liga Panameña" },
-    { id: "bra.1", name: "Brasileirão" },
-    { id: "bra.2", name: "Brasileirão Série B" },
-    { id: "bra.3", name: "Brasileirão Série C" },
-    { id: "bra.copa_do_brazil", name: "Copa do Brasil" },
-    { id: "arg.1", name: "Liga Profesional" },
-    { id: "arg.2", name: "Primera Nacional" },
-    { id: "arg.copa", name: "Copa Argentina" },
-    { id: "chi.1", name: "Primera División Chile" },
-    { id: "col.1", name: "Primera A Colombia" },
-    { id: "uru.1", name: "Primera División Uruguay" },
-    { id: "per.1", name: "Liga 1 Perú" },
-    { id: "ecu.1", name: "Liga Pro Ecuador" },
-    { id: "par.1", name: "Primera División Paraguay" },
-    { id: "ven.1", name: "Liga FUTVE" },
-    { id: "bol.1", name: "División Profesional Bolivia" },
-    { id: "conmebol.libertadores", name: "Copa Libertadores" },
-    { id: "conmebol.sudamericana", name: "Copa Sudamericana" },
-    { id: "afc.champions", name: "AFC Champions" },
-    { id: "afc.cup", name: "AFC Cup" },
-    { id: "jpn.1", name: "J-League" },
-    { id: "jpn.2", name: "J2 League" },
-    { id: "kor.1", name: "K-League 1" },
-    { id: "kor.2", name: "K-League 2" },
-    { id: "chn.1", name: "Chinese Super League" },
-    { id: "sau.1", name: "Saudi Pro League" },
-    { id: "uae.1", name: "UAE Pro League" },
-    { id: "qat.1", name: "Qatar Stars League" },
-    { id: "irn.1", name: "Persian Gulf Pro League" },
-    { id: "ind.1", name: "Indian Super League" },
-    { id: "tha.1", name: "Thai League 1" },
-    { id: "mys.1", name: "Malaysia Super League" },
-    { id: "idn.1", name: "Liga 1 Indonesia" },
-    { id: "vnm.1", name: "V.League 1" },
-    { id: "sgp.1", name: "Singapore Premier League" },
-    { id: "aus.1", name: "A-League" },
-    { id: "egy.1", name: "Egyptian Premier League" },
-    { id: "mar.1", name: "Botola Pro" },
-    { id: "rsa.1", name: "South African Premier" },
-    { id: "nga.1", name: "Nigeria Premier League" },
-    { id: "caf.champions", name: "CAF Champions League" },
-    { id: "fifa.world", name: "FIFA World Cup" },
-    { id: "fifa.wwc", name: "FIFA Women's World Cup" },
-    { id: "fifa.cwc", name: "FIFA Club World Cup" },
-    { id: "fifa.friendly", name: "International Friendly" },
-    { id: "fifa.olympics", name: "Olympic Football" }
+    { id: "eng.1", name: "Premier League" }, { id: "esp.1", name: "La Liga" }, { id: "ita.1", name: "Serie A" },
+    { id: "ger.1", name: "Bundesliga" }, { id: "fra.1", name: "Ligue 1" }, { id: "ned.1", name: "Eredivisie" },
+    { id: "por.1", name: "Primeira Liga" }, { id: "tur.1", name: "Süper Lig" }, { id: "sco.1", name: "Scottish Premiership" },
+    { id: "rus.1", name: "Russian Premier League" }, { id: "bel.1", name: "Pro League Belgia" },
+    { id: "uefa.champions", name: "Champions League" }, { id: "uefa.europa", name: "Europa League" },
+    { id: "uefa.europa.conf", name: "Conference League" }, { id: "uefa.nations", name: "UEFA Nations League" },
+    { id: "uefa.euro", name: "UEFA Euro" }, { id: "eng.2", name: "Championship" }, { id: "eng.3", name: "League One" },
+    { id: "eng.4", name: "League Two" }, { id: "eng.fa", name: "FA Cup" }, { id: "eng.league_cup", name: "Carabao Cup" },
+    { id: "esp.2", name: "La Liga 2" }, { id: "esp.copa_del_rey", name: "Copa del Rey" }, { id: "ita.2", name: "Serie B" },
+    { id: "ita.coppa_italia", name: "Coppa Italia" }, { id: "ger.2", name: "2. Bundesliga" }, { id: "ger.3", name: "3. Liga" },
+    { id: "ger.dfb_pokal", name: "DFB Pokal" }, { id: "fra.2", name: "Ligue 2" }, { id: "fra.coupe_de_france", name: "Coupe de France" },
+    { id: "ned.2", name: "Eerste Divisie" }, { id: "por.2", name: "Liga Portugal 2" }, { id: "gre.1", name: "Super League Yunani" },
+    { id: "ukr.1", name: "Ukrainian Premier League" }, { id: "aut.1", name: "Austrian Bundesliga" },
+    { id: "sui.1", name: "Swiss Super League" }, { id: "den.1", name: "Danish Superliga" }, { id: "swe.1", name: "Allsvenskan" },
+    { id: "nor.1", name: "Eliteserien" }, { id: "pol.1", name: "Ekstraklasa" }, { id: "cze.1", name: "Czech First League" },
+    { id: "rou.1", name: "Liga I Romania" }, { id: "isr.1", name: "Israeli Premier League" },
+    { id: "usa.1", name: "MLS" }, { id: "usa.nwsl", name: "NWSL" }, { id: "usa.usl.1", name: "USL Championship" },
+    { id: "mex.1", name: "Liga MX" }, { id: "mex.2", name: "Liga de Expansión MX" }, { id: "crc.1", name: "Liga Promerica" },
+    { id: "hon.1", name: "Liga Nacional Honduras" }, { id: "gua.1", name: "Liga Nacional Guatemala" },
+    { id: "slv.1", name: "Primera División El Salvador" }, { id: "pan.1", name: "Liga Panameña" },
+    { id: "bra.1", name: "Brasileirão" }, { id: "bra.2", name: "Brasileirão Série B" }, { id: "bra.3", name: "Brasileirão Série C" },
+    { id: "bra.copa_do_brazil", name: "Copa do Brasil" }, { id: "arg.1", name: "Liga Profesional" },
+    { id: "arg.2", name: "Primera Nacional" }, { id: "arg.copa", name: "Copa Argentina" },
+    { id: "chi.1", name: "Primera División Chile" }, { id: "col.1", name: "Primera A Colombia" },
+    { id: "uru.1", name: "Primera División Uruguay" }, { id: "per.1", name: "Liga 1 Perú" },
+    { id: "ecu.1", name: "Liga Pro Ecuador" }, { id: "par.1", name: "Primera División Paraguay" },
+    { id: "ven.1", name: "Liga FUTVE" }, { id: "bol.1", name: "División Profesional Bolivia" },
+    { id: "conmebol.libertadores", name: "Copa Libertadores" }, { id: "conmebol.sudamericana", name: "Copa Sudamericana" },
+    { id: "afc.champions", name: "AFC Champions" }, { id: "afc.cup", name: "AFC Cup" },
+    { id: "jpn.1", name: "J-League" }, { id: "jpn.2", name: "J2 League" }, { id: "kor.1", name: "K-League 1" },
+    { id: "kor.2", name: "K-League 2" }, { id: "chn.1", name: "Chinese Super League" }, { id: "sau.1", name: "Saudi Pro League" },
+    { id: "uae.1", name: "UAE Pro League" }, { id: "qat.1", name: "Qatar Stars League" },
+    { id: "irn.1", name: "Persian Gulf Pro League" }, { id: "ind.1", name: "Indian Super League" },
+    { id: "tha.1", name: "Thai League 1" }, { id: "mys.1", name: "Malaysia Super League" },
+    { id: "idn.1", name: "Liga 1 Indonesia" }, { id: "vnm.1", name: "V.League 1" },
+    { id: "sgp.1", name: "Singapore Premier League" }, { id: "aus.1", name: "A-League" },
+    { id: "egy.1", name: "Egyptian Premier League" }, { id: "mar.1", name: "Botola Pro" },
+    { id: "rsa.1", name: "South African Premier" }, { id: "nga.1", name: "Nigeria Premier League" },
+    { id: "caf.champions", name: "CAF Champions League" }, { id: "fifa.world", name: "FIFA World Cup" },
+    { id: "fifa.friendly", name: "International Friendly" }
 ];
 
 let allMatches = [];
 let existingData = new Map();
 let currentFilter = "all";
 
-/* ============================================================
-   AUTH
-   ============================================================ */
 await setPersistence(auth, browserLocalPersistence);
 
 onAuthStateChanged(auth, async (user) => {
@@ -304,28 +302,19 @@ onAuthStateChanged(auth, async (user) => {
     }
 });
 
-document.getElementById("btnLogin").addEventListener("click", () => {
-    window.location.href = "/login.html";
-});
-
+document.getElementById("btnLogin").addEventListener("click", () => { window.location.href = "/login.html"; });
 document.getElementById("btnLogout").addEventListener("click", async () => {
     if (!confirm("Logout?")) return;
     await signOut(auth);
     window.location.href = "/login.html";
 });
 
-/* ============================================================
-   UTILITY
-   ============================================================ */
 function clean(v) { return String(v || "").trim(); }
 
 function normalizeTeam(name) {
-    return clean(name).toLowerCase()
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        .replace(/\[[^\]]*\]/g, "")
-        .replace(/\([^)]*\)/g, "")
-        .replace(/[^a-z0-9\s]/g, " ")
-        .replace(/\s+/g, " ").trim();
+    return clean(name).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/\[[^\]]*\]/g, "").replace(/\([^)]*\)/g, "")
+        .replace(/[^a-z0-9\s]/g, " ").replace(/\s+/g, " ").trim();
 }
 
 function getNowWIBMs() { return Date.now() + (7 * 60 * 60 * 1000); }
@@ -349,13 +338,11 @@ function makeLooseKey(date, home, away) {
     return [date, normalizeTeam(home), normalizeTeam(away)].join("|");
 }
 
-/* ============================================================
-   FETCH ESPN
-   ============================================================ */
 async function fetchESPNDate(dateStr) {
     const promises = ESPN_LIGAS.map(async (liga) => {
         try {
-            const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${liga.id}/scoreboard?dates=${dateStr}`;
+            const espnUrl = `https://site.api.espn.com/apis/site/v2/sports/soccer/${liga.id}/scoreboard?dates=${dateStr}`;
+            const url = WORKER_URL + "?url=" + encodeURIComponent(espnUrl);
             const res = await fetch(url);
             if (!res.ok) return [];
             const data = await res.json();
@@ -375,13 +362,9 @@ async function fetchESPNDate(dateStr) {
                     const timeWib = String(wib.getUTCHours()).padStart(2, "0") + ":" + String(wib.getUTCMinutes()).padStart(2, "0");
 
                     return {
-                        league: liga.name,
-                        date: dateWib,
-                        time: timeWib,
-                        home: home.team?.displayName || "?",
-                        away: away.team?.displayName || "?",
-                        homeLogo: home.team?.logo || "",
-                        awayLogo: away.team?.logo || ""
+                        league: liga.name, date: dateWib, time: timeWib,
+                        home: home.team?.displayName || "?", away: away.team?.displayName || "?",
+                        homeLogo: home.team?.logo || "", awayLogo: away.team?.logo || ""
                     };
                 } catch (e) { return null; }
             }).filter(Boolean);
@@ -395,20 +378,14 @@ async function fetchAllESPN() {
     const pilihan = document.getElementById("tanggalSelect").value;
     let days = 1;
     if (pilihan === "7days" || pilihan === "all") days = 7;
-
     const promises = [];
-    for (let i = 0; i < days; i++) {
-        promises.push(fetchESPNDate(getYMD(i)));
-    }
+    for (let i = 0; i < days; i++) promises.push(fetchESPNDate(getYMD(i)));
     const results = await Promise.all(promises);
     const all = [];
     results.forEach(arr => all.push(...arr));
     return all;
 }
 
-/* ============================================================
-   LOAD FIRESTORE
-   ============================================================ */
 async function loadExisting() {
     const snap = await getDocs(collection(db, "predictions"));
     existingData.clear();
@@ -421,25 +398,16 @@ async function loadExisting() {
     });
 }
 
-/* ============================================================
-   LOAD ALL DATA (ESPN + Firestore)
-   ============================================================ */
 async function loadAllData(forceRefresh) {
     const btn = document.getElementById("btnFetch");
     const btnR = document.getElementById("btnRefresh");
-    btn.disabled = true;
-    btnR.disabled = true;
+    btn.disabled = true; btnR.disabled = true;
     btn.textContent = "⏳ Loading...";
-
     const wrap = document.getElementById("tableWrap");
-    wrap.innerHTML = '<div class="loading">Memuat jadwal dari ESPN + Firestore...</div>';
+    wrap.innerHTML = '<div class="loading">Memuat jadwal dari ESPN via Worker + Firestore...</div>';
 
     try {
-        const [espn, _] = await Promise.all([
-            fetchAllESPN(),
-            loadExisting()
-        ]);
-
+        const [espn, _] = await Promise.all([fetchAllESPN(), loadExisting()]);
         const seen = new Set();
         const result = [];
 
@@ -454,13 +422,9 @@ async function loadAllData(forceRefresh) {
             if (seen.has(k)) return;
             seen.add(k);
             result.push({
-                league: v.league || "LAINNYA",
-                date: v.date,
-                time: v.time,
-                home: v.home,
-                away: v.away,
-                homeLogo: v.homeLogo || "",
-                awayLogo: v.awayLogo || "",
+                league: v.league || "LAINNYA", date: v.date, time: v.time,
+                home: v.home, away: v.away,
+                homeLogo: v.homeLogo || "", awayLogo: v.awayLogo || "",
                 fromFirestore: true
             });
         });
@@ -470,9 +434,7 @@ async function loadAllData(forceRefresh) {
         document.getElementById("fetchStatus").className = "status success";
         document.getElementById("fetchStatus").innerHTML = `✅ <b>${espn.length}</b> dari ESPN + <b>${existingData.size}</b> dari Firestore = <b>${allMatches.length}</b> total`;
         document.getElementById("fetchStatus").classList.remove("hidden");
-
         renderTable();
-
     } catch (err) {
         console.error(err);
         document.getElementById("fetchStatus").className = "status error";
@@ -480,38 +442,27 @@ async function loadAllData(forceRefresh) {
         document.getElementById("fetchStatus").classList.remove("hidden");
     }
 
-    btn.disabled = false;
-    btnR.disabled = false;
+    btn.disabled = false; btnR.disabled = false;
     btn.textContent = "🔄 AMBIL JADWAL";
 }
 
-/* ============================================================
-   RENDER TABLE
-   ============================================================ */
 function renderTable() {
     const wrap = document.getElementById("tableWrap");
-
     let display = [...allMatches];
-
     const today = getTodayStr();
     const tomorrow = getTomorrowStr();
 
-    if (currentFilter === "today") {
-        display = display.filter(m => m.date === today);
-    } else if (currentFilter === "tomorrow") {
-        display = display.filter(m => m.date === tomorrow);
-    } else if (currentFilter === "empty") {
-        display = display.filter(m => {
-            const key = makeLooseKey(m.date, m.home, m.away);
-            const fs = existingData.get(key);
-            return !fs || !fs.handicap || !fs.predictionScoreHome || !fs.predictionScoreAway;
-        });
-    } else if (currentFilter === "new") {
-        display = display.filter(m => {
-            const key = makeLooseKey(m.date, m.home, m.away);
-            return !existingData.has(key);
-        });
-    }
+    if (currentFilter === "today") display = display.filter(m => m.date === today);
+    else if (currentFilter === "tomorrow") display = display.filter(m => m.date === tomorrow);
+    else if (currentFilter === "empty") display = display.filter(m => {
+        const key = makeLooseKey(m.date, m.home, m.away);
+        const fs = existingData.get(key);
+        return !fs || !fs.handicap || !fs.predictionScoreHome || !fs.predictionScoreAway;
+    });
+    else if (currentFilter === "new") display = display.filter(m => {
+        const key = makeLooseKey(m.date, m.home, m.away);
+        return !existingData.has(key);
+    });
 
     if (!display.length) {
         wrap.innerHTML = '<div class="loading">Tidak ada pertandingan di filter ini</div>';
@@ -519,65 +470,37 @@ function renderTable() {
         return;
     }
 
-    display.sort((a, b) => {
-        const da = (a.date || "") + (a.time || "");
-        const db2 = (b.date || "") + (b.time || "");
-        return da.localeCompare(db2);
-    });
+    display.sort((a, b) => ((a.date || "") + (a.time || "")).localeCompare((b.date || "") + (b.time || "")));
 
-    let html = `
-        <table>
-            <thead>
-                <tr>
-                    <th style="width:70px;">Tanggal</th>
-                    <th style="width:55px;">Jam</th>
-                    <th style="width:120px;">Liga</th>
-                    <th style="width:28px;"></th>
-                    <th>Tim Home</th>
-                    <th style="width:28px;"></th>
-                    <th>Tim Away</th>
-                    <th style="width:110px;">HDP</th>
-                    <th style="width:60px;">Pred H</th>
-                    <th style="width:60px;">Pred A</th>
-                    <th style="width:70px;">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-    `;
+    let html = `<table><thead><tr>
+        <th style="width:70px;">Tanggal</th><th style="width:55px;">Jam</th><th style="width:120px;">Liga</th>
+        <th style="width:28px;"></th><th>Tim Home</th><th style="width:28px;"></th><th>Tim Away</th>
+        <th style="width:110px;">HDP</th><th style="width:60px;">Pred H</th><th style="width:60px;">Pred A</th><th style="width:70px;">Status</th>
+    </tr></thead><tbody>`;
 
     display.forEach((m) => {
         const idx = allMatches.indexOf(m);
         const key = makeLooseKey(m.date, m.home, m.away);
         const existing = existingData.get(key);
         const isNew = !existing;
-
         const hdp = existing?.handicap || "";
         const pH = existing?.predictionScoreHome || "";
         const pA = existing?.predictionScoreAway || "";
         const saved = hdp && pH && pA;
-
         const homeLogoHTML = m.homeLogo ? `<img src="${m.homeLogo}" onerror="this.style.display='none'">` : "";
         const awayLogoHTML = m.awayLogo ? `<img src="${m.awayLogo}" onerror="this.style.display='none'">` : "";
-
         let cls = "";
         if (saved) cls += "saved ";
         if (isNew) cls += "new-row";
 
-        html += `
-            <tr data-index="${idx}" data-key="${key}" class="${cls}">
-                <td class="td-date">${m.date}</td>
-                <td class="td-time">${m.time}</td>
-                <td class="td-league">${m.league}</td>
-                <td class="td-logo">${homeLogoHTML}</td>
-                <td class="td-teams">${m.home}</td>
-                <td class="td-logo">${awayLogoHTML}</td>
-                <td class="td-teams">${m.away}</td>
-                <td><input type="text" class="input-hdp" value="${hdp}" placeholder="1/4 : 0" data-field="hdp"></td>
-                <td><input type="text" class="input-pred" value="${pH}" placeholder="2" data-field="predH" maxlength="2"></td>
-                <td><input type="text" class="input-pred" value="${pA}" placeholder="1" data-field="predA" maxlength="2"></td>
-                <td>${saved ? '✅' : '⏳'}</td>
-            </tr>
-        `;
+        html += `<tr data-index="${idx}" data-key="${key}" class="${cls}">
+            <td class="td-date">${m.date}</td><td class="td-time">${m.time}</td><td class="td-league">${m.league}</td>
+            <td class="td-logo">${homeLogoHTML}</td><td class="td-teams">${m.home}</td>
+            <td class="td-logo">${awayLogoHTML}</td><td class="td-teams">${m.away}</td>
+            <td><input type="text" class="input-hdp" value="${hdp}" placeholder="1/4 : 0" data-field="hdp"></td>
+            <td><input type="text" class="input-pred" value="${pH}" placeholder="2" data-field="predH" maxlength="2"></td>
+            <td><input type="text" class="input-pred" value="${pA}" placeholder="1" data-field="predA" maxlength="2"></td>
+            <td>${saved ? '✅' : '⏳'}</td></tr>`;
     });
 
     html += `</tbody></table>`;
@@ -590,14 +513,8 @@ function renderTable() {
             const pH = tr.querySelector(".input-pred[data-field='predH']").value.trim();
             const pA = tr.querySelector(".input-pred[data-field='predA']").value.trim();
             const status = tr.querySelector("td:last-child");
-
-            if (hdp && pH && pA) {
-                tr.classList.add("saved");
-                status.textContent = "✅";
-            } else {
-                tr.classList.remove("saved");
-                status.textContent = "⏳";
-            }
+            if (hdp && pH && pA) { tr.classList.add("saved"); status.textContent = "✅"; }
+            else { tr.classList.remove("saved"); status.textContent = "⏳"; }
             updateStats();
         });
     });
@@ -605,33 +522,22 @@ function renderTable() {
     updateStats();
 }
 
-/* ============================================================
-   UPDATE STATS
-   ============================================================ */
 function updateStats() {
     const total = allMatches.length;
     let saved = 0, pending = 0, newCount = 0;
-
     allMatches.forEach(m => {
         const key = makeLooseKey(m.date, m.home, m.away);
         const fs = existingData.get(key);
-        if (fs && fs.handicap && fs.predictionScoreHome && fs.predictionScoreAway) {
-            saved++;
-        } else {
-            pending++;
-        }
+        if (fs && fs.handicap && fs.predictionScoreHome && fs.predictionScoreAway) saved++;
+        else pending++;
         if (!fs) newCount++;
     });
-
     document.getElementById("statTotal").textContent = total;
     document.getElementById("statSaved").textContent = saved;
     document.getElementById("statPending").textContent = pending;
     document.getElementById("statNew").textContent = newCount;
 }
 
-/* ============================================================
-   FILL HDP VARIATIF
-   ============================================================ */
 const STRONG_TEAMS = ["real madrid", "barcelona", "atletico", "bayern", "dortmund", "manchester", "liverpool", "arsenal", "chelsea", "tottenham", "juventus", "inter", "milan", "napoli", "roma", "lazio", "atalanta", "psg", "paris", "marseille", "lyon", "monaco", "lille", "ajax", "psv", "feyenoord", "porto", "benfica", "sporting", "flamengo", "palmeiras", "boca", "river", "germany", "france", "italy", "spain", "england", "portugal", "netherlands", "belgium", "croatia", "brazil", "argentina", "uruguay"];
 
 function isStrongTeam(name) {
@@ -640,18 +546,14 @@ function isStrongTeam(name) {
 }
 
 function fillHdpVariatif() {
-    const rows = document.querySelectorAll("tbody tr");
-    rows.forEach(tr => {
+    document.querySelectorAll("tbody tr").forEach(tr => {
         const hdp = tr.querySelector(".input-hdp");
         if (hdp.value.trim()) return;
-
         const idx = parseInt(tr.dataset.index, 10);
         const m = allMatches[idx];
         if (!m) return;
-
         const homeStrong = isStrongTeam(m.home);
         const awayStrong = isStrongTeam(m.away);
-
         let value;
         if (homeStrong && !awayStrong) {
             const homeHdp = ["1/4 : 0", "1/4 : 0", "1/2 : 0", "1/2 : 0", "3/4 : 0", "1 : 0", "1 1/4 : 0", "1 1/2 : 0"];
@@ -663,28 +565,22 @@ function fillHdpVariatif() {
             const balanced = ["0 : 1/4", "1/4 : 0", "0 : 1/4", "1/4 : 0", "0 : 1/4", "1/4 : 0", "0 : 1/2", "1/2 : 0", "0 : 3/4", "3/4 : 0"];
             value = balanced[Math.floor(Math.random() * balanced.length)];
         }
-
         hdp.value = value;
         hdp.dispatchEvent(new Event("input"));
     });
 }
 
 function fillPredVariatif() {
-    const rows = document.querySelectorAll("tbody tr");
-    rows.forEach(tr => {
+    document.querySelectorAll("tbody tr").forEach(tr => {
         const pH = tr.querySelector(".input-pred[data-field='predH']");
         const pA = tr.querySelector(".input-pred[data-field='predA']");
         if (pH.value.trim() && pA.value.trim()) return;
-
         const idx = parseInt(tr.dataset.index, 10);
         const m = allMatches[idx];
         if (!m) return;
-
         const homeStrong = isStrongTeam(m.home);
         const awayStrong = isStrongTeam(m.away);
-
         let homeGoal, awayGoal;
-
         if (homeStrong && !awayStrong) {
             const patterns = [[2, 0], [2, 1], [3, 1], [1, 0], [3, 0], [2, 0], [3, 1], [2, 1], [1, 1], [0, 0], [2, 2]];
             [homeGoal, awayGoal] = patterns[Math.floor(Math.random() * patterns.length)];
@@ -695,114 +591,60 @@ function fillPredVariatif() {
             const patterns = [[0, 0], [1, 0], [0, 1], [1, 1], [2, 1], [1, 2], [2, 0], [0, 2], [2, 2], [3, 1], [1, 3], [0, 0], [1, 1]];
             [homeGoal, awayGoal] = patterns[Math.floor(Math.random() * patterns.length)];
         }
-
-        if (!pH.value.trim()) {
-            pH.value = homeGoal;
-            pH.dispatchEvent(new Event("input"));
-        }
-        if (!pA.value.trim()) {
-            pA.value = awayGoal;
-            pA.dispatchEvent(new Event("input"));
-        }
+        if (!pH.value.trim()) { pH.value = homeGoal; pH.dispatchEvent(new Event("input")); }
+        if (!pA.value.trim()) { pA.value = awayGoal; pA.dispatchEvent(new Event("input")); }
     });
 }
 
-/* ============================================================
-   SAVE ALL
-   ============================================================ */
 async function saveAll() {
     if (!auth.currentUser) { alert("Login dulu"); return; }
-
     const rows = document.querySelectorAll("tbody tr");
     if (!rows.length) { alert("Belum ada data"); return; }
-
     const toSave = [];
     rows.forEach(tr => {
         const idx = parseInt(tr.dataset.index, 10);
         const m = allMatches[idx];
         if (!m) return;
-
         const hdp = tr.querySelector(".input-hdp").value.trim();
         const pH = tr.querySelector(".input-pred[data-field='predH']").value.trim();
         const pA = tr.querySelector(".input-pred[data-field='predA']").value.trim();
-
-        if (hdp || pH || pA) {
-            toSave.push({ match: m, hdp, pH, pA });
-        }
+        if (hdp || pH || pA) toSave.push({ match: m, hdp, pH, pA });
     });
-
     if (!toSave.length) { alert("Gak ada input yang diisi"); return; }
     if (!confirm(`Simpan ${toSave.length} data ke Firestore?`)) return;
-
     const btn = document.getElementById("btnSaveAll");
-    btn.disabled = true;
-    btn.textContent = "⏳ Menyimpan...";
-
+    btn.disabled = true; btn.textContent = "⏳ Menyimpan...";
     try {
         await loadExisting();
-
         let batch = writeBatch(db);
-        let count = 0;
-        let updated = 0, created = 0;
-
+        let count = 0, updated = 0, created = 0;
         for (const item of toSave) {
             const { match, hdp, pH, pA } = item;
             const key = makeLooseKey(match.date, match.home, match.away);
             const existing = existingData.get(key);
-
             const data = {
-                league: match.league,
-                date: match.date,
-                time: match.time,
-                home: match.home,
-                away: match.away,
-                homeLogo: match.homeLogo || "",
-                awayLogo: match.awayLogo || "",
-                handicap: hdp,
-                predictionScoreHome: pH,
-                predictionScoreAway: pA,
-                active: true,
-                updatedAt: new Date()
+                league: match.league, date: match.date, time: match.time,
+                home: match.home, away: match.away,
+                homeLogo: match.homeLogo || "", awayLogo: match.awayLogo || "",
+                handicap: hdp, predictionScoreHome: pH, predictionScoreAway: pA,
+                active: true, updatedAt: new Date()
             };
-
-            if (existing) {
-                batch.update(doc(db, "predictions", existing.id), data);
-                updated++;
-            } else {
-                batch.set(doc(collection(db, "predictions")), {
-                    ...data,
-                    prediction: "",
-                    scoreHome: "",
-                    scoreAway: ""
-                });
-                created++;
-            }
+            if (existing) { batch.update(doc(db, "predictions", existing.id), data); updated++; }
+            else { batch.set(doc(collection(db, "predictions")), { ...data, prediction: "", scoreHome: "", scoreAway: "" }); created++; }
             count++;
-            if (count >= 400) {
-                await batch.commit();
-                batch = writeBatch(db);
-                count = 0;
-            }
+            if (count >= 400) { await batch.commit(); batch = writeBatch(db); count = 0; }
         }
         if (count > 0) await batch.commit();
-
         alert(`✅ Berhasil!\n\n📝 Update: ${updated}\n🆕 Baru: ${created}\n📊 Total: ${toSave.length}`);
-
         await loadExisting();
         renderTable();
-
     } catch (err) {
         console.error(err);
         alert("❌ Gagal simpan: " + err.message);
     }
-
-    btn.disabled = false;
-    btn.textContent = "💾 SIMPAN SEMUA";
+    btn.disabled = false; btn.textContent = "💾 SIMPAN SEMUA";
 }
 
-/* ============================================================
-   EVENT LISTENERS
-   ============================================================ */
 document.getElementById("btnFetch").addEventListener("click", () => loadAllData(false));
 document.getElementById("btnRefresh").addEventListener("click", () => {
     if (!confirm("Force refresh? Akan fetch ulang dari ESPN.")) return;
@@ -822,20 +664,16 @@ document.getElementById("btnFillHdp").addEventListener("click", () => {
     if (!confirm("Isi HDP variatif untuk semua yang kosong?")) return;
     fillHdpVariatif();
 });
-
 document.getElementById("btnFillPred").addEventListener("click", () => {
     if (!confirm("Isi prediksi variatif untuk semua yang kosong?")) return;
     fillPredVariatif();
 });
-
 document.getElementById("btnFillBoth").addEventListener("click", () => {
     if (!confirm("Isi HDP + Prediksi variatif untuk semua yang kosong?")) return;
     fillHdpVariatif();
     fillPredVariatif();
 });
-
 document.getElementById("btnSaveAll").addEventListener("click", saveAll);
-
 document.getElementById("btnClearAll").addEventListener("click", () => {
     if (!confirm("Kosongkan semua input?")) return;
     document.querySelectorAll("tbody input").forEach(i => i.value = "");
