@@ -542,27 +542,76 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// ============================================================
+// 40 LIGA ESPN — TERMASUK UEFA NATIONS LEAGUE
+// ============================================================
 const ESPN_LIGAS = [
+    // Inggris
     { id: "eng.1", name: "Premier League" },
+    { id: "eng.2", name: "Championship" },
+    { id: "eng.fa", name: "FA Cup" },
+    { id: "eng.league_cup", name: "Carabao Cup" },
+    // Spanyol
     { id: "esp.1", name: "La Liga" },
+    { id: "esp.2", name: "La Liga 2" },
+    { id: "esp.copa_del_rey", name: "Copa del Rey" },
+    // Italia
     { id: "ita.1", name: "Serie A" },
+    { id: "ita.2", name: "Serie B" },
+    { id: "ita.coppa_italia", name: "Coppa Italia" },
+    // Jerman
     { id: "ger.1", name: "Bundesliga" },
+    { id: "ger.2", name: "2. Bundesliga" },
+    { id: "ger.dfb_pokal", name: "DFB Pokal" },
+    // Prancis
     { id: "fra.1", name: "Ligue 1" },
+    { id: "fra.2", name: "Ligue 2" },
+    { id: "fra.coupe_de_france", name: "Coupe de France" },
+    // Belanda & Portugal
+    { id: "ned.1", name: "Eredivisie" },
+    { id: "ned.2", name: "Eerste Divisie" },
+    { id: "por.1", name: "Primeira Liga" },
+    { id: "por.2", name: "Liga Portugal 2" },
+    // Eropa
     { id: "uefa.champions", name: "Champions League" },
     { id: "uefa.europa", name: "Europa League" },
-    { id: "por.1", name: "Primeira Liga" },
-    { id: "ned.1", name: "Eredivisie" },
+    { id: "uefa.europa.conf", name: "Conference League" },
+    { id: "uefa.nations", name: "UEFA Nations League" },
+    { id: "uefa.euro", name: "UEFA Euro" },
+    { id: "uefa.euroq", name: "UEFA Euro Qualification" },
+    // Amerika
     { id: "usa.1", name: "MLS" },
+    { id: "usa.nwsl", name: "NWSL" },
+    { id: "usa.usl.1", name: "USL Championship" },
+    { id: "mex.1", name: "Liga MX" },
+    // Amerika Selatan
     { id: "bra.1", name: "Brasileirão" },
+    { id: "bra.2", name: "Brasileirão Série B" },
     { id: "arg.1", name: "Liga Profesional" },
+    { id: "arg.2", name: "Primera Nacional" },
+    { id: "conmebol.libertadores", name: "Copa Libertadores" },
+    { id: "conmebol.sudamericana", name: "Copa Sudamericana" },
+    // Asia & Timur Tengah
     { id: "afc.champions", name: "AFC Champions" },
-    { id: "fifa.world", name: "FIFA World Cup" }
+    { id: "jpn.1", name: "J-League" },
+    { id: "kor.1", name: "K-League 1" },
+    { id: "chn.1", name: "Chinese Super League" },
+    { id: "sau.1", name: "Saudi Pro League" },
+    // Dunia
+    { id: "fifa.world", name: "FIFA World Cup" },
+    { id: "fifa.wwc", name: "FIFA Women's World Cup" }
 ];
 
 let semuaData = [];
 let currentFilter = "today";
 
-function clean(v) { return String(v || "").trim(); }
+/* ============================================================
+   UTILITY
+   ============================================================ */
+function clean(v) {
+    if (v === undefined || v === null) return "";
+    return String(v).trim();
+}
 
 function escapeHtml(s) {
     return clean(s)
@@ -599,12 +648,11 @@ function normalizeTime(input) {
     return s;
 }
 
-// Normalisasi nama tim — buang embel-embel [N], (N), FC, SC, dll
 function normalizeTeamName(name) {
     let s = clean(name).toLowerCase();
-    s = s.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // hapus aksen
-    s = s.replace(/\[[^\]]*\]/g, ""); // hapus [N]
-    s = s.replace(/\([^)]*\)/g, ""); // hapus (N)
+    s = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    s = s.replace(/\[[^\]]*\]/g, "");
+    s = s.replace(/\([^)]*\)/g, "");
     s = s.replace(/[.'’`]/g, "");
     s = s.replace(/\b(fc|sc|cf|afc|ac|as|sk|if|bk|sv|kv|nk|club|football|sport|sports|soccer|team|the|of|and|de|do|da|la|le|el|city|united|utd|reserves?)\b/g, " ");
     s = s.replace(/[-_]/g, " ");
@@ -667,9 +715,6 @@ function formatTanggalShort(date) {
     return p[2] + "/" + p[1];
 }
 
-// ============================================================
-// KEY UNTUK DETEKSI DUPLIKAT — TANPA JAM
-// ============================================================
 function makeLooseKey(date, home, away) {
     return [
         normalizeDate(date),
@@ -678,6 +723,9 @@ function makeLooseKey(date, home, away) {
     ].join("|");
 }
 
+/* ============================================================
+   FETCH ESPN
+   ============================================================ */
 async function fetchESPNDate(dateStr) {
     const promises = ESPN_LIGAS.map(async (liga) => {
         try {
@@ -704,6 +752,7 @@ async function fetchESPNDate(dateStr) {
 
                     return {
                         league: liga.name,
+                        leagueId: liga.id,
                         date: dateWib,
                         time: timeWib,
                         home: homeComp.team?.displayName || homeComp.team?.name || "?",
@@ -727,13 +776,19 @@ async function fetchESPNDate(dateStr) {
 
 async function fetchESPN7Days() {
     const all = [];
+    // Load paralel biar cepat
+    const dayPromises = [];
     for (let i = 0; i < 7; i++) {
-        const arr = await fetchESPNDate(getYMD(i));
-        all.push(...arr);
+        dayPromises.push(fetchESPNDate(getYMD(i)));
     }
+    const results = await Promise.all(dayPromises);
+    results.forEach(arr => all.push(...arr));
     return all;
 }
 
+/* ============================================================
+   FETCH FIRESTORE
+   ============================================================ */
 async function fetchFirestore() {
     try {
         const snap = await getDocs(collection(db, "predictions"));
@@ -769,15 +824,13 @@ async function fetchFirestore() {
     }
 }
 
-// ============================================================
-// GABUNG DATA — ANTI DOBEL
-// ============================================================
+/* ============================================================
+   GABUNG ESPN + FIRESTORE (ANTI DOBEL)
+   ============================================================ */
 function gabungData(espnData, firestoreData) {
-    // 1. Map Firestore by LOOSE key (tanggal + nama tim, tanpa jam)
     const mapFS = new Map();
     firestoreData.forEach(item => {
         const key = makeLooseKey(item.date, item.home, item.away);
-        // Kalau sudah ada, timpa dengan yang punya HDP/Pred (prioritas lengkap)
         const existing = mapFS.get(key);
         if (!existing || (!existing.handicap && item.handicap)) {
             mapFS.set(key, item);
@@ -787,15 +840,13 @@ function gabungData(espnData, firestoreData) {
     const hasil = [];
     const seenKeys = new Set();
 
-    // 2. ESPN dulu
     espnData.forEach(match => {
         const looseKey = makeLooseKey(match.date, match.home, match.away);
-        if (seenKeys.has(looseKey)) return; // skip dobel ESPN
+        if (seenKeys.has(looseKey)) return;
         seenKeys.add(looseKey);
 
         const fs = mapFS.get(looseKey);
         if (fs) {
-            // Ambil HDP & Pred dari Firestore
             hasil.push({
                 ...match,
                 league: fs.league || match.league,
@@ -810,7 +861,6 @@ function gabungData(espnData, firestoreData) {
         }
     });
 
-    // 3. Tambah Firestore yang gak ada di ESPN (pakai loose key)
     firestoreData.forEach(item => {
         const looseKey = makeLooseKey(item.date, item.home, item.away);
         if (seenKeys.has(looseKey)) return;
@@ -821,6 +871,9 @@ function gabungData(espnData, firestoreData) {
     return hasil;
 }
 
+/* ============================================================
+   RENDER
+   ============================================================ */
 function renderMatch(data) {
     const home = clean(data.home);
     const away = clean(data.away);
@@ -925,6 +978,9 @@ function renderPrediksi(data) {
     container.innerHTML = html;
 }
 
+/* ============================================================
+   FILTER
+   ============================================================ */
 function updateLigaFilter(data) {
     const select = document.getElementById("ligaFilter");
     if (!select) return;
@@ -988,6 +1044,9 @@ function applyFilter() {
     renderPrediksi(filtered);
 }
 
+/* ============================================================
+   STATS
+   ============================================================ */
 function animateNumber(el, target, duration) {
     if (!el) return;
     const start = performance.now();
@@ -1009,6 +1068,9 @@ function updateStats(data) {
     animateNumber(document.getElementById("totalHari"), hari, 1400);
 }
 
+/* ============================================================
+   LOADING
+   ============================================================ */
 let progress = 0;
 let finished = false;
 
@@ -1041,6 +1103,9 @@ setTimeout(() => updateLoading(85, 400), 800);
 setTimeout(() => updateLoading(100, 400), 1200);
 setTimeout(finishLoading, 2500);
 
+/* ============================================================
+   LUX MARQUEE
+   ============================================================ */
 (function() {
     const container = document.getElementById("luxTextTop");
     if (!container) return;
@@ -1057,6 +1122,9 @@ setTimeout(finishLoading, 2500);
     }, 4000);
 })();
 
+/* ============================================================
+   INIT
+   ============================================================ */
 async function init() {
     try {
         console.log("[LOAD] Mulai...");
@@ -1075,7 +1143,7 @@ async function init() {
         semuaData = gabungData(espnData, fsData);
         semuaData.sort((a, b) => (getKickoffWIBMs(a) || 0) - (getKickoffWIBMs(b) || 0));
 
-        console.log(`[Total] ${semuaData.length} pertandingan (setelah anti-dobel)`);
+        console.log(`[Total] ${semuaData.length} pertandingan`);
 
         updateLigaFilter(semuaData);
         updateStats(semuaData);
@@ -1091,6 +1159,9 @@ async function init() {
     }
 }
 
+/* ============================================================
+   EVENT LISTENERS
+   ============================================================ */
 document.querySelectorAll(".tab-filter").forEach(tab => {
     tab.addEventListener("click", () => {
         document.querySelectorAll(".tab-filter").forEach(t => t.classList.remove("active"));
@@ -1107,6 +1178,7 @@ document.getElementById("btnClearSearch").addEventListener("click", () => {
     applyFilter();
 });
 
+// Auto-refresh tiap 5 menit
 setInterval(init, 5 * 60 * 1000);
 
 init();
