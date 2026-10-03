@@ -143,7 +143,8 @@ button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
             <p class="small">
                 Pilih tanggal → klik <b>Fetch</b> → centang pertandingan → simpan ke Firestore.<br>
                 🔸 HDP & prediksi diisi manual nanti lewat <b>admin.html</b>.<br>
-                🔸 Waktu otomatis dikonversi dari UTC ke <b>WIB (+7)</b>.
+                🔸 Waktu otomatis dikonversi dari UTC ke <b>WIB (+7)</b>.<br>
+                🔸 Pertandingan yang sudah ada otomatis di-skip (anti-duplikat).
             </p>
 
             <div class="form-row">
@@ -245,6 +246,137 @@ const db = getFirestore(app);
    ============================================================ */
 const TSDB_KEY = "123";
 const TSDB_BASE = `https://www.thesportsdb.com/api/v1/json/${TSDB_KEY}`;
+
+/* ============================================================
+   🔧 ALIAS TIM — samakan nama yang beda penulisan
+   Tambahkan sendiri sesuai kebutuhan (lihat hasil fetch)
+   ============================================================ */
+const TEAM_ALIAS = {
+    // === Eropa Timur ===
+    "czech republic": "czechia",
+    "korea republic": "south korea",
+    "korea dpr": "north korea",
+    "ir iran": "iran",
+    "bosnia and herzegovina": "bosnia",
+    "bosnia-herzegovina": "bosnia",
+    "republic of ireland": "ireland",
+    "north macedonia": "macedonia",
+    "macedonia": "north macedonia",
+
+    // === Benua Amerika ===
+    "usa": "united states",
+    "united states of america": "united states",
+    "mexico": "meksiko",           // sesuaikan
+    "costa rica": "kosta rika",    // sesuaikan
+
+    // === Afrika ===
+    "ivory coast": "cote divoire",
+    "cote d'ivoire": "cote divoire",
+    "cote divoire": "cote divoire",
+    "south africa": "afrika selatan",  // sesuaikan
+
+    // === Inggris (Premier League) ===
+    "man united": "manchester united",
+    "man utd": "manchester united",
+    "man city": "manchester city",
+    "newcastle": "newcastle united",
+    "brighton": "brighton hove albion",
+    "spurs": "tottenham",
+    "tottenham hotspur": "tottenham",
+    "west ham": "west ham united",
+    "wolves": "wolverhampton",
+    "wolverhampton wanderers": "wolverhampton",
+    "nottingham forest": "nottingham",
+    "nottm forest": "nottingham",
+    "sheffield utd": "sheffield united",
+    "leeds": "leeds united",
+    "leicester": "leicester city",
+
+    // === Spanyol (La Liga) ===
+    "atletico madrid": "atletico",
+    "atletico de madrid": "atletico",
+    "athletic bilbao": "athletic club",
+    "real betis": "betis",
+    "real sociedad": "sociedad",
+    "celta vigo": "celta",
+    "rayo vallecano": "rayo",
+    "espanyol": "espanyol barcelona",
+    "alaves": "deportivo alaves",
+
+    // === Italia (Serie A) ===
+    "inter": "inter milan",
+    "internazionale": "inter milan",
+    "ac milan": "milan",
+    "juventus": "juve",
+    "as roma": "roma",
+    "ss lazio": "lazio",
+    "napoli": "ssc napoli",
+
+    // === Jerman (Bundesliga) ===
+    "bayern munich": "bayern munchen",
+    "bayern": "bayern munchen",
+    "borussia dortmund": "dortmund",
+    "bvb": "dortmund",
+    "rb leipzig": "leipzig",
+    "bayer leverkusen": "leverkusen",
+    "borussia monchengladbach": "monchengladbach",
+    "eintracht frankfurt": "frankfurt",
+
+    // === Prancis (Ligue 1) ===
+    "paris saint germain": "psg",
+    "paris sg": "psg",
+    "marseille": "olympique marseille",
+    "lyon": "olympique lyonnais",
+    "monaco": "as monaco",
+
+    // === Portugal ===
+    "sporting cp": "sporting",
+    "sporting lisbon": "sporting",
+    "fc porto": "porto",
+    "sl benfica": "benfica",
+
+    // === Belanda ===
+    "ajax amsterdam": "ajax",
+    "psv eindhoven": "psv",
+    "feyenoord rotterdam": "feyenoord",
+
+    // === Turki ===
+    "galatasaray sk": "galatasaray",
+    "fenerbahce sk": "fenerbahce",
+    "besiktas jk": "besiktas",
+
+    // === Tim Nasional lain ===
+    "saudi arabia": "arab saudi",
+    "uae": "uni emirat arab",
+    "united arab emirates": "uni emirat arab",
+    "china pr": "china",
+    "pr china": "china",
+    "congo dr": "kongo",
+    "dr congo": "kongo",
+
+    // === Tambah sendiri di bawah ini ===
+};
+
+/* ============================================================
+   NORMALISASI NAMA TIM
+   ============================================================ */
+function normalizeTeam(name) {
+    let n = clean(name).toLowerCase();
+
+    // Hapus suffix/prefix umum
+    n = n.replace(/\b(fc|cf|sc|ac|afc|cd|ud|sv|if|bk|fk|sk|jk|as|ss|ssc|sl)\b/g, "");
+
+    // Hapus tanda baca
+    n = n.replace(/[.\-']/g, "");
+
+    // Rapikan spasi
+    n = n.replace(/\s+/g, " ").trim();
+
+    // Cek alias
+    if (TEAM_ALIAS[n]) n = TEAM_ALIAS[n];
+
+    return n;
+}
 
 /* ============================================================
    ELEMENT REFS
@@ -355,20 +487,47 @@ function padTime(h, m) {
     return String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0");
 }
 
-function utcToWib(timeStr) {
-    if (!timeStr) return "";
+/* ------------------------------------------------------------
+   ✅ PERBAIKAN: UTC → WIB dengan koreksi tanggal
+   ------------------------------------------------------------ */
+function utcToWib(dateStr, timeStr) {
+    if (!timeStr) return { date: dateStr, time: "" };
+
     const parts = String(timeStr).split(":");
-    if (parts.length < 2) return "";
+    if (parts.length < 2) return { date: dateStr, time: "" };
+
     let h = parseInt(parts[0], 10);
     let m = parseInt(parts[1], 10);
+
     h += 7;
-    if (h >= 24) h -= 24;
-    return padTime(h, m);
+
+    let finalDate = dateStr;
+
+    // Kalau lewat 24 jam, tanggal +1
+    if (h >= 24) {
+        h -= 24;
+        try {
+            const d = new Date(dateStr + "T00:00:00Z");
+            d.setUTCDate(d.getUTCDate() + 1);
+            finalDate = d.toISOString().slice(0, 10);
+        } catch (e) {
+            // fallback: biarkan tanggal asli
+        }
+    }
+
+    return { date: finalDate, time: padTime(h, m) };
 }
 
+/* ------------------------------------------------------------
+   ✅ PERBAIKAN: makeKey dengan normalisasi nama tim
+   ------------------------------------------------------------ */
 function makeKey(date, time, home, away) {
-    const norm = (s) => clean(s).toLowerCase().replace(/\s+/g, " ").trim();
-    return [date, time, norm(home), norm(away)].join("|");
+    return [
+        clean(date),
+        clean(time),
+        normalizeTeam(home),
+        normalizeTeam(away)
+    ].join("|");
 }
 
 function escapeHtml(s) {
@@ -402,6 +561,9 @@ btnFetch.addEventListener("click", async () => {
     resultCard.classList.add("hidden");
     showFetchStatus("⏳ Mengambil jadwal dari TheSportsDB...", "warning");
 
+    // Reload existing keys setiap kali fetch, biar data terbaru
+    await loadExistingKeys();
+
     try {
         const leagueId = fetchLeague.value;
         let url;
@@ -425,13 +587,13 @@ btnFetch.addEventListener("click", async () => {
         // Convert ke format internal
         fetchedMatches = data.events.map(ev => {
             const timeUtc = ev.strTime || "";
-            const timeWib = utcToWib(timeUtc);
+            const converted = utcToWib(ev.dateEvent || date, timeUtc);
 
             return {
                 idEvent: ev.idEvent,
                 league: ev.strLeague || "LAINNYA",
-                date: ev.dateEvent || date,
-                time: timeWib,
+                date: converted.date,       // ← tanggal sudah dikoreksi
+                time: converted.time,       // ← jam WIB
                 timeUtc: timeUtc,
                 home: ev.strHomeTeam || "",
                 away: ev.strAwayTeam || "",
